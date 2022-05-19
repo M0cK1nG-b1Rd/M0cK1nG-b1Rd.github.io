@@ -1,0 +1,1054 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第22章 恶意键盘记录器">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1999-02-20T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:08.883Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>第22章 恶意键盘记录器 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第22章 恶意键盘记录器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-20 12:21" pubdate>
+          1999年2月20日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第22章 恶意键盘记录器</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第22章恶意键盘记录器<br>不能说（经用户同意）应用在管理中的键盘记录器（Key Logger） 一定是坏的，问题是那些在用户不知情的情况下、出于恶意运行的键盘记录器。本章将分析岀现这种恶意键盘记录器的原因。</p>
+<h1 id="22-1恶意键盘记录器的目标"><a href="#22-1恶意键盘记录器的目标" class="headerlink" title="22.1恶意键盘记录器的目标"></a>22.1恶意键盘记录器的目标</h1><p>就是“金钱”。键盘记录器的基本功能是记录并保存用户在键盘上输人的信息，然后将这些信息转移到指定地点。信息化社会中，“信息就是金钱”。那么，如何利用键盘记录器赚钱呢？下面先看几个示例。</p>
+<h2 id="22-1-1-在线游戏"><a href="#22-1-1-在线游戏" class="headerlink" title="22.1.1 在线游戏"></a>22.1.1 在线游戏</h2><p>现在，网吧随处可见，黑客随便去一个网吧，偷偷在一台电脑上安装好键盘记录器后离开。之后会有人用这台安装了键盘记录器的电脑玩在线游戏，用户使用这台电脑时，键盘记录器会偷偷记录下游戏账号（ID、Password ）,并通过邮件发送给黑客。黑客通过这些游戏账号登录在线游戏，可以把原玩家的游戏币与装备换成现金。玩过在线游戏的朋友应该对这种用游戏币和装备换钱的交易非常清楚（游戏装备的年交易额是普通人无法想象的）。</p>
+<h2 id="22-1-2-网上银行"><a href="#22-1-2-网上银行" class="headerlink" title="22.1.2 网上银行"></a>22.1.2 网上银行</h2><p>那不玩在线游戏的人是不是就不会受到键盘记录器的侵害了呢？与每个人都息息相关的就是网上银行。如果网上银行的账户信息（ID、Password,账号）被盗该怎么办呢？如果存款余额神不知鬼不觉地清零了呢？</p>
+<p>其实上述事例在国内外屡见不鲜，特别是在南美的一些国家和地区（墨西哥、巴西等），网银被盗走数万乃至数十万美元的用户相当多。虽然大部分网上银行都要求用户使用IE浏览器（Internet Explorer ）连接，并且在银行网站安装了ActiveX安全模块，进行着双重、三重保护，但 是仍然没有人敢断言网上银行100%安全。</p>
+<h2 id="22-1-3-商业机密泄露"><a href="#22-1-3-商业机密泄露" class="headerlink" title="22.1.3 商业机密泄露"></a>22.1.3 商业机密泄露</h2><p>我们有时会看到这样的报道，某大公司因核心机密被泄露到国外而遭受重大损失。虽然这类商业信息遭泄露的例子并不多见，可一旦发生，其损害是十分巨大的（耗费几年时间，投人大量财力、精力研发的核心技术一旦遭到泄露，很有可能将企业推到生死存亡的关头）。对于一个国家亦是如此，若半导体、汽车、造船等关键技术被泄露到国外，整个国家可能就会陷入危机。从普通公司的泄密事件看，大部分公司内部都会一个“内线”，有了 “内线”就太方便设置键盘记录器了。</p>
+<p>现在各位应该能感觉到键盘记录器的可怕了吧？为什么大部分杀毒软件都会把键盘记录器<br>识别为“恶意”文件？为什么登录网上银行（或者在线游戏）的相应网站时要安装ActiveX安全模块？ 一切都有了答案。</p>
+<h1 id="22-2键盘记录器的种类与发展趋势"><a href="#22-2键盘记录器的种类与发展趋势" class="headerlink" title="22.2键盘记录器的种类与发展趋势"></a>22.2键盘记录器的种类与发展趋势</h1><p>各位听说过硬件版的键盘记录器吗？它就像一个USB存储器，连接在键盘线缆的末端从而设置到PC中。</p>
+<p>其内部有一个闪存（flashmemory），能够直接接收并存储来自键盘的电子信号。最新产品还支持Wi-Fi无线连接，能够更方便地传送键盘输入信息。虽然安装起来有些不方便，但是一旦成功，安装用户根本无法觉察到自己从键盘输人的信息遭到了盗窃。谁会仔细看桌下的PC （而且是PC机箱的背面）呢？而且普通人就是看了也认不出来。事实上，仅用软件根本无法阻止这种硬件版的键盘记录器。各种杀毒软件以及键盘安全软件在阻止软件版键盘记录器方面做岀了大量努力，但是恶意键盘记录器编写者的目标（&#x3D;金钱）非常明确，所以不可能完全阻止所有键盘记录器。键盘记录器制作者们无限编写、散布恶意键盘记录器。对他们而言，这是一份关乎生计的“事业”，这些人会亲自测试自己编写的键盘记录器，以确保能够成功绕开各种安全软件。</p>
+<p>这类键盘记录器未来会向着更精巧、更隐蔽的方向发展，另一方面我们却不得不一直使用键盘这类输人设备。</p>
+<p>那么，如果不用键盘，是不是就可以不受键盘记录器的威胁呢？那些制作者们可能又会开发出全新形态的键盘记录器。若未来键盘被淘汰，大量使用“手写识别”或“声音识别”输入设备，相信那个时候一定会出现相应的“手写记录器”、“声音记录器”吧。</p>
+<h1 id="22-3防范恶意键盘记录器"><a href="#22-3防范恶意键盘记录器" class="headerlink" title="22.3防范恶意键盘记录器"></a>22.3防范恶意键盘记录器</h1><p>虽然不能100%阻止恶意键盘记录器，但我们可以努力将其破坏性降到最低。以下这些简单的行为准则是我给各位的建议。</p>
+<p>Keylogger防范守则： </p>
+<p>□绝不在公共场合（网吧、学校自习室等）的PC中输人个人信息； </p>
+<p>□经常更新安全软件；</p>
+<p>□输入个人信息时灵活使用复制（剪切）&amp;粘贴（* ）;</p>
+<p>□使用个人防火墙（即使键盘输人遭到非法记录，只要不泄露信息就没有危险）。 </p>
+<p>若ID为reversecore，输人时先输入corereverse，再用鼠标选中core字符串，通过剪切&amp;粘贴功能最后形成reversecore。各位可以把这种方法应用到每个需要输入个人信息的地方，虽然有些麻烦，但能够增强一些安全性。当然，有些强大的键盘记录器甚至可以钩取剪贴板中的信息，所以 上面这个方法并不总是有效的，但用来防范一般的键盘记录器时，效果还是十分明显的。</p>
+<h1 id="22-4个人信息"><a href="#22-4个人信息" class="headerlink" title="22.4个人信息"></a>22.4个人信息</h1><p>最后简单谈谈有关个人信息的问题。信息化社会中，个人信息即代表某个“人”。所以每个人都要重视起来，要有保护意识。特别是密码，一定要设置为只有自己知道的、较为复杂的形式（结合“数字+字符+特殊字符”，且最少8位），绝对不要告诉别人。输人密码时也要时刻注意周围情况，不要泄露。</p>
+<blockquote>
+<p>我看社会工程学技巧相关图书时，遇到过一些介绍专业黑客盗取键盘输入的例子。黑客在离目标对象一米远的地方假装看报纸，轻松盗取了受害人键盘输入的信息（登录信息）。黑客不必费劲去猜测系统管理员的密码，（可能的话）只要走近就能轻松窃取。如若得手，黑客就能很容易地获取系统管理员权限。</p>
+</blockquote>
+<p>一定要保管好重要的个人信息。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第22章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第22章 恶意键盘记录器</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/20/逆向工程核心原理/第22章 恶意键盘记录器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月20日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第23章 DLL注入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧">
+                        <span class="hidden-mobile">第7章 栈帧</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

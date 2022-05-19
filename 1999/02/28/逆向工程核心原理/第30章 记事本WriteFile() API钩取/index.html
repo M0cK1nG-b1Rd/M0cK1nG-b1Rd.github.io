@@ -1,0 +1,1250 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第30章 记事本WriteFile() API钩取">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220225161138711.png">
+<meta property="article:published_time" content="1999-02-28T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:54.466Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220225161138711.png">
+  
+  
+  
+  <title>第30章 记事本WriteFile() API钩取 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第30章 记事本WriteFile() API钩取"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-28 12:21" pubdate>
+          1999年2月28日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          138 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第30章 记事本WriteFile() API钩取</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第30章记事本WriteFile() API钩取<br>本章将讲解前面介绍过的调试钩取技术。通过钩取记事本的kernel32!WriteFile() API，使其执行不同动作。</p>
+<h1 id="30-1-技术图表-调试技术"><a href="#30-1-技术图表-调试技术" class="headerlink" title="30.1 技术图表-调试技术"></a>30.1 技术图表-调试技术</h1><p>下面讲解调试方式的API钩取技术（请参考图30-1技术图表中有下划线的部分）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220225161138711.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-1 技术图表（调试）"></p>
+<p>由于该技术借助“调试”钩取，所以能够进行与用户更具交互性（interctive）的钩取操作。也就是说，这种技术会向用户提供简单的接口，使用户能够控制目标进程的运行，并且可以自由使用进程内存。使用调试钩取技术前，先要了解一下调试器的构造。</p>
+<h1 id="30-2-关于调试器的说明"><a href="#30-2-关于调试器的说明" class="headerlink" title="30.2 关于调试器的说明"></a>30.2 关于调试器的说明</h1><h2 id="30-2-1-术语"><a href="#30-2-1-术语" class="headerlink" title="30.2.1 术语"></a>30.2.1 术语</h2><p>先简单整理一下常用术语。</p>
+<ul>
+<li><p>调试器（Debugger）：进行调试的程序</p>
+</li>
+<li><p>被调试者（Debuggee）：被调试的程序</p>
+</li>
+</ul>
+<h2 id="30-2-2-调试器功能"><a href="#30-2-2-调试器功能" class="headerlink" title="30.2.2 调试器功能"></a>30.2.2 调试器功能</h2><p>调试器用来确认被调试者是否正确运行，发现（未能预料到的）程序错误。调试器能够逐一执行被调试者的指令，拥有对寄存器与内存的所有访问权限。</p>
+<h2 id="30-2-3-调试器的工作原理"><a href="#30-2-3-调试器的工作原理" class="headerlink" title="30.2.3 调试器的工作原理"></a>30.2.3 调试器的工作原理</h2><p>调试进程经过注册后，每当被调试者发生调试事件（DebugEvent）时，OS就会暂停其运行，并向调试器报告相应事件。调试器对相应事件做适当处理后，使被调试者继续运行。 </p>
+<p>□ 一般的异常（Exception）也属于调试事件。 </p>
+<p>□若相应进程处于非调试，调试事件会在其自身的异常处理或OS的异常处理机制中被处理掉。 </p>
+<p>□调试器无法处理或不关心的调试事件最终由OS处理。 </p>
+<p>图30-2形象描述了上述说明。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220225161339958.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-2 调试器工作原理"></p>
+<h2 id="30-2-4-调试事件"><a href="#30-2-4-调试事件" class="headerlink" title="30.2.4 调试事件"></a>30.2.4 调试事件</h2><p>各种调试事件整理如下： </p>
+<p>□ EXCEPTION_DEBUG_EVENT<br>□ CREATE_THREAD_DEBUG_EVENT<br>□ CREATE PROCESS DEBUG EVENT<br>□ EXIT_THREAD_DEBUG_EVENT<br>□ EXIT_PROCESS_DEBUG_EVENT<br>□ LOAD_DLL_DEBUG_EVENT<br>□ UNLOAD_DLL_DEBUG_EVENT<br>□ OUTPUT_DEBUG_STRING_EVENT<br>□ RIP_EVENT</p>
+<p>上面列出的调试事件中，与调试相关的事件为EXCEPTION_DEBUG_EVENT，下面是与其相关的异常列表。</p>
+<p>□ EXCEPTION_ACCESS_VIOLATION<br>□ EXCEPTION_ARRAY_BOUNDS_EXCEEDED<br>□ EXCEPTION_BREAKPOINT<br>□ EXCEPTION_DATATYPE_MISALIGNMENT<br>□ EXCEPTION_FLTDENORMAL_OPERAND<br>□ EXCEPTION_FLT_DIVIDE_BY_ZERO<br>□ EXCEPTION_FLT_INEXACT_RESULT<br>□ EXCEPTION_FLT_INVALID_OPERATION<br>□ EXCEPTION_FLT_OVERFLOW<br>□ EXCEPTION_FLT_STACK_CHECK<br>□ EXCEPTION_FLT_UNDERFLOW<br>□ EXCEPTION_ILLEGAL_INSTRUCTION<br>□ EXCEPTION_IN_PAGE_ERROR<br>□ EXCEPTION_INT_DIVIDE_BY_ZERO<br>□ EXCEPTIONJNT_OVERFLOW<br>□ EXCEPTION_INVALID_DISPOSITION<br>□ EXCEPTION_NONCONTINUABLE_EXCEPTION<br>□ EXCEPTION_PRIV_INSTRUCTION<br>□ EXCEPTION_SINGLE_STEP<br>□ EXCEPTION_STACK_OVERFLOW</p>
+<p>上面各种异常中，调试器必须处理的是EXCEPTION_BREAKPOINT异常。断点对应的汇编指令为INT3, IA-32指令为0xCC。代码调试遇到INT3指令即中断运行，EXCEPTION_BREAKPOINT异常事件被传送到调试器，此时调试器可做多种处理。</p>
+<p>调试器实现断点的方法非常简单，找到要设置断点的代码在内存中的起始地址，只要把1个 字节修改为0xCC就可以了。想继续调试时，再将它恢复原值即可。通过调试钩取API的技术就是利用了断点的这种特性。</p>
+<h1 id="30-3-调试技术流程"><a href="#30-3-调试技术流程" class="headerlink" title="30.3 调试技术流程"></a>30.3 调试技术流程</h1><p>下面详细讲解借助调试技术钩取API的方法。基本思路是，在“调试器-被调试者”的状态下，将被调试者的API起始部分修改为0xCC，控制权转移到调试器后执行指定操作，最后使被调试者重新进入运行状态。</p>
+<p>具体的调试流程如下：</p>
+<p>□对想钩取的进程进行附加操作，使之成为被调试者； </p>
+<p>□ “钩子”：将API起始地址的第一个字节修改为0xCC；  </p>
+<p>□调用相应API时，控制权转移到调试器；</p>
+<p>□执行需要的操作（操作参数、返回值等）； </p>
+<p>□脱钩：将0xCC恢复原值（为了正常运行API）； </p>
+<p>□运行相应API （无0xCC的正常状态）；</p>
+<p>□ “钩子”：再次修改为0xCC （为了继续钩取）；</p>
+<p>□控制权返还被调试者。</p>
+<p>以上介绍的是最简单的情形，在此基础上可以有多种变化。既可以不调用原始API，也可以调用用户提供的客户API； 可以只钩取一次，也可以钩取多次。实际应用时，根据需要适当调整即可。</p>
+<h1 id="30-4-练习"><a href="#30-4-练习" class="headerlink" title="30.4 练习"></a>30.4 练习</h1><p>结合上面学习的内容，我们通过一个示例来练习。该示例钩取Notepad.exe的WriteFile()API，保存文件时操作输入参数，将小写字母全部转换为大写字母。也就是说，在Notepad中保存文件内容时，其中输入的所有小写字母都会先被转换为大写字母，然后再保存。</p>
+<blockquote>
+<p>本示例在Windows XP 32位系统环境下通过测试。</p>
+</blockquote>
+<p>首先运行Notepad.exe，获取其PID，如图30-3所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226094631826.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-3 Process Explorer"></p>
+<p>运行示例源文件中的钩取程序（hookdbg.exe）。hookdbg.exe是基于控制台的程序，其运行参数为目标进程的PID，如图所示。</p>
+<p>如图30-4所示，运行hookdbg.exe程序后，就开始了对notepad进程（PID为3284）的WriteFile()API的钩取。然后在notepad中随意输入一些英文小写字母，如图30-5所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226094647261.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-4 运行hookdbg.exe"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226094736948.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-5 在notepad中输入小写字母"></p>
+<p>完成输入后，保存输入的文本内容，如图30-6所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226094827281.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-6 保存文件"></p>
+<p>保存文件后，notepad界面中不会有任何变化（请注意前面只是钩取了WriteFile()API）。关闭notepad，查看hookdbg程序的控制台窗口，如图30-7所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226094846990.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-7 hookdbg.exe运行结果"></p>
+<p>从图30-7中可以看到，“original string”中的部分是原来输入的小写字母，“converted string”中的字符是WriteFile() APl钩取之后经过变换得到的字符串（小写字母→大写字母），这是为了显示hookdbg.exe程序内部的钩取过程而输出的字符串。打开保存的test.txt文件，查看实际文本是否以大写字母形式保存，如图30-8所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226125618362.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-8 test.txt文件内容"></p>
+<p>从文本内容可知，原来的小写字母全部被转换为大写字母并保存。虽然这个示例功能非常简单，但它能够很好地说明通过调试进行API钩取的技术。</p>
+<h1 id="30-5-工作原理"><a href="#30-5-工作原理" class="headerlink" title="30.5 工作原理"></a>30.5 工作原理</h1><p>为帮助大家理解示例，先讲解其工作原理。假设notepad要保存文件中的某些内容时会调用kernel32!WriteFile() API （先确定一下假设是否正确）。</p>
+<h2 id="30-5-1-栈"><a href="#30-5-1-栈" class="headerlink" title="30.5.1 栈"></a>30.5.1 栈</h2><p>WriteFile()定义（出处：MSDN）如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">WriteFile</span><span class="hljs-params">(</span><br><span class="hljs-params">  [in]                HANDLE       hFile,</span><br><span class="hljs-params">  [in]                LPCVOID      lpBuffer,</span><br><span class="hljs-params">  [in]                DWORD        nNumberOfBytesToWrite,</span><br><span class="hljs-params">  [out, optional]     LPDWORD      lpNumberOfBytesWritten,</span><br><span class="hljs-params">  [in, out, optional] LPOVERLAPPED lpOverlapped</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>第二个参数（lpBuffer）为数据缓冲区指针，第三个参数（nNumberOfBytesToWrite）为要写的字节数。顺便提醒一下：函数参数被以逆序形式存储到栈。使用OllyDbg工具调试正常运行的notepad，并查看程序栈。</p>
+<blockquote>
+<p>示例中使用的是Windows XP SP3 （32位）中的notepad.exe记事本程序。</p>
+</blockquote>
+<p>如图30-9所示，使用OllyDbg打开notepad后，在Kernel32!WriteFile() API处设置断点，按（F9）键运行程序。在记事本中输入文本后，以合适的文件名保存，如图30-10所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226100941397.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-9 kernel32.WriteFile()"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226100733273.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-10 在notepad中输入文本"></p>
+<p>在OllyDbg代码窗口中可以看到，调试器在kernel32!WriteFile()处（设有断点）暂停，然后查看进程栈，如图30-11所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226101049765.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-11 查看栈中的参数"></p>
+<p>当前栈（ESP:7FA7C）中存在1个返回值（01004C30），ESP+8 （7FA84）中存在数据缓冲区的地址（0E7310）（参考图30-11中的栈窗口）。直接转到数据缓冲区地址处，可以看到要保存到notepad的字符串（“ReverseCore”）（参考上图中的内存窗口）。钩取WriteFile() API后，用指定字符串覆盖数据缓冲区中的字符串即可达成所愿。</p>
+<h2 id="30-5-2-执行流"><a href="#30-5-2-执行流" class="headerlink" title="30.5.2 执行流"></a>30.5.2 执行流</h2><p>我们现在已经知道应该修改被调试进程内存的哪一部分了。接下来，只要正常运行WriteFile()，将修改后的字符串保存到文件就可以了。</p>
+<p>下面我们使用调试方法来钩取API。利用前面介绍的hookdbg.exe，在WriteFile() API起始地址处设置断点（INT3）后，向被调试进程（notepad.exe）保存文件时，EXCEPTION_BREAKPOINT事件就会传给调试器（hookdbg.exe）。那么，此时被调试者（notepad.exe）的EIP值是多少呢？</p>
+<p>乍一想很容易认为是WriteFile() API的起始地址（7C7E0E27）。但其实EIP的值应该为WriteFile()API的起始地址（7C7E0E27）+ 1 &#x3D; 7C7E0E28。</p>
+<p>原因在于，我们在WriteFile() API的起始地址处设置了断点，被调试者（notepad.exe）内部调 用WriteFile()时，会在起始地址7C7E0E27处遇到INT3 （0xCC）指令。执行该指令（Breakpoint - INT3）时，EIP的值会增加1个字节（INT3指令的长度）。然后控制权会转移给调试器（hookdbg.exe） （因为在“调试器-被调试者”关系中，被调试者中发生的EXCEPTION_BREAKPINT异常需要由调试器处理）。修改覆写了数据缓冲区的内容后，EIP值被重新更改为WriteFile()API的起始地址，继续运行。</p>
+<h2 id="30-5-3-“脱钩”-amp-“钩子”"><a href="#30-5-3-“脱钩”-amp-“钩子”" class="headerlink" title="30.5.3 “脱钩” &amp; “钩子”"></a>30.5.3 “脱钩” &amp; “钩子”</h2><p>另一个问题是，若只将执行流返回到WriteFile()起始地址，再遇到相同的INT3指令时，就会陷入无限循环（发生EXCEPTION_BREAKPOINT）。为了不致于陷入这种境地，应该去除设置在WriteFile() API起始地址处的断点，即将0xCC更改为original byte（0x6A） （original byte在钩取API前已保存）。这一操作称为“脱钩”，就是取消对API的钩取。</p>
+<p>覆写好数据缓冲区并正常返回WriteFile() API代码后，EIP值恢复为WriteFile()API的地址，修改后的字符串最终保存到文件。这就是hookdbg.cpp的工作原理。</p>
+<p>若只需要钩取1次，那到这儿就结束了。但如果需要不断钩取，就要再次设置断点。只靠说明是理解不了的，下面结合源代码（hookdbg.cpp）详细讲解。</p>
+<blockquote>
+<p>像OllyDbg这类应用范围很广的调试器，EIP值与设置断点的地址是相同的，并不显示INT3 （0xCC）指令，如图30-11所示。这是OllyDbg为了向用户展示更方便的界面而提供的功能。也就是说，覆写了 INT3（0xCC）之后，若执行该命令，则EIP值增1。此时OllyDbg会将0xCC恢复为原来的字节，并调整EIP （最终的实现算法如上所述）。</p>
+</blockquote>
+<h1 id="30-6-源代码分析"><a href="#30-6-源代码分析" class="headerlink" title="30.6 源代码分析"></a>30.6 源代码分析</h1><p>本节分析hookdbg.cpp源代码。</p>
+<h2 id="30-6-1-main"><a href="#30-6-1-main" class="headerlink" title="30.6.1 main()"></a>30.6.1 main()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><br>LPVOID g_pfWriteFile = <span class="hljs-literal">NULL</span>;<br>CREATE_PROCESS_DEBUG_INFO g_cpdi;<br>BYTE g_chINT3 = <span class="hljs-number">0xCC</span>, g_chOrgByte = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>* argv[])</span><br>&#123;<br>    DWORD dwPID;<br><br>    <span class="hljs-keyword">if</span>( argc != <span class="hljs-number">2</span> )<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\nUSAGE : hookdbg.exe &lt;pid&gt;\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// Attach Process</span><br>    dwPID = atoi(argv[<span class="hljs-number">1</span>]);<br>    <span class="hljs-keyword">if</span>( !DebugActiveProcess(dwPID) )<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DebugActiveProcess(%d) failed!!!\n&quot;</span><br>               <span class="hljs-string">&quot;Error Code = %d\n&quot;</span>, dwPID, GetLastError());<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 调试器循环</span><br>    DebugLoop();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>main()函数的代码非常简单，以程序运行参数的形式接收要钩取API的进程的PID。然后通过DebugActiveProcess()  API（出处：MSDN）将调试器附加到该运行的进程上，开始调试（上面输入的PID作为参数传入函数）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">DebugActiveProcess</span><span class="hljs-params">(</span><br><span class="hljs-params">	DWORD dwProcessId</span><br><span class="hljs-params"> 	<span class="hljs-comment">// process to be debugged</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+<p>然后进人DebugLoop()函数，处理来自被调试者的调试事件。</p>
+<blockquote>
+<p>另一种启动调试的方法是使用CreateProcess() API,从一开始就直接以调试模式运行相关进程。更详细的说明请参考MSDN。</p>
+</blockquote>
+<h2 id="30-6-2-DebugLoop"><a href="#30-6-2-DebugLoop" class="headerlink" title="30.6.2 DebugLoop()"></a>30.6.2 DebugLoop()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">DebugLoop</span><span class="hljs-params">()</span><br>&#123;<br>    DEBUG_EVENT de;<br>    DWORD dwContinueStatus;<br><br>    <span class="hljs-comment">// 等待被调试者发生事件</span><br>    <span class="hljs-keyword">while</span>( WaitForDebugEvent(&amp;de, INFINITE) )<br>    &#123;<br>        dwContinueStatus = DBG_CONTINUE;<br><br>        <span class="hljs-comment">// 被调试进程生成或附加事件</span><br>        <span class="hljs-keyword">if</span>( CREATE_PROCESS_DEBUG_EVENT == de.dwDebugEventCode )<br>        &#123;<br>            OnCreateProcessDebugEvent(&amp;de);<br>        &#125;<br>        <span class="hljs-comment">// 异常事件</span><br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( EXCEPTION_DEBUG_EVENT == de.dwDebugEventCode )<br>        &#123;<br>            <span class="hljs-keyword">if</span>( OnExceptionDebugEvent(&amp;de) )<br>                <span class="hljs-keyword">continue</span>;<br>        &#125;<br>        <span class="hljs-comment">// 被调试进程终止事件</span><br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( EXIT_PROCESS_DEBUG_EVENT == de.dwDebugEventCode )<br>        &#123;<br>            <span class="hljs-comment">// 被调试者终止-&gt;调试器终止</span><br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br><br>        <span class="hljs-comment">// 再次运行被调试者</span><br>        ContinueDebugEvent(de.dwProcessId, de.dwThreadId, dwContinueStatus);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>DebugLoop()函数的工作原理类似于窗口过程函数（WndProc），它从被调试者处接收事件并处理，然后使被调试者继续运行。DebugLoop()函数代码比较简单，结合代码中的注释就能理解。</p>
+<p>下面看看其中比较重要的2个API。</p>
+<p>顾名思义，WaitForDebugEvent() API （出处： MSDN）是一个等待被调试者发生调试事件的函数（行为动作类似于WaitForSingleObject() API）。</p>
+<p>DebugLoop()函数代码中，若发生调试事件，WaitForDebugEvdnt() API就会将相关事件信息设置到其第一个参数的变量（DEBUG_EVENT结构体对象），然后立刻返回。DEBUG_EVENT结构体定义（出处：MSDN）如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">DEBUG_EVENT</span> &#123;</span><br>  DWORD dwDebugEventCode;<br>  DWORD dwProcessId;<br>  DWORD dwThreadId;<br>  <span class="hljs-class"><span class="hljs-keyword">union</span> &#123;</span><br>    EXCEPTION_DEBUG_INFO      Exception;<br>    CREATE_THREAD_DEBUG_INFO  CreateThread;<br>    CREATE_PROCESS_DEBUG_INFO CreateProcessInfo;<br>    EXIT_THREAD_DEBUG_INFO    ExitThread;<br>    EXIT_PROCESS_DEBUG_INFO   ExitProcess;<br>    LOAD_DLL_DEBUG_INFO       LoadDll;<br>    UNLOAD_DLL_DEBUG_INFO     UnloadDll;<br>    OUTPUT_DEBUG_STRING_INFO  DebugString;<br>    RIP_INFO                  RipInfo;<br>  &#125; u;<br>&#125; DEBUG_EVENT, *LPDEBUG_EVENT;<br></code></pre></td></tr></table></figure>
+
+
+
+
+<p>前面的讲解中已经提到过，共有9种调试事件。DEBUG_EVENT.dwDebugEventCode成员会被设置为9种事件中的一种，根据相关事件的种类，也会设置适当的DEBUG_EVENT.u （union）成员（DEBUG_EVENT.u共用体成员内部也由9个结构体组成，它们对应于事件种类的个数）。</p>
+<blockquote>
+<p>例如，发生异常事件时，dwDebugEventCode成员会被设置为EXCEPTION_DEBUG_EVENT, u.Exception结构体也会得到设置。</p>
+</blockquote>
+<p>ContinueDebugEvent() API (出处：MSDN )是一个使被调试者继续运行的函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">ContinueDebugEvent</span><span class="hljs-params">(</span><br><span class="hljs-params">    DWORD dwProcessId,</span><br><span class="hljs-params">     <span class="hljs-comment">// process to continue</span></span><br><span class="hljs-params">    DWORD dwThreadId,</span><br><span class="hljs-params">     <span class="hljs-comment">// thread to continue</span></span><br><span class="hljs-params">    DWORD dwContinueStatus</span><br><span class="hljs-params">     <span class="hljs-comment">// continuation status</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>ContinueDebugEvent() API 的最后一个参数 dwContinueStatus 的值为 DBG_CONTINUE或DBG_EXCEPTION_NOTHANDLED。</p>
+<p>若处理正常，则其值设置为DBG_CONTINUE；若无法处理，或希望在应用程序的SEH中处理，则其值设置为DBG_EXCEPTION_NOT_HANDLED。</p>
+<p>SEH是Windows提供的异常处理机制。关于这种异常处理及反调试技术将在第49章中详细讲解。</p>
+<p>代码30-2的DebugLoop()函数处理3种调试事件，如下所示。 </p>
+<p>□ EXIT_PROCESS_DEBUG_EVENT<br>□ CREATE_PROCESS_DEBUG_EVENT<br>□ EXCEPTION_DEBUG_EVENT</p>
+<p>下面分别看看这3个事件</p>
+<h2 id="30-6-3-EXIT-PROCESS-DEBUG-EVENT"><a href="#30-6-3-EXIT-PROCESS-DEBUG-EVENT" class="headerlink" title="30.6.3 EXIT_PROCESS_DEBUG_EVENT"></a>30.6.3 EXIT_PROCESS_DEBUG_EVENT</h2><p>被调试进程终止时会触发该事件。本章的示例代码中发生该事件时，调试器与被调试者将一起终止。</p>
+<h2 id="30-6-4-CREATE-PROCESS-DEBUG-EVENT-OnCreateProcessDebugEvent"><a href="#30-6-4-CREATE-PROCESS-DEBUG-EVENT-OnCreateProcessDebugEvent" class="headerlink" title="30.6.4 CREATE_PROCESS_DEBUG_EVENT-OnCreateProcessDebugEvent()"></a>30.6.4 CREATE_PROCESS_DEBUG_EVENT-OnCreateProcessDebugEvent()</h2><p>OnCreateProcessDebugEvent()是CREATE_PROCESS_DEBUG_EVENT事件句柄，被调试进程启动（或者附加）时即调用执行该函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">OnCreateProcessDebugEvent</span><span class="hljs-params">(LPDEBUG_EVENT pde)</span><br>&#123;<br>    <span class="hljs-comment">// WriteFile() API 地址</span><br>    g_pfWriteFile = GetProcAddress(GetModuleHandleA(<span class="hljs-string">&quot;kernel32.dll&quot;</span>), <span class="hljs-string">&quot;WriteFile&quot;</span>);<br><br>    <span class="hljs-comment">// API “钩子” - WriteFile()</span><br>    <span class="hljs-comment">// 更改第一个字节为0xCC (INT3)</span><br>    <span class="hljs-comment">// originalbyte是g_chOrgByte备份</span><br>    <span class="hljs-built_in">memcpy</span>(&amp;g_cpdi, &amp;pde-&gt;u.CreateProcessInfo, <span class="hljs-keyword">sizeof</span>(CREATE_PROCESS_DEBUG_INFO));<br>    ReadProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                      &amp;g_chOrgByte, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br>    WriteProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                       &amp;g_chINT3, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>首先获取WriteFile() API的起始地址，需要注意，它获取的不是被调试进程的内存地址，而是调试进程的内存地址。对于Windows OS的系统DLL而言，它们在所有进程中都会加载到相同地址（虚拟内存），所以上面这样做是没有任何问题的。</p>
+<p>g_cpdi是CREATE_PROCESS_DEBUG_INFO结构体（出处：MSDN）变量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">CREATE_PROCESS_DEBUG_INFO</span> &#123;</span><br>  HANDLE                 hFile;<br>  HANDLE                 hProcess;<br>  HANDLE                 hThread;<br>  LPVOID                 lpBaseOfImage;<br>  DWORD                  dwDebugInfoFileOffset;<br>  DWORD                  nDebugInfoSize;<br>  LPVOID                 lpThreadLocalBase;<br>  LPTHREAD_START_ROUTINE lpStartAddress;<br>  LPVOID                 lpImageName;<br>  WORD                   fUnicode;<br>&#125; CREATE_PROCESS_DEBUG_INFO, *LPCREATE_PROCESS_DEBUG_INFO;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>通过CREATE_PROCESS_DEBUG_INFO结构体的hProcess成员（被调试进程的句柄），可以钩取WriteFile() API （不使用调试方法时，可以使用OpenProcess() API获取相应进程的句柄）。调试方法中，钩取的方法非常简单。</p>
+<p>只要在API的起始位置设置好断点即可。由于调试器拥有被调试进程的句柄（带有调试权限），所以可以使用ReadProcessMemory()、WriteProcessMemory() API对被调试进程的内存空间自由进行读写操作。用上面的函数可以向被调试者设置断点（INT3 0xCC）0通过ReadProcessMemory()读取WriteFile() API的第一个字节，并将其存储到g_chOrgByte变量。如图30-12所示，WriteFile()API的第一个字节为0x6A （Windows XP操作系统）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226105643030.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-12 WriteFile()第一个字节"></p>
+<p>g_chOrgByte变量中存储的是WriteFile() API的第一个字节，后面“脱钩”时会用到。然后使用WriteProcessMemory() API将WriteFile() API的第一个字节更改为0xCC （参考图30-13）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96.assets/image-20220226111210557.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图30-13 设置OxCC"></p>
+<p>0xCC是IA-32指令，对应于INT3指令，也就是断点。CPU遇到INT3指令时会暂停执行程序，并触发异常。若相应程序正处于调试中，则将控制权转移到调试器，由调试器处理。这也是一般调试器设置断点的基本原理。</p>
+<p>这样一来，被调试进程调用WriteFile()API时，控制权都会转移给调试器。</p>
+<h2 id="30-6-5-EXCEPTION-DEBUG-EVENT-OnExceptionDebugEvent"><a href="#30-6-5-EXCEPTION-DEBUG-EVENT-OnExceptionDebugEvent" class="headerlink" title="30.6.5 EXCEPTION_DEBUG_EVENT-OnExceptionDebugEvent()"></a>30.6.5 EXCEPTION_DEBUG_EVENT-OnExceptionDebugEvent()</h2><p>OnExceptionDebugEvent()是EXCEPTION_DEBUG_EVENT事件句柄，它处理被调试者的INT3指令。代码30-4是OnExceptionDebugEvent()函数代码，下面看一下它的核心部分。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">OnExceptionDebugEvent</span><span class="hljs-params">(LPDEBUG_EVENT pde)</span><br>&#123;<br>    CONTEXT ctx;<br>    PBYTE lpBuffer = <span class="hljs-literal">NULL</span>;<br>    DWORD dwNumOfBytesToWrite, dwAddrOfBuffer, i;<br>    PEXCEPTION_RECORD per = &amp;pde-&gt;u.Exception.ExceptionRecord;<br><br>    <span class="hljs-comment">// 是断点异常(INT3)时</span><br>    <span class="hljs-keyword">if</span>( EXCEPTION_BREAKPOINT == per-&gt;ExceptionCode )<br>    &#123;<br>        <span class="hljs-comment">// 断点地址为WriteFile() API地址时</span><br>        <span class="hljs-keyword">if</span>( g_pfWriteFile == per-&gt;ExceptionAddress )<br>        &#123;<br>            <span class="hljs-comment">// #1. Unhook</span><br>            <span class="hljs-comment">// 将0xCC恢复为orignal byte</span><br>            WriteProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                               &amp;g_chOrgByte, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br><br>            <span class="hljs-comment">// #2. 获取线程上下文</span><br>            ctx.ContextFlags = CONTEXT_CONTROL;<br>            GetThreadContext(g_cpdi.hThread, &amp;ctx);<br><br>            <span class="hljs-comment">// #3. 获取WriteFile()的param 2、3值</span><br>            <span class="hljs-comment">// 函数参数存在于相应进程的栈</span><br>            <span class="hljs-comment">// param 2 : ESP + 0x8</span><br>            <span class="hljs-comment">// param 3 : ESP + 0xC</span><br>            ReadProcessMemory(g_cpdi.hProcess, (LPVOID)(ctx.Esp + <span class="hljs-number">0x8</span>), <br>                              &amp;dwAddrOfBuffer, <span class="hljs-keyword">sizeof</span>(DWORD), <span class="hljs-literal">NULL</span>);<br>                              <span class="hljs-comment">// Read DWORD大小的数据放到 dwAddrOfBuffer</span><br>            ReadProcessMemory(g_cpdi.hProcess, (LPVOID)(ctx.Esp + <span class="hljs-number">0xC</span>), <br>                              &amp;dwNumOfBytesToWrite, <span class="hljs-keyword">sizeof</span>(DWORD), <span class="hljs-literal">NULL</span>);<br>                              <span class="hljs-comment">// // Read DWORD大小的数据放到dwNumOfBytesToWrite</span><br><br>            <span class="hljs-comment">// #4. 分配临时缓冲区</span><br>            lpBuffer = (PBYTE)<span class="hljs-built_in">malloc</span>(dwNumOfBytesToWrite+<span class="hljs-number">1</span>);<br>            <span class="hljs-built_in">memset</span>(lpBuffer, <span class="hljs-number">0</span>, dwNumOfBytesToWrite+<span class="hljs-number">1</span>);<br><br>            <span class="hljs-comment">// #5. 复制WriteFile()缓冲区到临时缓冲区</span><br>            ReadProcessMemory(g_cpdi.hProcess, (LPVOID)dwAddrOfBuffer, <br>                              lpBuffer, dwNumOfBytesToWrite, <span class="hljs-literal">NULL</span>);<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n### original string ###\n%s\n&quot;</span>, lpBuffer);<br><br>            <span class="hljs-comment">// #6. 将小写字母转换为大写字母</span><br>            <span class="hljs-keyword">for</span>( i = <span class="hljs-number">0</span>; i &lt; dwNumOfBytesToWrite; i++ )<br>            &#123;<br>                <span class="hljs-keyword">if</span>( <span class="hljs-number">0x61</span> &lt;= lpBuffer[i] &amp;&amp; lpBuffer[i] &lt;= <span class="hljs-number">0x7A</span> )<br>                    lpBuffer[i] -= <span class="hljs-number">0x20</span>;<br>            &#125;<br><br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n### converted string ###\n%s\n&quot;</span>, lpBuffer);<br><br>            <span class="hljs-comment">// #7. 将变换后的缓冲区复制到WriteFile()缓冲区</span><br>            WriteProcessMemory(g_cpdi.hProcess, (LPVOID)dwAddrOfBuffer, <br>                               lpBuffer, dwNumOfBytesToWrite, <span class="hljs-literal">NULL</span>);<br><br>            <span class="hljs-comment">// #8. 释放临时缓冲区</span><br>            <span class="hljs-built_in">free</span>(lpBuffer);<br><br>            <span class="hljs-comment">// #9. 将线程上下文的EIP更改为WriteFile()的首地址</span><br>            <span class="hljs-comment">// (当前为WriteFile()+1位置, INT3命令之后)</span><br>            <span class="hljs-comment">// 简而言之: 执行了INT3后, EIP+1, 需要把EIP+1再还原为EIP原来的值</span><br>            ctx.Eip = (DWORD)g_pfWriteFile; <span class="hljs-comment">// 还原EIP </span><br>            SetThreadContext(g_cpdi.hThread, &amp;ctx);<br><br>            <span class="hljs-comment">// #10. 运行被调试进程</span><br>            ContinueDebugEvent(pde-&gt;dwProcessId, pde-&gt;dwThreadId, DBG_CONTINUE);<br>            Sleep(<span class="hljs-number">0</span>);<br><br>            <span class="hljs-comment">// #11. API Hook</span><br>            WriteProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                               &amp;g_chINT3, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br><br>            <span class="hljs-keyword">return</span> TRUE;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>OnExceptionDebugEvent()函数代码有些多，接下来分析核心部分。首先，if语句用于检测异常是否为EXCEPTION_BREAKPOINT异常（除此之外，还有大约19种异常，请参考前几节内容）。然后，用if语句检测发生断点的地址是否与kernel32!WriteFile()的起始地址一致（OnCreateProcessDebugEvent()已经事先获取了WriteFile()的起始地址）。若满足条件，则继续执行以下代码。</p>
+<p>#1. “脱钩”（删除API钩子）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">WriteProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                   &amp;g_chOrgByte, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+
+<p>首先需要“脱钩”（删除API “钩子”），因为在将小写字母转换为大写字母后需要正常调用WriteFile()函数（请参考前面“‘脱钩’ &amp; ‘钩子’”部分中的相关说明）。类似“钩子”、“脱钩”的方法也非常简单，只要将0xCC恢复原值（g_chOrgByte）即可。</p>
+<blockquote>
+<p>可以根据实际需要取消对相关API的调用，也可以调用用户自定义的MyWriteFile()函数，所以“脱钩”过程不是必须的。使用时，要根据具体情况灵活选择处理方法。</p>
+</blockquote>
+<p>#2.获取线程上下文（Thread Context）</p>
+<p>这是第一次提到“线程上下文”，所有程序在内存中都以进程为单位运行，而进程的实际指令代码以线程为单位运行。Windows OS是一个多线程（multi-thread）操作系统，同一进程中可以同时运行多个线程。多任务（multi-tasking）是将CPU资源划分为多个时间片（time-slice），然后平等地逐一运行所有线程（考虑线程优先级）。CPU运行完一个线程的时间片而切换到其他线程时间片时，它必须将先前线程处理的内容准确备份下来，这样再次运行它时才能正常无误。</p>
+<p>再次运行先前线程时，必须有运行所需信息，这些重要信息指的就是CPU中各寄存器的值。通过这些值，才能保证CPU能够再次准确运行它（内存信息栈&amp;堆存在于相应进程的虚拟空间，不需要另外保护）。负责保存线程CPU寄存器信息的就是CONTEXT结构体（每个线程都对应一个CONTEXT结构体），它的定义如下（出处：MS VC++： winnt.h）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">CONTEXT</span> &#123;</span><br>  ULONG              ContextFlags;<br>  ULONG              Dr0;<br>  ULONG              Dr1;<br>  ULONG              Dr2;<br>  ULONG              Dr3;<br>  ULONG              Dr6;<br>  ULONG              Dr7;<br>  FLOATING_SAVE_AREA FloatSave;<br>  ULONG              SegGs;<br>  ULONG              SegFs;<br>  ULONG              SegEs;<br>  ULONG              SegDs;<br>  ULONG              Edi;<br>  ULONG              Esi;<br>  ULONG              Ebx;<br>  ULONG              Edx;<br>  ULONG              Ecx;<br>  ULONG              Eax;<br>  ULONG              Ebp;<br>  ULONG              Eip;<br>  ULONG              SegCs;<br>  ULONG              EFlags;<br>  ULONG              Esp;<br>  ULONG              SegSs;<br>  UCHAR              ExtendedRegisters[MAXIMUM_SUPPORTED_EXTENSION];<br>&#125; CONTEXT;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>下面是获取线程上下文的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">ctx.ContextFlags = CONTEXT_CONTROL;<br>GetThreadContext(g_cpdi.hThread, &amp;ctx);<br></code></pre></td></tr></table></figure>
+
+<p>像这样调用GetThreadContext() API （出处：MSDN），即可将指定线程（g_cpdi.hThread）的CONTEXT存储到ctx结构体变量（g_cpdi.hThread是被调试者的主线程句柄）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">GetThreadContext</span><span class="hljs-params">(</span><br><span class="hljs-params">	HANDLE hThread,</span><br><span class="hljs-params">	 <span class="hljs-comment">// handle of thread with context</span></span><br><span class="hljs-params">	LPCONTEXT lpContext</span><br><span class="hljs-params">	 <span class="hljs-comment">// address of context structure</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>#3.获取WriteFile()的param 2、3值</p>
+<p>调用WriteFile()函数时，我们要在传递过来的参数中知道param2（数据缓冲区地址）与param3 （缓冲区大小）这2个参数。函数参数存储在栈中，通过#2中获取的CONTEXT.Esp成员可以分别获得它们的值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 函数参数存在于相应进程的栈</span><br><span class="hljs-comment">// param 2 : ESP + 0x8</span><br><span class="hljs-comment">// param 3 : ESP + 0xC</span><br>ReadProcessMemory(g_cpdi.hProcess, (LPVOID)(ctx.Esp + <span class="hljs-number">0x8</span>), <br>                  &amp;dwAddrOfBuffer, <span class="hljs-keyword">sizeof</span>(DWORD), <span class="hljs-literal">NULL</span>);<br><span class="hljs-comment">// Read DWORD大小的数据放到 dwAddrOfBuffer</span><br>ReadProcessMemory(g_cpdi.hProcess, (LPVOID)(ctx.Esp + <span class="hljs-number">0xC</span>), <br>                  &amp;dwNumOfBytesToWrite, <span class="hljs-keyword">sizeof</span>(DWORD), <span class="hljs-literal">NULL</span>);<br><span class="hljs-comment">// // Read DWORD大小的数据放到dwNumOfBytesToWrite</span><br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ul>
+<li><p>存储在dwAddrOfBuffer中的数据缓冲区地址是被调试者（notepad.exe）虚拟内<br>存空间中的地址。 </p>
+</li>
+<li><p>param2与param3分别为ESP+0x8、ESP+0xC,原因请参考第7章。</p>
+</li>
+</ul>
+</blockquote>
+<p>#4.~#8. 把小写字母转换为大写字母后覆写WriteFile()缓冲区<br>获取数据缓冲区的地址与大小后，将其内容读到调试器的内存空间，把小写字母转换为大写字母。然后将修改后的大写字母覆写到原位置（被调试者的虚拟内存）。整个代码不难，结合代码中的注释就能轻松理解。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// #4. 分配临时缓冲区</span><br>lpBuffer = (PBYTE)<span class="hljs-built_in">malloc</span>(dwNumOfBytesToWrite+<span class="hljs-number">1</span>);<br><span class="hljs-built_in">memset</span>(lpBuffer, <span class="hljs-number">0</span>, dwNumOfBytesToWrite+<span class="hljs-number">1</span>);<br><br><span class="hljs-comment">// #5. 复制WriteFile()缓冲区到临时缓冲区</span><br>ReadProcessMemory(g_cpdi.hProcess, (LPVOID)dwAddrOfBuffer, <br>                  lpBuffer, dwNumOfBytesToWrite, <span class="hljs-literal">NULL</span>);<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n### original string ###\n%s\n&quot;</span>, lpBuffer);<br><br><span class="hljs-comment">// #6. 将小写字母转换为大写字母</span><br><span class="hljs-keyword">for</span>( i = <span class="hljs-number">0</span>; i &lt; dwNumOfBytesToWrite; i++ )<br>&#123;<br>    <span class="hljs-keyword">if</span>( <span class="hljs-number">0x61</span> &lt;= lpBuffer[i] &amp;&amp; lpBuffer[i] &lt;= <span class="hljs-number">0x7A</span> )<br>        lpBuffer[i] -= <span class="hljs-number">0x20</span>;<br>&#125;<br><br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n### converted string ###\n%s\n&quot;</span>, lpBuffer);<br><br><span class="hljs-comment">// #7. 将变换后的缓冲区复制到WriteFile()缓冲区</span><br>WriteProcessMemory(g_cpdi.hProcess, (LPVOID)dwAddrOfBuffer, <br>                   lpBuffer, dwNumOfBytesToWrite, <span class="hljs-literal">NULL</span>);<br><br><span class="hljs-comment">// #8. 释放临时缓冲区</span><br><span class="hljs-built_in">free</span>(lpBuffer);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>#9.把线程上下文的EIP修改为WriteFile()起始地址</p>
+<p>下面将#2中获取的CONTEXT结构体的Eip成员修改为WriteFile()的起始地址。EIP的当前地址为WriteFile()+1 （参考前面“#执行流”中的说明）。</p>
+<p>修改好CONTEXT.Eip成员后，调用SetThreadContext() API。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// #9. 将线程上下文的EIP更改为WriteFile()的首地址</span><br><span class="hljs-comment">// (当前为WriteFile()+1位置, INT3命令之后)</span><br><span class="hljs-comment">// 简而言之: 执行了INT3后, EIP+1, 需要把EIP+1再还原为EIP原来的值</span><br>ctx.Eip = (DWORD)g_pfWriteFile; <span class="hljs-comment">// 还原EIP </span><br>SetThreadContext(g_cpdi.hThread, &amp;ctx);<br></code></pre></td></tr></table></figure>
+
+<p>下面是SetThreadContext()API （出处：MSDN）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">SetThreadContext</span><span class="hljs-params">(</span><br><span class="hljs-params">  [in] HANDLE        hThread,</span><br><span class="hljs-params">  [in] <span class="hljs-type">const</span> CONTEXT *lpContext</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>#10.运行调试进程</p>
+<p>一切准备就绪后，接下来就要正常调用WriteFile() API了。调用ContinueDebugEvent() API可以重启被调试进程，使之继续运行。由于在#9已经将CONTEXT.Eip修改为WriteFile()的起始地址，所以会调用执行WriteFile()。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">ContinueDebugEvent(pde-&gt;dwProcessId, pde-&gt;dwThreadId, DBG_CONTINUE);<br>Sleep(<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Sleep(0)有什么用？</p>
+<p>首先用源代码运行测试，然后对Sleep(0)语句进行注释处理，再次运行测试（请在notepad中输入文本后，快速反复保存）。比较2种测试结果，并思考有什么不同，以及产生不同的原因。（答案见最后）</p>
+</blockquote>
+<p>#11.设置API “钩子”<br>最后设置API “钩子”，方便下次钩取操作（若略去该操作，由于#1中已经“脱钩”，WriteFile()API钩取将完全处于“脱钩”状态）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">WriteProcessMemory(g_cpdi.hProcess, g_pfWriteFile, <br>                   &amp;g_chINT3, <span class="hljs-keyword">sizeof</span>(BYTE), <span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>DebugLoop()函数的讲解到此结束。建议大家在实际的代码调试过程中分别查看各结构体的值，经过几次调试后，相信大家都能掌握程序的执行流程。</p>
+<blockquote>
+<p>从Windows XP开始就可以调用DebugSetProcessKillOnExit()函数了，我们可以不销毁被调试进程就退出（detach）调试器。需要注意的是，必须在调试器终止前“脱钩”。否则，调用API时就会因为其起始部分仍为0xCC而导致EXCEPTION BREAKPOINT异常。由于此时不存在调试器，所以终止被调试进程。</p>
+</blockquote>
+<p>关于调试器工作原理与异常的内容请参考第48章</p>
+<blockquote>
+<p>Q.在OnExceptionDebugEvent()函数中调用了ContinueDebugEvent()函数后，为什么还要调用Sleep(0)函数？ </p>
+<p>A.调用Sleep(0)函数可以释放当前线程的剩余时间片，即放弃当前线程执行的CPU时间片也就是说，调用Sleep(0)函数后，CPU会立即执行其他线程。被调试进程（Notepad.exe）的主线程处于运行状态时，会正常调用WriteFile() API。然后经过一定时间，控制权再次转移给HookDbg.exe，Sleep(0)后面的“钩子”代码（WriteProcessMemory() API）会被调用执行。若没有Sleep(0)语句，Notepad.exe调用 WriteFile() API的过程中，HookDbg.exe会尝试将WriteFile()API的首字节修改为0xCC。若运气不佳，这可能会导致内存访问异常。</p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第30章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第30章 记事本WriteFile() API钩取</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/28/逆向工程核心原理/第30章 记事本WriteFile() API钩取/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月28日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第31章 关于调试器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”">
+                        <span class="hidden-mobile">第29章 API钩取：逆向分析之“花”</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

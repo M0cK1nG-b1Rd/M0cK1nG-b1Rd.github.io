@@ -1,0 +1,1239 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第32章 计算器显示中文数字">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226154749071.png">
+<meta property="article:published_time" content="1999-03-02T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:49.326Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226154749071.png">
+  
+  
+  
+  <title>第32章 计算器显示中文数字 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第32章 计算器显示中文数字"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-03-02 12:21" pubdate>
+          1999年3月2日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          130 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第32章 计算器显示中文数字</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第32章计算器显示中文数字<br>API钩取技术中有一种是通过注入DLL文件来钩取某个API的，DLL文件注入目标进程后，修 改IAT来更改进程中调用的特定API的功能。</p>
+<p>本章讲解API钩取技术时将以Windows计算器（calc.exe）为示例，向计算器进程插入用户的DLL文件，钩取IAT的user32.SetWindowTextW() API地址。负责向计算器显示文本的SetWindowTextW() API被钩取之后，计算器中显示出的将是中文数字，而不是原来的阿拉伯数字。</p>
+<h1 id="32-1-技术图表"><a href="#32-1-技术图表" class="headerlink" title="32.1 技术图表"></a>32.1 技术图表</h1><p>图32-1的API钩取技术图表中，带有下划线的部分就是“通过DLL注入实现IAT钩取的技术”。这项技术的优点是工作原理与具体实现都比较简单（只需先将要钩取的API在用户的DLL中重定 义，然后再注入目标进程即可）；缺点是，如果想钩取的API不在目标进程的IAT中，那么就无法使用该技术进行钩取操作。换言之，如果要钩取的API是由程序代码动态加载DLL文件而得以使用的，那么我们将无法使用这项技术钩取它。</p>
+<h1 id="32-2-选定目标API"><a href="#32-2-选定目标API" class="headerlink" title="32.2 选定目标API"></a>32.2 选定目标API</h1><p>确定了任务目标，并且选择了要使用的API钩取技术后，接下来的重要一步是选定目标API，即要钩取的API。初学者往往不知所措，因为他们不知道究竟哪个API提供了要钩取的那个功能。操作系统中，某项功能最终都是由某个或某些API提供的，比如创建文件由kernel32!CreateFile()API负责，创建注册表新键advapi32!RegCreateKeyEx() API负责，网络连接由ws2_32!connect()API等负责。对拥有丰富开发经验或逆向技术知识的人来说，他们能够很容易地想起需要的API。而对于尚未掌握这部分知识的人而言，要知道答案必须先学会检索。如果要钩取尚未公开的API（undocumented API）,就必须学会使用检索功能。若搜索不到，可以先根据已有经验（或直觉）推测，然后再验证确认。</p>
+<p>选定API前要先明确任务目标。本章示例的目标是“把计算器的文本显示框中显示的阿拉伯数字更改为中文数字”。首先，使用010Editor工具查看计算器（calc.exe）中导入的API，如图32-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226154749071.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-2 calc.exe的IAT"></p>
+<p>图32-2中有2个API引人注目，分别为SetWindowTextW()、SetDlgItemTextW(),它们负责向计算器的文本显示框中显示文本。由于SetDlgItemTextW()在其内部又调用了SetWindowTextW()，所以我们先假设只要钩取SetWindowTextW()这1个API就可以了。SetWindowTextW() API定义（出处：MSDN）如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">SetWindowText</span><span class="hljs-params">(</span><br><span class="hljs-params">    HWND hWnd,</span><br><span class="hljs-params">     <span class="hljs-comment">// handle of window or control</span></span><br><span class="hljs-params">    LPCTSTR lpString</span><br><span class="hljs-params">     <span class="hljs-comment">// address of string</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>它拥有2个参数，第一个参数为窗口句柄（hWnd）,第二个参数为字符串指针（IpString）。其 中，我们感兴趣的是第二个参数—字符串指针（IpString）。钩取时查看字符串（IpString）中的内容，将其中的阿拉伯数字更改为中文数字就行了。</p>
+<blockquote>
+<p>API名称中最后面的“W”表示该API是宽字符（Wide character）版本。与之对应，若API名称最后面的字符为“A”，则表示该API是ASCII码字符（ASCII character）版本。Windows OS内部使用的宽字符指的就是Unicode码。 如：SetWindowTextA(）、SetWindowTextW()</p>
+</blockquote>
+<p>下面使用OllyDbg验证上面的猜测是否正确。</p>
+<blockquote>
+<p>示例中使用的是Windows 7（32位）中的 calc.exe， Windows Vista、 Windows XP SP3 （32位）中的calc.exe工作原理也是一样的。</p>
+</blockquote>
+<p>如图32-3所示，使用鼠标右键菜单的Search for All intermodular calls命令，查找计算器（calc.exe）代码中调用SetWindowTextW() API的部分。然后在所有调用它的地方设置断点，运行计算器（calc.exe），调试器在设置断点的地方暂停，如图32-4所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226162153646.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-3 calc.exe内部调用的SetWindowTextW() API与断点设置"></p>
+<p>在图32-4中查看栈窗口，可以看到SetWindowTextW() API的IpString参数的值为22C9CF0（OllyDbg中指出它是一个“Text”）。进入22C9CF0地址，可以看到字符串 “0.” 被保存为Unicode码 形式。该字符串就是显示在计算器显示框中的初始值，继续运行。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226163804514.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-4 在SetWindowTextW()的断点处暂停"></p>
+<p>如图32-5所示，计算器（calc.exe）正常运行后，显示框中显示图32-4中的字符串 “0.”（是计算器自动添加的字符串）。为了继续调试，在计算器中随意输入数字7。由于前面已经设置了断点，所以调试器会在设置的断点处暂停，如图32-4所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226165203181.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-6 在SetWindowTextW()的断点处暂停"></p>
+<p>如图32-6所示，保存在Text参数中的字符串地址为22C9CD8,与图32-4中的22C9CF0不同。进入22C9CD8地址，可以看到输入的字符串 “7.”（末尾的是由计算器自动添加的字符串）。下面尝试把阿拉伯数字 “7” 更改为中文数字“七”，测试一下。请注意：中文数字“七”对应的Unicode码为4e03。</p>
+<blockquote>
+<p>Unicode码中每个汉字占用2个字节。</p>
+</blockquote>
+<p>如图32-7所示，将中文数字“七”的Unicode码（4e03）覆写到22C9CD8地址。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226164952180.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-7 更改为中文数字“七”"></p>
+<p>由于X86系列的CPU采用小端序标记法，所以覆写时要逆序（034e）进行。如上所示，修改了SetWindowTextW()API的IpString （或Text）参数内容后，继续运行计算器，可以看到原本显示在计算器中的阿拉伯数字 “7” 变为了中文数字“七”，如图32-8所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226164834121.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-8 变为中文数字“七”"></p>
+<p>对SetWindowTextW() API的验证到此结束，验证结果表明我们前面的猜测完全正确。经过上述过程，我们知道了代码中调用SetWindowTextW() API的位置（01003678），并且确定了一个事实：只要修改参数字符串中的内容，就能修改计算器中显示的格式。下面继续学习IAT钩取操作及实现原理，并讲解计算器SetWindowTextW() API的IAT钩取源代码。</p>
+<h1 id="32-3-IAT钩取工作原理"><a href="#32-3-IAT钩取工作原理" class="headerlink" title="32.3 IAT钩取工作原理"></a>32.3 IAT钩取工作原理</h1><p>进程的IAT中保存着程序中调用的API的地址。</p>
+<blockquote>
+<p>有关IAT的说明请参考第13章。</p>
+</blockquote>
+<p>IAT钩取通过修改IAT中保存的API地址来钩取某个API。请先看图32-9。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226170025241.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-9 正常调用SetWindowsTextW() API的程序执行流"></p>
+<p>图32-9描述的是计算器（calc.exe）进程正常调用user32.SetWindowTextW() API的情形。地址01001110属于IAT区域，程序开始运行时，PE装载器会将user32.SetWindowTextW() API地址（77D0960E）记录到该地址（01001110）。01002628地址处的CALL DWORD PTR [01001110]指令最终会调用保存在01001110地址（77D0960E）处的函数，直接等同于CALL 77D0960E命令。</p>
+<p>执行地址01002628处的CALL命令后，运行将转移至user32.SetWindowTextW()函数的起始地址（77D0960E）处（①），函数执行完毕后返回（②）。</p>
+<p>下面看看IAT被钩取后计算器进程的运行过程，如图32-10所示</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220226170147461.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-10 IAT被钩取后SetWindowTextW()的调用流程"></p>
+<p>钩取IAT前，首先向计算器进程（calc.exe）注入hookiat.dll文件</p>
+<blockquote>
+<p>关于DLL注入的讲解请参考第23章。</p>
+</blockquote>
+<p>hookiat.dll文件中提供了名为MySetWindowTextW()的钩取函数（10001000）。地址01002628处的CALL命令与图32-9中的CALL命令完全一致。但是跟踪进入01001110地址中可以发现，它的值已经变为10001000，地址10001000是hookiat.MySetWindowTextW()函数的起始地址。也就是说，在保持运行代码不变的前提下，将IAT中保存的API起始地址变为用户函数的起始地址。这就是IAT钩取的基本工作原理。</p>
+<p>执行完01002628地址处的CALL命令后，运行转到hookiat.MySetWindowTextW()函数的起始地址（10001000）（①），经过一系列处理后，执行1000107D地址处的CALL命令，转到（原来要调用的）user32.SetWindowTextW()函数的起始地址（②）。</p>
+<blockquote>
+<p>地址1000B6B8位于hookiat.dll的data节区，它是全局变量g_pOrgFunc的地址。注入DLL时，DllMain()会获取并保存user32.SetWindowTextW()函数的起始地址。</p>
+</blockquote>
+<p>user32.SetWindowTextW() API执行完毕后，执行会返回到hookiat.dll的1000107D地址的下一条指令（③），然后返回到01002628地址（calc.exe的代码区域）的下一条指令继续执行（④）。也就是说，程序调用user32.SetWindowTextW() API之前，会先调用hookiat.MySetWindowTextW()函数。像这样，先向目标进程（calc.exe）注入用户DLL （hookiat.dll）,然后在calc.exe进程的IAT区域中更改4个字节大小的地址，就可以轻松钩取指定API （这种通过修改IAT来钩取API的技术 也称为IAT钩取技术）。希望各位先理解上面讲解的IAT钩取工作原理，再跟着做后面的练习示例。</p>
+<h1 id="32-4-练习示例"><a href="#32-4-练习示例" class="headerlink" title="32.4 练习示例"></a>32.4 练习示例</h1><p>本练习示例的目标是在计算器的显示框中用中文数字代替原来的阿拉伯数字。为达成目标，本节中我们将使用前面讲过的“通过修改IAT来实现API钩取的技术”。</p>
+<blockquote>
+<p>hookiat.dll 与 InjectDll.exe 文件均使用 VC++ Express Edition 编写而成，并在 Windows XP SP3、Windows 7 （32位）中通过测试。</p>
+</blockquote>
+<p>首先复制示例文件到工作目录（c:\work），然后运行计算器（calc.exe）程序，再使用Process Explorer查看计算器进程的PID值，如图32-11所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227105951440.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-11 calc.exe的PID"></p>
+<p>在命令行窗口中输入图32-12中的命令，按Enter键执行。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227110223756.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-12 向calc.exe注人hookiat.dll文件"></p>
+<blockquote>
+<p>这里在进行实验时发现通过命令行不能注进去，可以通过VS注进去，在C盘根目录下依旧不行，原因未知。</p>
+</blockquote>
+<p>可以在Process Explorer中看到hookiat.dll文件已经成功注入calc.exe，如图32-13所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227111253122.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-13 注入calc.exe进程的hookiat.dll"></p>
+<p>接下来在计算器中任意输入一些数字并计算，如图32-14所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227111803252.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-14 IAT被钩取后的calc.exe进程"></p>
+<p>从图32-14可以看到，输入的所有数字都被转换成了中文数字形式，并且计算器的计算功能也非常正常（请注意，我们只是钩取了数字的显示，除此之外其他功能均正常运行）。</p>
+<p>下面尝试一下“脱钩”操作。“脱钩”就是把IAT恢复原值，弹岀并卸载已插入的DLL（hookiat.dll）。在命<br>令窗口中输入并执行图32-15中的命令。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227112417353.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-15 从calc.exe进程卸载hookiat.dll"></p>
+<p>执行完上述命令后，再次向计算器中输入数字，如图32-16所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227112436172.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-16 “脱钩”后的calc.exe进程"></p>
+<p>可以看到数字正常显示为阿拉伯数字形式，表明“脱钩”成功</p>
+<h1 id="32-5-源代码分析"><a href="#32-5-源代码分析" class="headerlink" title="32.5 源代码分析"></a>32.5 源代码分析</h1><p>本节将详细分析示例程序（hookiat.dll）的源代码，借此深人了解IAT钩取的工作原理及具体实现方法。</p>
+<blockquote>
+<p>所有源代码均使用VC-H- 2010 Express Edition开发而成，且在Windows XP SP3、Windows 7 （32位）系统环境中顺利通过测试。为便于讲解，后面的源代码中省略了返回值检查与错误处理的语句。</p>
+</blockquote>
+<p>InjectDll.cpp源代码与以前讲解过的内容（注入DLL的代码）基本结构类似（详细说明请参考第23章）。下面将详细讲解hookiat.dll的源代码（hookiat.cpp）。</p>
+<h2 id="32-5-1-DIIMain"><a href="#32-5-1-DIIMain" class="headerlink" title="32.5.1 DIIMain()"></a>32.5.1 DIIMain()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL WINAPI <span class="hljs-title function_">DllMain</span><span class="hljs-params">(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)</span><br>&#123;<br>	<span class="hljs-keyword">switch</span>( fdwReason )<br>	&#123;<br>		<span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH : <br>            <span class="hljs-comment">// 保存原始API地址</span><br>           	g_pOrgFunc = GetProcAddress(GetModuleHandle(<span class="hljs-string">L&quot;user32.dll&quot;</span>), <br>                                        <span class="hljs-string">&quot;SetWindowTextW&quot;</span>);<br><br>            <span class="hljs-comment">// # hook</span><br>            <span class="hljs-comment">//    用 hookiat!MySetWindowText() 钩取 user32!SetWindowTextW()</span><br>			hook_iat(<span class="hljs-string">&quot;user32.dll&quot;</span>, g_pOrgFunc, (PROC)MySetWindowTextW);<br>			<span class="hljs-keyword">break</span>;<br><br>		<span class="hljs-keyword">case</span> DLL_PROCESS_DETACH :<br>            <span class="hljs-comment">// # unhook</span><br>            <span class="hljs-comment">//   将 calc.exe 的IAT恢复原值 </span><br>            hook_iat(<span class="hljs-string">&quot;user32.dll&quot;</span>, (PROC)MySetWindowTextW, g_pOrgFunc);<br>			<span class="hljs-keyword">break</span>;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>DllMain()函数代码一如既往地简单，下面看看其中比较重要的代码。</p>
+<p>保存SetWindowTextW()地址</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH : <br>    <span class="hljs-comment">// 保存原始API地址</span><br>    g_pOrgFunc = GetProcAddress(GetModuleHandle(<span class="hljs-string">L&quot;user32.dll&quot;</span>), <br>                                <span class="hljs-string">&quot;SetWindowTextW&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+
+<p>在DLL_PROCESS_ATTACH事件中先获取user32.SetWindowTextW() API的地址，然后将其保存到全局变量（gjOrgFunc），后面“脱钩”时会用到这个地址。</p>
+<blockquote>
+<p>由于计算器已经加载了 user32.dll，所以像上面那样直接调用GetProcAddress()函数不会有什么问题。但实际操作中，必须先确定提供（要钩取的）API的DLL已经正常 加载到相应进程（若相应DLL在钩取前尚未被加载，则应该先调用LoadLirary() API加载它）。</p>
+</blockquote>
+<p>IAT钩取</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">hook_iat(<span class="hljs-string">&quot;user32.dll&quot;</span>, g_pOrgFunc, (PROC)MySetWindowTextW);<br></code></pre></td></tr></table></figure>
+
+<p>上面这条语句用来调用hook_iat()函数，钩取IAT （即将user32.SetWindowTextW()的地址更改为hookiat.MySetWindowTextW()的地址）。上面这两个语句是发生DLL加载事件（DLL_PROCESS_ATTACH）时执行的所有操作。</p>
+<p>IAT “脱钩”</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">case</span> DLL_PROCESS_DETACH :<br>    <span class="hljs-comment">// # unhook</span><br>    <span class="hljs-comment">//   将 calc.exe 的IAT恢复原值 </span><br>    hook_iat(<span class="hljs-string">&quot;user32.dll&quot;</span>, (PROC)MySetWindowTextW, g_pOrgFunc);<br></code></pre></td></tr></table></figure>
+
+
+<p>卸载DLL时会触发DLL_PROCESS_DETACH事件，发生该事件时，我们将进行IAT “脱钩” （hookiat.MySetWindowTextW()的地址更改为user32.SetWindowTextW()的地址）。以上就是对DllMain()函数的讲解。接下来分析MySetWindowTextW()函数，它是user32.SetWindowTextW()的钩取函数（5.3节中将详细说明hook_iat()函数）。</p>
+<h2 id="32-5-2-MySetWindowTextW"><a href="#32-5-2-MySetWindowTextW" class="headerlink" title="32.5.2 MySetWindowTextW()"></a>32.5.2 MySetWindowTextW()</h2><p>下面看看MySetWindowTextW()函数，它是SetWindowTextW()的钩取函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL WINAPI <span class="hljs-title function_">MySetWindowTextW</span><span class="hljs-params">(HWND hWnd, LPWSTR lpString)</span><br>&#123;<br>    <span class="hljs-type">wchar_t</span>* pNum = <span class="hljs-string">L&quot;零一二三四五六七八九&quot;</span>;<br>    <span class="hljs-type">wchar_t</span> temp[<span class="hljs-number">2</span>] = &#123;<span class="hljs-number">0</span>,&#125;;<br>    <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>, nLen = <span class="hljs-number">0</span>, nIndex = <span class="hljs-number">0</span>;<br><br>    nLen = wcslen(lpString);<br>    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; nLen; i++)<br>    &#123;<br>        <span class="hljs-comment">// 将阿拉伯数字转换为中文数字</span><br>        <span class="hljs-comment">//   lpString是宽字符版本（2个字节）字符串</span><br>        <span class="hljs-keyword">if</span>( <span class="hljs-string">L&#x27;0&#x27;</span> &lt;= lpString[i] &amp;&amp; lpString[i] &lt;= <span class="hljs-string">L&#x27;9&#x27;</span> )<br>        &#123;<br>            temp[<span class="hljs-number">0</span>] = lpString[i];<br>            nIndex = _wtoi(temp);<br>            lpString[i] = pNum[nIndex];<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 调用user32!SetWindowTextW() API</span><br>    <span class="hljs-comment">//  (修改lpString缓冲区中的内容）</span><br>    <span class="hljs-keyword">return</span> ((PFSETWINDOWTEXTW)g_pOrgFunc)(hWnd, lpString);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>计算器进程（calc.exe）的IAT被钩取后，每当代码中调用user32.SetWindowTextW()函数时，都会首先调用hookiat.MySetWindowTextW()函数。</p>
+<p>接下来分析MySetWindowTextW()函数中的重要代码。MySetWindowTextW()函数的IpString参数是一块缓冲区，该缓冲区用来存放要输岀显示的字符串。所以，操作IpString参数即可在计算器中显示用户指定的字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">nLen = wcslen(lpString);<br><span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; nLen; i++)<br>&#123;<br>    <span class="hljs-comment">// 将阿拉伯数字转换为中文数字</span><br>    <span class="hljs-comment">//   lpString是宽字符版本（2个字节）字符串</span><br>    <span class="hljs-keyword">if</span>( <span class="hljs-string">L&#x27;0&#x27;</span> &lt;= lpString[i] &amp;&amp; lpString[i] &lt;= <span class="hljs-string">L&#x27;9&#x27;</span> )<br>    &#123;<br>        temp[<span class="hljs-number">0</span>] = lpString[i];<br>        nIndex = _wtoi(temp);<br>        lpString[i] = pNum[nIndex];<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述for循环将存放在IpString的阿拉伯数字字符串转换为中文数字字符串。图35-17描述的是IpString缓冲区更改前后的情形。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227113500565.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-17 更改IpString缓冲区的内容"></p>
+<p>从图中可以看到，阿拉伯数字“123” 被更改为了中文数字“一二三”，即阿拉伯数字与中文数字是1 : 1的关系。利用这种特性可以不加任何修改地使用原缓冲区，也就是说，把阿拉伯数字转换为对应的中文数字时，缓冲区尺寸并未改变。从代码32-2中可知，IpString字符串的缓冲区中直接保存的是变换之后的（中文）字符串。</p>
+<blockquote>
+<p>若将阿拉伯数字“123” 更改为英文数字 “ONETWOTHREE”，显然英文数字要长得多，所以不能直接使用原缓冲区（123），而要先开辟一块新缓冲区，再将新缓冲区的地址传递给原始API。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">return</span> ((PFSETWINDOWTEXTW)g_pOrgFunc)(hWnd, lpString);<br></code></pre></td></tr></table></figure>
+
+<p>for循环结束后，最后再调用函数指针g_pOrgFunc，它指向user32.SetWindowTextW()API的起始地址（该地址在DllMain()中已经获取并保存下来）。也就是说，调用原来的SetWindowTextW()函数，将（变换后的）中文数字显示在计算器的显示框中。总结一下MySetWindowTextW()函数：首先更改作为参数传递过来的IpString字符串缓冲区中的内容，然后调用SetWindowTextW()函数， 将lpString字符串缓冲区中的（更改后的）内容显示在计算器的显示框中。</p>
+<p>下一小节将分析hook_iat()函数，它具体负责钩取IAT。</p>
+<h2 id="32-5-3-hook-iat"><a href="#32-5-3-hook-iat" class="headerlink" title="32.5.3 hook_iat()"></a>32.5.3 hook_iat()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL <span class="hljs-title function_">hook_iat</span><span class="hljs-params">(LPCSTR szDllName, PROC pfnOrg, PROC pfnNew)</span><br>&#123;<br>	HMODULE hMod;<br>	LPCSTR szLibName;<br>	PIMAGE_IMPORT_DESCRIPTOR pImportDesc; <br>	PIMAGE_THUNK_DATA pThunk;<br>	DWORD dwOldProtect, dwRVA;<br>	PBYTE pAddr;<br><br>    <span class="hljs-comment">// hMod, pAddr = ImageBase of calc.exe</span><br>    <span class="hljs-comment">//             = VA to MZ signature (IMAGE_DOS_HEADER)</span><br>	hMod = GetModuleHandle(<span class="hljs-literal">NULL</span>);<br>	pAddr = (PBYTE)hMod;<br><br>    <span class="hljs-comment">// pAddr = VA to PE signature (IMAGE_NT_HEADERS)</span><br>	pAddr += *((DWORD*)&amp;pAddr[<span class="hljs-number">0x3C</span>]);<br><br>    <span class="hljs-comment">// dwRVA = RVA to IMAGE_IMPORT_DESCRIPTOR Table</span><br>	dwRVA = *((DWORD*)&amp;pAddr[<span class="hljs-number">0x80</span>]);<br><br>    <span class="hljs-comment">// pImportDesc = VA to IMAGE_IMPORT_DESCRIPTOR Table</span><br>	pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)((DWORD)hMod+dwRVA);<br><br>	<span class="hljs-keyword">for</span>( ; pImportDesc-&gt;Name; pImportDesc++ )<br>	&#123;<br>        <span class="hljs-comment">// szLibName = VA to IMAGE_IMPORT_DESCRIPTOR.Name</span><br>		szLibName = (LPCSTR)((DWORD)hMod + pImportDesc-&gt;Name);<br>		<span class="hljs-keyword">if</span>( !_stricmp(szLibName, szDllName) )<br>		&#123;<br>            <span class="hljs-comment">// pThunk = IMAGE_IMPORT_DESCRIPTOR.FirstThunk</span><br>            <span class="hljs-comment">//        = VA to IAT(Import Address Table)</span><br>			pThunk = (PIMAGE_THUNK_DATA)((DWORD)hMod + <br>                                         pImportDesc-&gt;FirstThunk);<br><br>            <span class="hljs-comment">// pThunk-&gt;u1.Function = VA to API</span><br>			<span class="hljs-keyword">for</span>( ; pThunk-&gt;u1.Function; pThunk++ )<br>			&#123;<br>				<span class="hljs-keyword">if</span>( pThunk-&gt;u1.Function == (DWORD)pfnOrg )<br>				&#123;<br>                    <span class="hljs-comment">// 更改内存属性为 E/R/W</span><br>					VirtualProtect((LPVOID)&amp;pThunk-&gt;u1.Function, <br>                                   <span class="hljs-number">4</span>, <br>                                   PAGE_EXECUTE_READWRITE, <br>                                   &amp;dwOldProtect);<br><br>                    <span class="hljs-comment">// 修改IAT值（钩取）</span><br>                    pThunk-&gt;u1.Function = (DWORD)pfnNew;<br>					<br>                    <span class="hljs-comment">// 恢复内存属性</span><br>                    VirtualProtect((LPVOID)&amp;pThunk-&gt;u1.Function, <br>                                   <span class="hljs-number">4</span>, <br>                                   dwOldProtect, <br>                                   &amp;dwOldProtect);						<br><br>					<span class="hljs-keyword">return</span> TRUE;<br>				&#125;<br>			&#125;<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该函数是具体执行IAT钩取的函数。函数代码虽然不长，但其中含有较多注释，使函数自身看上去较长。接下来逐一查看：hook_iat()函数的前半部分用来读取PE文件头信息，并查找IAT的位置（要理解这部分代码需要先了解IAT的结构）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">hMod = GetModuleHandle(<span class="hljs-literal">NULL</span>); 		<span class="hljs-comment">// hMod = ImageBase</span><br>pAddr = (PBYTE)hMod;				<span class="hljs-comment">// pAddr = ImageBase</span><br>pAddr += *((DWORD*)&amp;pAddr[<span class="hljs-number">0x3C</span>]);	<span class="hljs-comment">// pAddr = &quot;PE&quot; signature</span><br>dwRVA = *((DWORD*)&amp;pAddr[<span class="hljs-number">0x80</span>]);	<span class="hljs-comment">// dwRVA = RVA of IMAGE_IMPORT_DESCRIPTOR</span><br>pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)((DWORD)hMod+dwRVA);<br></code></pre></td></tr></table></figure>
+
+
+<p>上面这几行代码首先从ImageBase开始，经由PE签名找到IDT。plmportDesc变量中存储着IMAGE_IMPORT_DESCRIPTOR结构体的起始地址，后者是calc.exe进程IDT的第一个结构体。IDT是由IMAGE_IMPORT_DESCR!PTOR结构体组成的数组。若想查找到IAT,先要查找到这个位置。上面的代码中，plmportDesc变量的值为01012B80,使用PEView查看该地址，如图32-18所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227122023028.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-18 calc.exe进程的IDT"></p>
+<p>图32-18是计算器进程的IMAGE_IMPORT_DESCRIPTOR（数组），它在PEView中名为IDT。我们要查找的user32.dll位于图32-18的最下方，接下来使用for循环遍历该IDT。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span>( ; pImportDesc-&gt;Name; pImportDesc++ )<br>&#123;<br>    <span class="hljs-comment">// szLibName = VA to IMAGE_IMPORT_DESCRIPTOR.Name</span><br>    szLibName = (LPCSTR)((DWORD)hMod + pImportDesc-&gt;Name);<br>    <span class="hljs-keyword">if</span>( !_stricmp(szLibName, szDllName) )<br>    &#123;<br></code></pre></td></tr></table></figure>
+
+<p>在上面的for循环中比较pImportDesc-&gt;Name与szDllName（“user32.dll”），通过比较查找到user32.dll的IMAGE_IMPORT_DESCRIPTOR结构体地址。最终plmportDesc的值为01012BE4 （参考图32-18）。接下来进入user32的IAT。pImportDesc-&gt;FirstThunk成员所指的就是IAT。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// pThunk = IMAGE_IMPORT_DESCRIPTOR.FirstThunk</span><br><span class="hljs-comment">//        = VA to IAT(Import Address Table)</span><br>pThunk = (PIMAGE_THUNK_DATA)((DWORD)hMod + <br>                             pImportDesc-&gt;FirstThunk);<br></code></pre></td></tr></table></figure>
+
+<p>以上代码中，pThunk就是user32.dll的IAT （010010A4,参考图32-18）。使用PEView查看该地址，如图32-19所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227122115207.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-19 calc.exe进程的IAT"></p>
+<p>可以看到，user32.dll的IAT中导入了相当多的函数。我们要查找的SetWindowTextW位于010013F8地址处，其值为77D2612B。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// pThunk-&gt;u1.Function = VA to API</span><br><span class="hljs-keyword">for</span>( ; pThunk-&gt;u1.Function; pThunk++ )<br>&#123;<br>    <span class="hljs-keyword">if</span>( pThunk-&gt;u1.Function == (DWORD)pfnOrg )<br>    &#123;<br></code></pre></td></tr></table></figure>
+
+
+<p>在上面的for循环中比较pThunk-&gt;ul.Function与pfnOrg （77D2612BSetWindowTextW的起始地址），准确查找到 SetWindowTextW 的 IAT 地址（010013F8）（当前 pThunk&#x3D;010013F8,pThunk-&gt;ul.Function&#x3D;77D2612B）。</p>
+<p>上述代码就是从计算器进程的ImageBase开始查找user32.SetWindowTextW的IAT地址的整个过程。</p>
+<blockquote>
+<p>若不怎么理解上述代码，请参考第13章中有关IAT的部分，使用PEView逐一查找。</p>
+</blockquote>
+<p>查找到IAT地址后，接下来就要修改（hooking）它的值</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 修改IAT值（钩取）</span><br>pThunk-&gt;u1.Function = (DWORD)pfnNew;<br></code></pre></td></tr></table></figure>
+
+
+<p>pThunk-&gt;ul.Function中，原来的值为77CF61C9 （SetWindowTextW地址），上面语句将其修改为（10001000 hookiat.MySetWindowTextW的地址）。这样，计算器代码调用user32.SetWindowTextW() API时，实际会先调用hookiat.MySetWindowTextW()函数。</p>
+<blockquote>
+<p>从上述hook_iat()函数代码中可以看到，钩取前先调用了 VirtualProtect()函数，将相应IAT的内存区域更改为“可读写”模式，钩取之后重新返回原模式的代码是存在的。该语句用来改变内存属性，由于计算器进程的IAT内存区域是只读的，所以需要使用该语句将其更改为“可读写”模式。</p>
+</blockquote>
+<p>对hook_iat.cpp代码的分析到此结束。如果理解了 IAT钩取的内部工作原理，再阅读hook_iat.cpp代码时就会感到很容易，理解起来也不会有什么难度。</p>
+<h1 id="32-6-调试被注入的DLL文件"><a href="#32-6-调试被注入的DLL文件" class="headerlink" title="32.6 调试被注入的DLL文件"></a>32.6 调试被注入的DLL文件</h1><p>本节将使用OllyDbg调试钩取代码，并查看被钩取的IAT内存区域。此外还要学习如何调试注入进程的DLL文件。我们要调试的是hookiat.dll文件，它被注入计算器（calc.exe）进程。首先运行计算器程序，然后用Process Explorer查看计算器进程的PID值，如图32-20所示。</p>
+<p>接下来将calc.exe进程附加到OllyDbg,如图32-21所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227122805646.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-21 OllyDbg附加"></p>
+<blockquote>
+<p>我们使用的是OllyDbg 2.0版本，用OllyDbg 1.10调试被注入的DLL会遇到一些Bug,导致调试进程意外终止。</p>
+</blockquote>
+<p>附加成功后，按F9运行键运行calc.exe进程。然后设置OllyDbg选项，如图32-22所示。这样，注入DLL文件（hookiat.dll）时，控制权就会转给调试器。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227124930776.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-22 复选Pause on new module (DLL)选项"></p>
+<p>如图32-22所示，在OllyDbg的Options窗口中复选Pause on new module （DLL）选项后，每当有DLL加载（含注入）到被调试进程时，控制权就会转移给调试器。设置好选项后，在OllyDbg中按F9运行键正常运行计算器进程。在命令行窗口中输入相应参数，运行InjectDll.exe，将hookiat.dll注入计算器进程（参考图32-23）。</p>
+<blockquote>
+<p>这里使用了VS，命令行会注入失败。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227123304955.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-23 注入hookiat.dll"></p>
+<p>calc.exe进程中发生DLL加载事件时，相关事件就会被通知到OllyDbg，如图32-22所示设置好选项后，调试器就会在hookiat.dll的EP处暂停下来，如图32-24所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227134143100.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-24 hookiat.dll的EP代码"></p>
+<blockquote>
+<p>有DLL被加载时，调试器会自动暂停在被加载的DLL的EP处，这是OllyDbg2.0中提供的功能。若使用的是OllyDbg1.1,调试器会在非EP的其他代码位置处（ntdll.dll 区域）暂停。</p>
+</blockquote>
+<p>接下来，取消图32-22中复选的Pause on new module （DLL）选项，查找DllMain()代码。</p>
+<p>在调试器中查找hookiat.dll的DllMain()函数最简单的方法是，检索DllMain()中使用的字符串或API （当然也可以使用Step In（F7）命令逐行跟踪查找）。参考代码32-1可知，DllMain()函数中使用的字符串有“user32.dll”与“SetWindowTextW”。下面通过查找代码中使用的“user32.dll”与 “SetWindowTextW”字符串来找DllMain()函数。在OllyDbg的代码窗口中选择鼠标右键菜单Search for All referenced strings选项，如图32-25所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227134220849.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-25 査找字符串"></p>
+<p>从图32-25可知，“user32.dll”字符串有2处，“SetWindowTextW”字符串有1处。转到引用“SetWindowTextW”字符串的代码地址1ED112E处，如图32-26所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227134248129.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-26 DllMain()代码"></p>
+<p>图32-26黑色线框中的反汇编代码与代码32-1中的C语言代码是一致的。因此该部分（1ED1120~）就是DllMain()函数（DllMain()函数的起始地址为1ED1120）。这就是调试注入进程的DLL的方法。</p>
+<h2 id="32-6-1-DIIMain"><a href="#32-6-1-DIIMain" class="headerlink" title="32.6.1 DIIMain()"></a>32.6.1 DIIMain()</h2><p>下面从DllMain()函数起始位置开始调试（与代码32-1比较查看，理解起来会更容易）。继续调试DllMain(),出现如图32-27所示的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227135247248.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-27 调用hook_iat()函数"></p>
+<p>地址1ED1151处的CALL hook_iat指令就是调用hook_iat()函数的部分。由于函数参数逆序存储在栈中，所以各参数含义与注释的描述一样（请比较代码32-1与图32-27）。需要注意的是，在代码32-1中可以看到hook_iat()函数有3个参数，而图32-27中的hook_iat()的参数只有2个。</p>
+<blockquote>
+<p>从栈窗口中可以清楚地看到这一点，需要注意的是栈中只有一个参数。另一个参数是原始函数的地址，它通过EDX寄存器进行传递，这是通过指令<code>MOV EDX,EAX</code>完成的。这就是所谓的寄存器传参。</p>
+</blockquote>
+<p>仔细查看可以发现，hook_iat()的第一个参数“user32.dll”字符串 的地址和原始函数的地址被省略了。这是VC++编辑器进行代码优化的结果，字符串的地址（4字节常数）并未作为函数参数传入，而被硬编码到hook_iat()函数中。大家以后调试自己编写的程序时，会经常遇到上述代码优化现象。</p>
+<h2 id="32-6-2-hook-iat"><a href="#32-6-2-hook-iat" class="headerlink" title="32.6.2 hook_iat()"></a>32.6.2 hook_iat()</h2><p>hook_iat()是具体负责实施IAT钩取的核心函数，下面开始调试它。</p>
+<p><strong>查找IMAGE_IMPORT_DESCRIPTION</strong></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227140027407.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-28 査找IMAGE_IMPORT_DESCRIPTION"></p>
+<p>图32-28灰色部分代码描述了从PE文件头中查找IMAGE_IMPORT_DESCRIPTION Table （下 称“IID Table”）的过程（在PEView中可以看到多个IID—起组成了IDT）。以上代码（1ED1093~1ED10A5）仅用6条汇编指令就找到了IID Table。</p>
+<blockquote>
+<p>如果你尚未掌握PE文件头的结构，或初次接触上面这样的汇编代码，那么很可能不理解代码内容。此时可以同时打开PEView,边参考PE文件结构边调试。其实这不是什么困难的事情，看多了自然就明白了。等以后熟悉了，只要看到[EDI+3C]、[EDI+EAX+80]等代码，也能轻松知道它们是用来跟踪IID Table的代码。</p>
+</blockquote>
+<p>地址1ED10BA处的<code>CALL _stricmp</code>指令用于调用stricmp()函数。通过遍历IID Table比较IID.Name与“user32.dll”字符串，最终查找到user32.dll对应的IID。 在IAT中查找SetWindowTextW API的位置查找到user32.dll对应的IID后，下面的代码用来在IAT中查找SetWindowTextW API的位置（参考图32-29）。然后修改其中的内容，从而实现对API的钩取。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227140444708.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-29 IAT"></p>
+<p>1ED10D2地址处的<code>CMP DWORD PTR DS:[ESI]，EBX</code>指令中，ESI的值为user32.dll的IAT起始地址，EBP的值为SetWindowTextW的地址（77D2612B）。图32-29的代码运行循环进入IAT，查找位于01001110的SetWindowTextW的地址值（77D2612B）。</p>
+<p><strong>IAT钩取</strong></p>
+<p>图32-30是实际钩取IAT的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227140818189.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-30 IAT钩取"></p>
+<p>1ED1103地址处的<code>MOV DWORD PTR DS:[ESI]，EAX</code>指令用来将MySetWindowTextW （hooking函数）的地址覆写到前面从IAT中获取的SetWindowTextW的地址（010013F8）。地址010013F8在calc.exe进程中位于user32.dll的IAT区域，该地址原来存储着SetWindowTextW地址（77D2612B）（参考图32-29）。</p>
+<p>执行1ED1103地址处的MOV指令后，user32.SetWindowTextW地址（77D2612B）被更改为hookiat.MySetWindowTextW地址（1ED1000）（参考图32-30）。从现在开始，calc.exe进程代码（通过IAT）调用user32.SetWindowTextW() API时，实际调用的是hookiat.MySetWindowTextW()。</p>
+<h2 id="32-6-3-MySetWindowTextW"><a href="#32-6-3-MySetWindowTextW" class="headerlink" title="32.6.3 MySetWindowTextW()"></a>32.6.3 MySetWindowTextW()</h2><p>完成IAT钩取操作后，在OllyDbg中按F9键正常运行计算器（calc.exe）进程。</p>
+<p>在calc.exe进程中调用user32.SetWindowTextW() API的代码处设置断点，调试hookiat.MySetWindowTextW()函数被调用的情形。首先在调用user32.SetWindowTextW() API的代码处设置断点。使用OllyDbg的Search for All intermodular calls功能，打开如图32-31所示的对话框。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227141742137.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-31 Search for All intermodular calls对话框"></p>
+<p>可以看到，之前所有的SetWindowTextW函数都成功被Hook成了MySetWindowTextW。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227142057389.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-32 调用MySetWindowTextW()"></p>
+<p>地址10013F8中原来保存的是user32.SetWindowTextW()的地址，钩取后，存储的地址变为 hookiat.MySetWindowTextW()的地址（1ED1000），如图32-32所示。进入MySetWindowTextW()函数继续调试，岀现图32-33所示的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97.assets/image-20220227142509646.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图32-33 调用user32.SetWindowTextW()"></p>
+<p>MySetWindowTextW()函数主要有2个功能，它首先将阿拉伯数字转换为中文数字（字符串）,然后调用原来的 user32.SetWindowTextW() API。1ED1068地址处的 CALL DWORD PTR DS:[g_pOrgFunc]指令就是用来调用user32.SetWindowTextW() API的。1EDEB24地址是hookiat.dll中.data节区的全局变量（g_pOrgFunc）, DllMain()函数会事先将SetWindowTextW的地址存入此处（参考代码32-1、图32-7）。至此，对注入calc.exe进程的hookiat.dll的调试就全部结束了。</p>
+<h1 id="32-7-小结"><a href="#32-7-小结" class="headerlink" title="32.7 小结"></a>32.7 小结</h1><p>IAT钩取是API钩取技术之一，本章详细讲解了该技术的内部工作原理，并通过DLL注入技术将hookiatdll注入目标进程，由此进行API钩取调试练习。理解了这些工作原理与相关概念后，就可以继续下一章的学习。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第32章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第32章 计算器显示中文数字</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/03/02/逆向工程核心原理/第32章 计算器显示中文数字/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年3月2日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第33章 隐藏进程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器">
+                        <span class="hidden-mobile">第31章 关于调试器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

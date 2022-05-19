@@ -1,0 +1,1236 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第7章 栈帧">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205162157436.png">
+<meta property="article:published_time" content="1999-02-10T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:46:45.661Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205162157436.png">
+  
+  
+  
+  <title>第7章 栈帧 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第7章 栈帧"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-10 12:21" pubdate>
+          1999年2月10日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          77 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第7章 栈帧</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>本章我们将学习栈帧（Stack Frame）相关知识，栈帧在程序中用于声明局部变量、调用函数。理解了栈帧，就能轻松掌握保存在其中的函数参数和局部变量，这对我们调试代码也是很有帮助的。</p>
+<p>目标</p>
+<ul>
+<li>理解栈帧的运行原理。 </li>
+<li>编写简单的程序，通过调试观察栈侦情况。 </li>
+<li>详细讲解几个简单的汇编指令。</li>
+</ul>
+<h1 id="7-1栈帧"><a href="#7-1栈帧" class="headerlink" title="7.1栈帧"></a>7.1栈帧</h1><p>简言之，栈帧就是利用EBP （栈帧指针，请注意不是ESP）寄存器访问栈内局部变量、参数、函数返回地址等的手段。通过前面关于IA-32寄存器的学习我们知道，ESP寄存器承担着栈顶指针的作用，而EBP寄存器则负责行使栈帧指针的职能。程序运行中，ESP寄存器的值随时变化，访问栈中函数的局部变量、参数时，若以ESP值为基准编写程序会十分困难，并且也很难使CPU引用到准确的地址。所以，调用某函数时，先要把用作基准点（函数起始地址）的ESP值保存到EBP,并维持在函数内部。这样，无论ESP的值如何变化，以EBP的值为基准（base）能够安全访问到相关函数的局部变量、参数、返回地址，这就是EBP寄存器作为栈帧指针的作用。</p>
+<p>接下来看看栈帧对应的汇编代码（<strong>重点</strong>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs assembly">PUSH EBP		;函数开始（使用EBP前先把已有值保存到栈中）<br>MOV EBP, ESP	;保存当前ESP到EBP中<br><br>...				;函数体<br>				;无论ESP值如何变化，EBP都保持不变，可以安全访问函数的局部变量、参数<br><br>MOV ESP, EBP	;将函数的起始地址返回到ESP中<br>POP EBP			;函数返回前弹出保存在栈中的EBP值<br>RETN			;函数终止<br></code></pre></td></tr></table></figure>
+
+
+
+<p>借助栈帧技术管理函数调用时，无论函数调用的深度有多深、多复杂，调用栈都能得到很好的管理与维护。</p>
+<blockquote>
+<ul>
+<li><p>最新的编译器中都带有一个“优化”（Optimization）选项，使用该选项编译简单的函数将不会生成栈帧。 </p>
+</li>
+<li><p>在栈中保存函数返回地址是系统安全隐患之一，攻击者使用缓冲区溢出技术能够把保存在栈内存的返回地址更改为其他地址。</p>
+</li>
+</ul>
+</blockquote>
+<h1 id="7-2-调试示例：stackframe-exe"><a href="#7-2-调试示例：stackframe-exe" class="headerlink" title="7.2 调试示例：stackframe.exe"></a>7.2 调试示例：stackframe.exe</h1><p>下面调试一个非常简单的程序来进一步了解栈帧相关知识。</p>
+<h2 id="7-2-1-StackFrame-cpp"><a href="#7-2-1-StackFrame-cpp" class="headerlink" title="7.2.1 StackFrame.cpp"></a>7.2.1 StackFrame.cpp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// StackFrame.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><br><span class="hljs-type">long</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">long</span> a, <span class="hljs-type">long</span> b)</span> &#123;<br>    <span class="hljs-type">long</span> x = a, y = b;<br>    <span class="hljs-keyword">return</span> (x + y);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span> &#123;<br>    <span class="hljs-type">long</span> a = <span class="hljs-number">1</span>, b = <span class="hljs-number">2</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,add(a, b));<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p>在进行实验时使用的是Visual Studio，为了更好地适用栈帧，必须使用Release版本来编译程序，并且关闭Visual Studio的优化选项（&#x2F;Od）后再编译程序。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205162157436.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205162157436"></p>
+<p>使用x32dbg调试工具打幵StackFrame.exe文件，找到main函数所在位置，如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205162538805.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205162538805"></p>
+<p>对于尚不熟悉汇编语言的朋友来说，上图中的代码可能有些复杂，下面我们会详细讲解。通过与C语言源代码的对照讲解，分析代码执行各阶段中栈内数据的变化，帮助大家更好地理解。</p>
+<h2 id="7-2-2开始执行main-函数-amp-生成栈帧"><a href="#7-2-2开始执行main-函数-amp-生成栈帧" class="headerlink" title="7.2.2开始执行main()函数&amp;生成栈帧"></a>7.2.2开始执行main()函数&amp;生成栈帧</h2><p>VS中的反汇编界面已经非常贴心地给出了汇编代码和C语言的对照表，照搬如下。其中由于VS装在Win10上，反汇编界面对应的地址是使用了ASLR的，我们将以x32dbg（win7环境下的地址为准）。</p>
+<p>add函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs assembly">     4: long add(long a, long b) &#123;<br>006C1080 55                   push        ebp  <br>006C1081 8B EC                mov         ebp,esp  <br>006C1083 83 EC 08             sub         esp,8  <br>     5:     long x = a, y = b;<br>006C1086 8B 45 08             mov         eax,dword ptr [a]  ;param &#x27;a&#x27;<br>006C1089 89 45 FC             mov         dword ptr [x],eax  ;local &#x27;x&#x27;<br>006C108C 8B 4D 0C             mov         ecx,dword ptr [b]  ;param &#x27;b&#x27;<br>006C108F 89 4D F8             mov         dword ptr [y],ecx  ;local &#x27;y&#x27;<br>     6:     return (x + y);<br>006C1092 8B 45 FC             mov         eax,dword ptr [x]  <br>006C1095 03 45 F8             add         eax,dword ptr [y]  <br>     7: &#125;<br>006C1098 8B E5                mov         esp,ebp  <br>006C109A 5D                   pop         ebp  <br>006C109B C3                   ret<br></code></pre></td></tr></table></figure>
+
+
+
+<p>main函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs assembly">     9: int main(int argc, char* argv[]) &#123;<br>006C10A0 55                   push        ebp  <br>006C10A1 8B EC                mov         ebp,esp  <br>006C10A3 83 EC 08             sub         esp,8  <br>    10:     long a = 1, b = 2;<br>006C10A6 C7 45 F8 01 00 00 00 mov         dword ptr [a],1  <br>006C10AD C7 45 FC 02 00 00 00 mov         dword ptr [b],2  <br>    11:     printf(add(a, b));<br>006C10B4 8B 45 FC             mov         eax,dword ptr [b]  <br>006C10B7 50                   push        eax  <br>006C10B8 8B 4D F8             mov         ecx,dword ptr [a]  <br>006C10BB 51                   push        ecx  <br>006C10BC E8 BF FF FF FF       call        add (06C1080h)  <br>006C10C1 83 C4 08             add         esp,8  <br>006C10C4 50                   push        eax  <br>006C10C5 E8 76 FF FF FF       call        printf (06C1040h)  <br>006C10CA 83 C4 04             add         esp,4  <br>    12:     return 0;<br>006C10CD 33 C0                xor         eax,eax  <br>    13: &#125;<br>006C10CF 8B E5                mov         esp,ebp  <br>006C10D1 5D                   pop         ebp  <br>006C10D2 C3                   ret  <br></code></pre></td></tr></table></figure>
+
+
+
+<p>首先从StackFrame.cpp源程序的主函数开始分析，代码如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>* argv[])</span> &#123;<br></code></pre></td></tr></table></figure>
+
+<p>函数main()是程序开始执行的地方，在main()函数的起始地址（ 42F430）处，设置一个断点，然后按运行程序，程序运行到main()函数的断点处暂停。</p>
+<p>开始执行main()函数时栈的状态如下图所示。从现在开始要密切关注栈的变化，这是我们要重点学习的内容。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192352364.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192352364"></p>
+<blockquote>
+<p>当前ESP的值为12FF44，EBP的值为12FF88。切记地址4012A0保存在ESP（12FF44）中，它是main()函数执行完毕后要返回的地址。</p>
+</blockquote>
+<p>大家的运行环境不同，这意味着看到的地址可能会与上图中的不一样。</p>
+<p>main()函数一开始运行就生成与其对应的函数栈帧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401040    | 55                  | push ebp                        |<br></code></pre></td></tr></table></figure>
+
+
+<p>PUSH是一条压栈指令，上面这条PUSH语句的含义是“把EBP值压入栈”。main()函数中，EBP为栈帧指针，用来把EBP之前的值备份到栈中（main()函数执行完毕，返回之前，该值会再次恢复）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401041    | 8BEC                | mov ebp,esp                     |<br></code></pre></td></tr></table></figure>
+
+<p>MOV是一条数据传送命令，上面这条MOV语句的命令是“把ESP值传送到EBP”。换言之，从这条命令开始，EBP就持有与当前ESP相同的值，并且直到main()函数执行完毕，EBP的值始终保持不变。也就是说，我们通过EBP可以安全访问到存储在栈中的函数参数与局部变量。执行完00401040与00401041地址处的两条命令后，函数main()的栈帧就生成了（设置好EBP了）。</p>
+<p>x32dbg的栈窗口默认是ESP寻址，下拉如下菜单选择头两个即可在ESP寻址和EBP寻址之间来回切换，右侧的数字是显示偏移的最大长度。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192600662.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192600662"></p>
+<p>接下来，在x32dbg的栈窗口中确认EBP的位置。程序调试到现在的栈内情况如下图所示，把地址转换为相对于EBP的偏移后，能更直观地观察到栈内情况。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192540929.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192540929"></p>
+<p>如上图所示，当前EBP值为12FF40,与ESP值一致，12FF40地址处保存着12FF88,它是main()函数开始执行时EBP持有的初始值。</p>
+<h2 id="7-2-3-设置局部变量"><a href="#7-2-3-设置局部变量" class="headerlink" title="7.2.3 设置局部变量"></a>7.2.3 设置局部变量</h2><p>下面开始分析源文件StackFrame.cpp中的变量声明及赋值语句。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">long</span> a = <span class="hljs-number">1</span>, b = <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
+
+<p>main()函数中，上述语句用于在栈中为局部变量（a，b）分配空间，并赋初始值。main()函数中声明的变量a、b是如何在函数栈中生成的，又是如何管理的呢？下面一起来揭晓其中的秘密。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010A3    | 83EC 08             | sub esp,8                       |<br></code></pre></td></tr></table></figure>
+
+
+
+<p>SUB是汇编语言中的一条减法指令，上面这条语句用来将ESP的值减去8个字节。如图7-4所 示，执行该条命令之前，ESP的值为12FF40,减去8个字节后，变为12FF38。那么为什么要将ESP减去8个字节呢？从ESP减去8个字节，其实质是为函数的局部变量（a与b，请参考代码7-2）开辟空间，以便将它们保存在栈中。由于局部变量a与b都是long型（长整型），它们分别占据4个字节大小，所以需要在栈中开辟8个字节的空间来保存这2个变量。</p>
+<p>使用SUB指令从ESP中减去8个字节，为2个函数变量开辟好栈空间后，在main()内部，无论ESP的值如何变化，变量a与b的栈空间都不会受到损坏。由于EBP的值在main()函数内部是固定不变的，我们就能以它为基准来访问函数的局部变量了。继续看如下代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010A6    | C745 F8 01000000    | mov dword ptr ss:[ebp-8],1              |; [EBP-4] = local ，a<br>004010AD    | C745 FC 02000000    | mov dword ptr ss:[ebp-4],2              |; [EBP-8] = local ，b<br></code></pre></td></tr></table></figure>
+
+
+
+<p>对于刚刚接触汇编语言的朋友来说，上面两条命令中的“DWORD PTRSS:[EBP-4]” 部分可能略显陌生。其实没什么难的，只粟把它们看作类似于C语言中的指针就可以了。</p>
+<p>上面这些指针命令很难用简洁明了的语言描述出来，简单翻译一下就是，地址EBP-4处有一个4字节大小的内存空间。</p>
+<blockquote>
+<p>DWORD PTR SS:[EBP-4]语句中，SS是Stack Segment的缩写，表示栈段。由于Windows中使用的是段内存模型（Segment Memory Model），使用时需要指出相关内存属于哪一个区段。其实，32位的Windows OS中，SS、DS、ES的值皆为0，所以采用 这种方式附上区段并没有什么意义。（这里存疑）因EBP与ESP是指向栈的寄存器，所以添加上了SS寄存器。请注意，“DWORD PTR”与“SS:”等字符串可以通过设置x32dbg的相应选项来隐藏。</p>
+</blockquote>
+<p>再次分析上面的2条MOV命令，它们的含义是“把数据1与2分别保存到[EBP-4]与[EBP-8]中”, 即[EBP-4]代表局部变量a，[EBP-8]代表局部变量b。执行完上面两条语句后，函数栈内的情况如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192634628.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192634628"></p>
+<h2 id="7-2-4-add-函数参数传递与调用"><a href="#7-2-4-add-函数参数传递与调用" class="headerlink" title="7.2.4 add()函数参数传递与调用"></a>7.2.4 add()函数参数传递与调用</h2><p>StackFrame.cpp源代码中使用如下语句调用add()函数，执行加法运算并输出函数返回值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,add(a, b));<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010B4    | 8B45 FC             | mov eax,dword ptr ss:[ebp-4]            |;[EBP-8] = b<br>004010B7    | 50                  | push eax                                |;Arg2 = 00000002<br>004010B8    | 8B4D F8             | mov ecx,dword ptr ss:[ebp-8]            |;[EBP-4] = a<br>004010BB    | 51                  | push ecx                                |;Arg1 = 00000001<br>004010BC    | E8 BFFFFFFF         | call petest01.401080                    |;add()<br></code></pre></td></tr></table></figure>
+
+<p>请看上面5行汇编代码，它描述了调用add()函数的整个过程。地址40103C处为”Call 401080”命令，该命令用于调用401080处的函数，而401080处的函数即为add()函数。函数add()接收a、b这2个长整型参数，所以调用add()之前需要先把2个参数压入栈，地址004010B4-004010BB之间的代码即用于此。这一过程中需要注意的是，参数入栈的顺序与C语言源码中的参数顺序恰好相反（我们把这称为函数参数的逆向存储）。换言之，变量b （ [EBP-8]）首先入栈，接着变量a （[EBP-4]）再入栈。执行完地址004010B4-004010BB之间的代码后，栈内情况如下图所示。</p>
+<blockquote>
+<p>P.S. 这里和书上结果不太一样，原因是开辟局部变量的时候编译器选择先填充了低地址，原因未明。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192819166.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192819166"></p>
+<p>相比之下书上的栈内空间更能体现出逆序的感觉：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205172056956.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205172056956"></p>
+<p>接下来进入add()函数（401080）内部，分析整个函数调用过程</p>
+<p>返回地址</p>
+<p>执行CALL命令进入被调用的函数之前，CPU会先把函数的返回地址压入栈，用作函数执行完毕后的返回地址。在地址004010BC处调用了add()函数，它的下一条命令的地址为4010C1。函数add()执行完毕后，程序执行流应该返回到4010C1地址处，该地址即被称为add()函数的返回地址。执行完004010BC地址处的CALL命令后进入函数，栈内情况如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205192856471.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205192856471"></p>
+<blockquote>
+<p>从这里也不难看出，call指令的等价命令是push call指令下一条指令的地址+jmp call调用的函数地址</p>
+</blockquote>
+<h2 id="7-2-5开始执行add-函数-amp-生成栈帧"><a href="#7-2-5开始执行add-函数-amp-生成栈帧" class="headerlink" title="7.2.5开始执行add()函数&amp;生成栈帧"></a>7.2.5开始执行add()函数&amp;生成栈帧</h2><p>StackFrame.cpp源代码中，函数add()的前2行代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">long</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">long</span> a, <span class="hljs-type">long</span> b)</span><br>&#123;<br></code></pre></td></tr></table></figure>
+
+<p>函数幵始执行时，栈中会单独生成与其对应的栈帧</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401080    | 55                  | push ebp                                |<br>00401081    | 8BEC                | mov ebp,esp                             |<br></code></pre></td></tr></table></figure>
+
+<p>上面2行代码与开始执行main()函数时的代码完全相同，先把EBP值（main()函数的基址指针）保存到栈中，再把当前ESP存储到EBP中，这样函数add()的栈帧就生成了。如此一来，add()函数内部的EBP值始终不变。执行完以上2行代码后，栈内情况如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205193002824.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205193002824"></p>
+<p>可以看到，main()函数使用的EBP值（12FF40 ）被备份到栈中，然后EBP的值被设置为一个新值12FF28。</p>
+<h2 id="7-2-6设置add-函数的局部变量（x，y）"><a href="#7-2-6设置add-函数的局部变量（x，y）" class="headerlink" title="7.2.6设置add()函数的局部变量（x，y）"></a>7.2.6设置add()函数的局部变量（x，y）</h2><p>StackFrame.cpp源代码中有如下代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">long</span> x = a, y = b;<br></code></pre></td></tr></table></figure>
+
+<p>上面一行语句声明了2个长整型的局部变量（x,y）,并使用2个形式参数（a,b）分别为它们赋初始值。希望大家密切关注形式参数与局部变量在函数内部以何种方式表示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401083    | 83EC 08             | sub esp,8                               |<br></code></pre></td></tr></table></figure>
+
+<p>上面这条语句的含义为，在栈内存中为局部变量x、y开辟8个字节的空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401086    | 8B45 08             | mov eax,dword ptr ss:[ebp+8]            |;[ebp+8] = param a<br>00401089    | 8945 FC             | mov dword ptr ss:[ebp-4],eax            |;[ebp-4] = local x<br>0040108C    | 8B4D 0C             | mov ecx,dword ptr ss:[ebp+C]            |;[ebp+C] = param b<br>0040108F    | 894D F8             | mov dword ptr ss:[ebp-8],ecx            |;[ebp-8] = local y<br></code></pre></td></tr></table></figure>
+
+<p>add函数的栈帧生成之后，EBP的值发生了变化，[EBP+8]与[EBP+C]分别指向参数a与b，如 图7-8所示，而[EBP-8]与[EBP-4]则分别指向add()函数的2个局部变量x、y。执行完上述语句后，栈内情况如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205193428211.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205193428211"></p>
+<h2 id="7-2-7-ADD-运算"><a href="#7-2-7-ADD-运算" class="headerlink" title="7.2.7 ADD 运算"></a>7.2.7 ADD 运算</h2><p>StackFrame.cpp源代码中，下面这条语句用于返回2个局部变量之和。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">return</span> (x + y);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401092    | 8B45 FC             | mov eax,dword ptr ss:[ebp-4]            |;[ebp-4]= local x<br></code></pre></td></tr></table></figure>
+
+<p>上述MOV语句中，变量x的值被传送到EAX。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401095    | 0345 F8             | add eax,dword ptr ss:[ebp-8]            |;[ebp-8]= local y<br></code></pre></td></tr></table></figure>
+
+<p>ADD指令为加法指令，上面这条语句中，变量y （[EBP-8] &#x3D; 2 ）与EAX原值（x）相加，且运 算结果被存储在EAX中，运算完成后EAX中的值为3。 第14章中我们将详细学习EAX寄存器，它是一种通用寄存器，在算术运算中存储输入输岀数据，为函数提供返回值。如上所示，函数即将返回时，若向EAX输入某个值，该值就会原封不动地返回。执行运算的过程中栈内情况保持不变。</p>
+<h2 id="7-2-8删除函数add-的栈帧-amp-函数执行完毕（返回）"><a href="#7-2-8删除函数add-的栈帧-amp-函数执行完毕（返回）" class="headerlink" title="7.2.8删除函数add()的栈帧&amp;函数执行完毕（返回）"></a>7.2.8删除函数add()的栈帧&amp;函数执行完毕（返回）</h2><p>“删除函数栈帧与函数执行完毕返回”对应于StackFrame.cpp文件中的如下代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">return</span> (x + y); &#125;<br></code></pre></td></tr></table></figure>
+
+<p>执行完加法运算后，要返回函数add()，在此之前先删除函数add()的栈帧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401098    | 8BE5                | mov esp,ebp                             |<br></code></pre></td></tr></table></figure>
+
+<p>上面这条命令把当前EBP的值赋给ESP,与地址00401081处的MOV EBP, ESP命令相对应。在地址00401081处，MOV EBP, ESP命令把函数add()开始执行时的ESP值（12FF44）放入EBP，函数执行完毕时，使用00401098处的MOV ESP,EBP命令再把存储到EBP中的值恢复到ESP中。</p>
+<p>执行完上面的命令后，地址00401083处的SUB ESP,8命令就会失效，即函数add()的2个局部变量x、y不再有效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0040109A    | 5D                  | pop ebp                                 |<br></code></pre></td></tr></table></figure>
+
+
+
+<p>上面这条命令用于恢复函数add()开始执行时备份到栈中的EBP值，它与00401080地址处的PUSH EBP命令对应。EBP值恢复为12FF40,它是main()函数的EBP值。到此，add()函数的栈帧就被删除了。</p>
+<p>执行完上述命令后，栈内情形如下图所示</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205200647612.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205200647612"></p>
+<p>可以看到，ESP的值为12FF2C，该地址的值为4010C1，它是执行CALL 401080命令时CPU存储到栈中的返回地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0040109B    | C3                  | ret                                     |<br></code></pre></td></tr></table></figure>
+
+<p>执行上述RETN命令，存储在栈中的返回地址即被返回，此时栈内情形如图7-11所示。</p>
+<p>从下图中可以看到，调用栈已经完全返回到调用add()函数之前的状态，大家可以比较一下调用前后的两张堆栈图。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205200856191.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205200856191"></p>
+<p>应用程序采用上述方式管理栈，不论有多少函数嵌套调用，栈都能得到比较好的维护，不会崩溃。但是由于函数的局部变量、参数、返回地址等是一次性保存到栈中的，利用字符串函数的漏洞等很容易引起栈缓冲区溢出，最终导致程序或系统崩溃。</p>
+<h2 id="7-2-9从栈中删除函数add-的参数（整理栈）"><a href="#7-2-9从栈中删除函数add-的参数（整理栈）" class="headerlink" title="7.2.9从栈中删除函数add()的参数（整理栈）"></a>7.2.9从栈中删除函数add()的参数（整理栈）</h2><p>现在，程序执行流已经重新返回main()函数中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010C1    | 83C4 08             | add esp,8                               |<br></code></pre></td></tr></table></figure>
+
+<p>上面语句使用ADD命令将ESP加上8,为什么突然要把ESP加上8呢？请看图7-11中的栈窗口，地址12FF30与12FF34处存储的是传递给函数add()的参数a与b。函数add()执行完毕后，就不再需要参数a与b了，所以要把ESP加上8,将它们从栈中清理掉（参数a与b都是长整型，各占4个字节，合起来共8个字节）。</p>
+<blockquote>
+<p>请记住，调用add()函数之前先使用PUSH命令把参数a、b压入栈。</p>
+</blockquote>
+<p>执行完上述命令后，栈内情况如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205201305317.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205201305317"></p>
+<blockquote>
+<p>被调函数执行完毕后，函数的调用者（Caller）负责清理存储在栈中的参数，这种 方式称为cdecl方式；反之，被调用者（Callee）负责清理保存在栈中的参数，这种方 式称为stdcall方式。这些函数调用规则统称为调用约定（Calling Convention），这在程序开发与分析中是一个非常重要的概念，第10章将进一步讲解相关内容。</p>
+</blockquote>
+<h2 id="7-2-10调用-printf-函数"><a href="#7-2-10调用-printf-函数" class="headerlink" title="7.2.10调用 printf()函数"></a>7.2.10调用 printf()函数</h2><p>StackFrame.cpp源文件中用于打印输出运算结果的语句如下所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,add(a, b));<br></code></pre></td></tr></table></figure>
+
+<p>调用printf()函数的汇编代码如下所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010C4    | 50                  | push eax                                |<br>004010C5    | 68 18304000         | push petest01.403018                    | 403018:&quot;%d\n&quot;<br>004010CA    | E8 71FFFFFF         | call petest01.401040                    |<br>004010CF    | 83C4 08             | add esp,8                               |<br></code></pre></td></tr></table></figure>
+
+<p>地址004010C4处的EAX寄存器中存储着函数add()的返回值，它是执行加法运算后的结果值3。地址004010CA处的CALL 401040命令中调用的是401040地址处的函数，它是一个C标准库函数printf()，所有C标准库函数都由Visual C++编写而成（其中包含着数量庞大的函数，在此不详细介绍）。由于上面的printf()函数有2个参数，大小为8个字节（ 32位寄存器+32位常量&#x3D;64位&#x3D;8字节），所以在40104F地址处使用ADD命令，将ESP加上8个字节，把函数的参数从栈中删除。函数printf()执行完毕并通过ADD命令删除参数后，栈内情形如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205201954369.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205201954369"></p>
+<h2 id="7-2-11设置返回值"><a href="#7-2-11设置返回值" class="headerlink" title="7.2.11设置返回值"></a>7.2.11设置返回值</h2><p>StackFrame.cpp中设置返回值的语句如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+
+<p>main()函数使用该语句设置返回值（0）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010D2    | 33C0                | xor eax,eax                             |<br></code></pre></td></tr></table></figure>
+
+<p>XOR命令用来进行Exclusive OR bit （异或）运算，其特点为 “2个相同的值进行XOR运算，结果为0”。XOR命令比MOV EAX, 0命令执行速度快，常用于寄存器的初始化操作。</p>
+<blockquote>
+<p>利用相同的值连续执行2次XOR运算即变为原值，这个特征被大量应用于编码与解码。后面的代码分析中我们会经常看到XOR命令。</p>
+</blockquote>
+<h2 id="7-2-12删除栈帧-amp-main-函数终止"><a href="#7-2-12删除栈帧-amp-main-函数终止" class="headerlink" title="7.2.12删除栈帧&amp;main()函数终止"></a>7.2.12删除栈帧&amp;main()函数终止</h2><p>本节内容对应StackFrame.cpp中的如下代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最终主函数终止执行，同add()函数一样，其返回前要先从栈中删除与其对应的栈帧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010D4    | 8BE5                | mov esp,ebp                             |<br>004010D6    | 5D                  | pop ebp                                 |<br></code></pre></td></tr></table></figure>
+
+<p>执行完上面2条命令后，main()函数的栈帧即被删除，且其局部变量a、b也不再有效。执行至此，栈内情形如下图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7.assets/image-20211205202236073.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211205202236073"></p>
+<p>上图与main()函数开始执行时栈内情形是完全一样的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">004010D7    | C3                  | ret                                     |<br></code></pre></td></tr></table></figure>
+
+<p>执行完上面命令后，主函数执行完毕并返回，程序执行流跳转到返回地址处（4012A5），该 地址指向Visual C++的启动函数区域。随后执行进程终止代码。请各位自行查看该过程。请大家阅读上面内容的同时动手调试，认真观察栈的行为动作，相信各位的调试水平会得到很大提高</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第7章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第7章 栈帧</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/10/逆向工程核心原理/第7章 栈帧/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月10日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第13章 PE文件格式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1111/01/01/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

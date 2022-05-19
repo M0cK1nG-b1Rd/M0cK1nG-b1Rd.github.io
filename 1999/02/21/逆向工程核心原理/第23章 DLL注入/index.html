@@ -1,0 +1,1207 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第23章 DLL注入">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221151648330-16454278349002.png">
+<meta property="article:published_time" content="1999-02-21T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:46:59.749Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221151648330-16454278349002.png">
+  
+  
+  
+  <title>第23章 DLL注入 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第23章 DLL注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-21 12:21" pubdate>
+          1999年2月21日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          129 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第23章 DLL注入</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第23章DLL注入<br>DLL注入（DLL Injection）是渗透其他进程的最简单有效的方法，本章将详细讲解DLL注入 的有关内容。借助DLL注入技术，可以钩取API、改进程序、修复Bug等。</p>
+<h1 id="23-1-DLL-注入"><a href="#23-1-DLL-注入" class="headerlink" title="23.1 DLL 注入"></a>23.1 DLL 注入</h1><p>DLL注入指的是向运行中的其他进程强制插入特定的DLL文件。从技术细节来说，DLL注入命令其他进程自行调用LoadLibrary() API,加载（Loading）用户指定的DLL文件。DLL注入与一般DLL加载的区别在于，加载的目标进程是其自身或其他进程。图23-1描述了DLL注入的概念。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221151648330-16454278349002.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图23-1 DLL注入"></p>
+<p>从图23-1中可以看到，myhack.dll已被强制插入notepad进程（本来notepad并不会加载myhack.dll ）。加载到notepad.exe进程中的myhack.dll与已经加载到notepad.exe进程中的DLL（kemel32.dll、user32.dll） —样，拥有访问notepad.exe进程内存的（正当的）权限，这样用户就可以做任何想做的事了（比如：向notepad添加通信功能以实现Messenger、文本网络浏览器等）。</p>
+<blockquote>
+<p>DLL被加载到进程后会自动运行DllMain()函数，用户可以把想执行的代码放到DllMain()函数，每当加载DLL时，添加的代码就会自然而然得到执行。利用该特性可修复程序Bug,或向程序添加新功能。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOL WINAPI <span class="hljs-title function_">DllMain</span><span class="hljs-params">(HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpvReserved)</span><br>&#123;<br>	<span class="hljs-keyword">switch</span>( dwReason )<br>	&#123;<br>        <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:<br>			<span class="hljs-comment">// 添加想执行的代码</span><br>			<span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:<br>			<span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:<br>			<span class="hljs-keyword">break</span>;	<br>        <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:<br>			<span class="hljs-keyword">break</span>;	<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="23-2-DLL注入示例"><a href="#23-2-DLL注入示例" class="headerlink" title="23.2 DLL注入示例"></a>23.2 DLL注入示例</h1><p>使用LoadLibrary() API加载某个DLL时，该DLL中的DllMain()函数就会被调用执行。DLL注入的工作原理就是从外部促使目标进程调用LoadLibrary() API （与一般DLL加载相同），所以会强制调用执行DLL的DllMain()函数。并且，被注入的DLL拥有目标进程内存的访问权限，用户可以随意操作（修复Bug、添加功能等）。下面看一些使用DLL注入技术的示例。</p>
+<h2 id="23-2-1-改善功能与修复Bug"><a href="#23-2-1-改善功能与修复Bug" class="headerlink" title="23.2.1 改善功能与修复Bug"></a>23.2.1 改善功能与修复Bug</h2><p>DLL注入技术可用于改善功能与修复Bug。没有程序对应的源码，或直接修改程序比较困难时，就可以使用DLL注入技术为程序添加新功能（类似于插件），或者修改有问题的代码、数据。</p>
+<h2 id="23-2-2-消息钩取"><a href="#23-2-2-消息钩取" class="headerlink" title="23.2.2 消息钩取"></a>23.2.2 消息钩取</h2><p>Windows OS默认提供的消息钩取功能应用的就是一种DLL注入技术。与常规的DLL注入唯一的区别是，OS会直接将已注册的钩取DLL注入目标进程。</p>
+<blockquote>
+<p>我曾经从网上下载过一个Hex Editor，它不支持鼠标滚轮滑动，所以我用消息钩取技术为其添加了鼠标滚轮支持。虽然可以下载更多、更好用的Hex Editor,但是利用学到的技术改善、扩展程序功能是一种非常妙的体验。这样不仅能解决问题，还锻炼了 我们灵活应用技术的能力（此后我就开始对使用逆向技术改善已有程序的功能产生了浓厚兴趣）。</p>
+</blockquote>
+<h2 id="23-2-3-API-钩取"><a href="#23-2-3-API-钩取" class="headerlink" title="23.2.3 API 钩取"></a>23.2.3 API 钩取</h2><p>API钩取广泛应用于实际的项目开发，而进行API钩取时经常使用DLL注入技术。先创建好DLL形态的钩取函数，再将其轻松注入要钩取的目标进程，这样就完成了API钩取。这灵活运用了 “被注入的DLL拥有目标进程内存访问权限”这一特性。</p>
+<h2 id="23-2-4-其他应用程序"><a href="#23-2-4-其他应用程序" class="headerlink" title="23.2.4 其他应用程序"></a>23.2.4 其他应用程序</h2><p>DLL注入技术也应用于监视、管理PC用户的应用程序。比如，用来阻止特定程序（像游戏、股票交易等）运行、禁止访问有害网站，以及监视PC的使用等。管理员（或者父母）主要安装这类拦截&#x2F;阻断应用程序来管理&#x2F;监视。受管理&#x2F;监视的一方当然千方百计地想关闭这些监视程序，但由于这些监视程序采用DLL注入技术，它们可以隐藏在正常进程中运行，所以管理员一般不用担心被发现或被终止（若用户强制终止Windows系统进程，也会一并关闭系统，最后也算达成了拦截&#x2F;阻断这一目标）。</p>
+<h2 id="23-2-5-恶意代码"><a href="#23-2-5-恶意代码" class="headerlink" title="23.2.5 恶意代码"></a>23.2.5 恶意代码</h2><p>恶意代码制作者们是不会置这么好的技术于不顾的，他们积极地把DLL注入技术运用到自己制作的恶意代码中。这些入把自己编写的恶意代码隐藏到正常进程（winlogon.exe、services.exe、svchost.exe、explorer.exe等），打开后门端口（ Backdoor port ），尝试从外部连接，或通过键盘偷录（Keylogging）功能将用户的个入信息盗走。只有了解恶意代码制作者们使用的手法，才能拿出相应对策</p>
+<h1 id="23-3-DLL注入的实现方法"><a href="#23-3-DLL注入的实现方法" class="headerlink" title="23.3 DLL注入的实现方法"></a>23.3 DLL注入的实现方法</h1><p>向某个进程注入DLL时主要使用以下三种方法：</p>
+<p>DLL注入方法</p>
+<p>□创建远程线程（CreateRemoteThread() API） </p>
+<p>□使用注册表（AppInit_DLLs值） </p>
+<p>□消息钩取（SetWindowsHookEx() API）</p>
+<h1 id="23-4-CreateRemoteThread"><a href="#23-4-CreateRemoteThread" class="headerlink" title="23.4 CreateRemoteThread()"></a>23.4 CreateRemoteThread()</h1><p>本方法是《Windows核心编程》一书（素有“Windows编程圣经”之称）中介绍过的。本节 通过一个简单的示例来演示如何通过创建远程线程完成DLL注入。</p>
+<h2 id="23-4-1-练习示例-myhack-dll"><a href="#23-4-1-练习示例-myhack-dll" class="headerlink" title="23.4.1 练习示例 myhack.dll"></a>23.4.1 练习示例 myhack.dll</h2><p>本示例将把myhack.dll注入notepad.exe进程，被注入的myhack.dll是用来联网并下载<a target="_blank" rel="noopener" href="http://www.naver.com/index.html%E6%96%87%E4%BB%B6%E7%9A%84%E3%80%82">http://www.naver.com/index.html文件的。</a></p>
+<p><strong>复制练习文件</strong></p>
+<p>首先将练习文件（InjectDll.exe、myhack.dll）分别复制到工作文件夹。</p>
+<p><strong>运行notepad.exe程序</strong></p>
+<p>先运行notepad.exe （日记本）程序，再运行Process Explorer （或者Windows任务管理器）获 取notepad.exe进程的PID。</p>
+<p>可以看到图23-3中notepad.exe进程的PID值为1016。</p>
+<p><strong>运行DebugView</strong></p>
+<p>DebugView是一个非常有用的实用程序，它可以用来捕获并显示系统中运行的进程输出的所有调试字符串，由大名鼎鼎的Process Explorer制作入Mark Russinovich开发而成。请访问下面URL下载。</p>
+<p><a target="_blank" rel="noopener" href="http://technet.microsoft.com/en-us/sysintemals/bb896647">http://technet.microsoft.com/en-us/sysintemals/bb896647</a></p>
+<p>示例中的DLL文件被成功注入notepad.exe进程时，就会输出调试字符串，此时使用DebugView<br>即可查看，如图23-4所示。</p>
+<blockquote>
+<p>应当养成在应用程序开发中灵活使用DebugView查看调试日志的好习惯。</p>
+</blockquote>
+<p><strong>myhack.dll注入</strong><br>InjectDll.exe是用来向目标进程注入DLL文件的实用小程序（后面会详细讲解工作原理及源代码）。如图23-5所示，打开命令窗口并输入相应参数即可运行InjectDll.exe。</p>
+<p><strong>确认DLL注入成功</strong><br>下面要检查myhack.dll文件是否成功注入notepad.exe进程。首先查看DebugView日志，如图23-6所示。</p>
+<p>DebugView中显示岀调试字符串，该字符串是由HD:1016进程输岀的。PID:1016进程就是注入myhack.dll的notepad.exe进程。成功注入myhack.dll时，就会调用执行DllMain()函数的OutputDebugString() API。 </p>
+<p>在Process Explorer中也可以看到myhack.dll已经成功注入notepad.exe进程。在Process Explorer的View菜单中，选择Show Lower Pane与Lower Pane Views - DLLs项，然后选择notepad.exe进程，就会列出所有加载到notepad.exe进程中的dll,如图23-7所示。在图中可以看到已经成功注入notepad.exe的myhack.dll文件。</p>
+<p><strong>结果确认</strong><br>下面确认一下指定网站的index.html文件下载是否正常。</p>
+<p>双击图23-8中的Index.html文件，在IE浏览器中查看页面。</p>
+<p>图23-9看上去虽然与实际网站的主页面有些不同，但可以肯定它就是该网站的index.html文件。</p>
+<blockquote>
+<p>有时会因系统用户权限、安全设置等导致无法下载index.html文件。</p>
+</blockquote>
+<p>就像在上述示例中看到的一样，借助创建远程线程的方法可以成功“渗透”指定进程，进而可以随意操作。下面继续分析示例源代码，进一步学习使用CreateRemoteThread() API实施DLL注入的原理与实现方法。</p>
+<h2 id="23-4-2-分析示例源代码"><a href="#23-4-2-分析示例源代码" class="headerlink" title="23.4.2 分析示例源代码"></a>23.4.2 分析示例源代码</h2><blockquote>
+<p>以下介绍的源代码是用Micosoft Visual C++ Express 2010编写的，在Windows XP&#x2F;732位操作系统中通过测试。</p>
+</blockquote>
+<p>Myhack.cpp<br>先分析一下myhack.dll源代码（myhack.cpp ）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;urlmon.lib&quot;</span>)</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_URL     	(<span class="hljs-string">L&quot;http://www.naver.com/index.html&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_FILE_NAME   (<span class="hljs-string">L&quot;index.html&quot;</span>)</span><br><br>HMODULE g_hMod = <span class="hljs-literal">NULL</span>;<br><br>DWORD WINAPI <span class="hljs-title function_">ThreadProc</span><span class="hljs-params">(LPVOID lParam)</span><br>&#123;<br>    TCHAR szPath[_MAX_PATH] = &#123;<span class="hljs-number">0</span>,&#125;;<br><br>    <span class="hljs-keyword">if</span>( !GetModuleFileName( g_hMod, szPath, MAX_PATH ) )<br>        <span class="hljs-keyword">return</span> FALSE;<br>	<br>    TCHAR *p = _tcsrchr( szPath, <span class="hljs-string">&#x27;\\&#x27;</span> );<br>    <span class="hljs-keyword">if</span>( !p )<br>        <span class="hljs-keyword">return</span> FALSE;<br><br>    _tcscpy_s(p+<span class="hljs-number">1</span>, _MAX_PATH, DEF_FILE_NAME);<br><br>    URLDownloadToFile(<span class="hljs-literal">NULL</span>, DEF_URL, szPath, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br>BOOL WINAPI <span class="hljs-title function_">DllMain</span><span class="hljs-params">(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)</span><br>&#123;<br>    HANDLE hThread = <span class="hljs-literal">NULL</span>;<br><br>    g_hMod = (HMODULE)hinstDLL;<br><br>    <span class="hljs-keyword">switch</span>( fdwReason )<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH : <br>        OutputDebugString(<span class="hljs-string">L&quot;&lt;myhack.dll&gt; Injection!!!&quot;</span>);<br>        hThread = CreateThread(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, ThreadProc, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>        CloseHandle(hThread);<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在DllMain()函数中可以看到，该DLL被加载（DLL_PROCESS_ATTACH）时，先输出一个调试字符串（“myhack.dll Injection!!!”），然后创建线程调用函数（ThreadProc）。在ThreadProc()函数中通过调用urlmon!URLDownloadToFile() API来下载指定网站的index.html文件。前面提到过，向进程注入DLL后就会调用执行该DLL的DllMain()函数。所以当myhack.dll注入notepad.exe进程后，最终会调用执行URLDownloadToFile()API。</p>
+<p><strong>InjectDII.cpp</strong></p>
+<p>InjectDll.exe程序用来将myhack.dll注入notepad.exe进程，下面看一下其源代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><br>BOOL <span class="hljs-title function_">SetPrivilege</span><span class="hljs-params">(LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)</span> <br>&#123;<br>    TOKEN_PRIVILEGES tp;<br>    HANDLE hToken;<br>    LUID luid;<br><br>    <span class="hljs-keyword">if</span>( !OpenProcessToken(GetCurrentProcess(),<br>                          TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, <br>			              &amp;hToken) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;OpenProcessToken error: %u\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !LookupPrivilegeValue(<span class="hljs-literal">NULL</span>,           <span class="hljs-comment">// lookup privilege on local system</span><br>                              lpszPrivilege,  <span class="hljs-comment">// privilege to lookup </span><br>                              &amp;luid) )        <span class="hljs-comment">// receives LUID of privilege</span><br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;LookupPrivilegeValue error: %u\n&quot;</span>, GetLastError() ); <br>        <span class="hljs-keyword">return</span> FALSE; <br>    &#125;<br><br>    tp.PrivilegeCount = <span class="hljs-number">1</span>;<br>    tp.Privileges[<span class="hljs-number">0</span>].Luid = luid;<br>    <span class="hljs-keyword">if</span>( bEnablePrivilege )<br>        tp.Privileges[<span class="hljs-number">0</span>].Attributes = SE_PRIVILEGE_ENABLED;<br>    <span class="hljs-keyword">else</span><br>        tp.Privileges[<span class="hljs-number">0</span>].Attributes = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">// Enable the privilege or disable all privileges.</span><br>    <span class="hljs-keyword">if</span>( !AdjustTokenPrivileges(hToken, <br>                               FALSE, <br>                               &amp;tp, <br>                               <span class="hljs-keyword">sizeof</span>(TOKEN_PRIVILEGES), <br>                               (PTOKEN_PRIVILEGES) <span class="hljs-literal">NULL</span>, <br>                               (PDWORD) <span class="hljs-literal">NULL</span>) )<br>    &#123; <br>        _tprintf(<span class="hljs-string">L&quot;AdjustTokenPrivileges error: %u\n&quot;</span>, GetLastError() ); <br>        <span class="hljs-keyword">return</span> FALSE; <br>    &#125; <br><br>    <span class="hljs-keyword">if</span>( GetLastError() == ERROR_NOT_ALL_ASSIGNED )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;The token does not have the specified privilege. \n&quot;</span>);<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125; <br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br>BOOL <span class="hljs-title function_">InjectDll</span><span class="hljs-params">(DWORD dwPID, LPCTSTR szDllPath)</span><br>&#123;<br>    HANDLE hProcess = <span class="hljs-literal">NULL</span>, hThread = <span class="hljs-literal">NULL</span>;<br>    HMODULE hMod = <span class="hljs-literal">NULL</span>;<br>    LPVOID pRemoteBuf = <span class="hljs-literal">NULL</span>;<br>    DWORD dwBufSize = (DWORD)(_tcslen(szDllPath) + <span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(TCHAR);<br>    LPTHREAD_START_ROUTINE pThreadProc;<br><br>    <span class="hljs-comment">// #1. dwPID 를 이용하여 대상 프로세스(notepad.exe)의 HANDLE을 구한다.</span><br>    <span class="hljs-keyword">if</span> ( !(hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID)) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;OpenProcess(%d) failed!!! [%d]\n&quot;</span>, dwPID, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-comment">// #2. 대상 프로세스(notepad.exe) 메모리에 szDllName 크기만큼 메모리를 할당한다.</span><br>    pRemoteBuf = VirtualAllocEx(hProcess, <span class="hljs-literal">NULL</span>, dwBufSize, MEM_COMMIT, PAGE_READWRITE);<br><br>    <span class="hljs-comment">// #3. 할당 받은 메모리에 myhack.dll 경로(&quot;c:\\myhack.dll&quot;)를 쓴다.</span><br>    WriteProcessMemory(hProcess, pRemoteBuf, (LPVOID)szDllPath, dwBufSize, <span class="hljs-literal">NULL</span>);<br><br>    <span class="hljs-comment">// #4. LoadLibraryA() API 주소를 구한다.</span><br>    hMod = GetModuleHandle(<span class="hljs-string">L&quot;kernel32.dll&quot;</span>);<br>    pThreadProc = (LPTHREAD_START_ROUTINE)GetProcAddress(hMod, <span class="hljs-string">&quot;LoadLibraryW&quot;</span>);<br>	<br>    <span class="hljs-comment">// #5. notepad.exe 프로세스에 스레드를 실행</span><br>    hThread = CreateRemoteThread(hProcess, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, pThreadProc, pRemoteBuf, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>    WaitForSingleObject(hThread, INFINITE);	<br><br>    CloseHandle(hThread);<br>    CloseHandle(hProcess);<br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><span class="hljs-type">int</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR *argv[])<br>&#123;<br>    <span class="hljs-keyword">if</span>( argc != <span class="hljs-number">3</span>)<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;USAGE : %s &lt;pid&gt; &lt;dll_path&gt;\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// change privilege</span><br>    <span class="hljs-keyword">if</span>( !SetPrivilege(SE_DEBUG_NAME, TRUE) )<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">// inject dll</span><br>    <span class="hljs-keyword">if</span>( InjectDll((DWORD)_tstol(argv[<span class="hljs-number">1</span>]), argv[<span class="hljs-number">2</span>]) )<br>        _tprintf(<span class="hljs-string">L&quot;InjectDll(\&quot;%s\&quot;) success!!!\n&quot;</span>, argv[<span class="hljs-number">2</span>]);<br>    <span class="hljs-keyword">else</span><br>        _tprintf(<span class="hljs-string">L&quot;InjectDll(\&quot;%s\&quot;) failed!!!\n&quot;</span>, argv[<span class="hljs-number">2</span>]);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>main()函数的主要功能是检查输入程序的参数，然后调用InjectDll()函数。InjectDll()函数是用 来实施DLL注入的核心函数，其功能是命令目标进程（notepadexe ）自行调用LoadLibrary（“myhack.dll”）API。下面逐行详细查看InjectDll()函数。</p>
+<ul>
+<li>获取目标进程句柄</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID)<br></code></pre></td></tr></table></figure>
+
+<p>调用OpenProcessO API,借助程序运行时以参数形式传递过来的dwPID值，获取notepad.exe进程的句柄（PROCESS_ALL_ACCESS权限）。得到PROCESS_ALL_ACCESS权限后，就可以使用获取的句柄（hProcess ）控制对应进程（notepad.exe ）0</p>
+<ul>
+<li>将要注入的DLL路径写入目标进程内存</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">pRemoteBuf = VirtualAllocEx(hProcess, <span class="hljs-literal">NULL</span>, dwBufSize, MEMCOMMIT, PAGEREADWRITE);<br></code></pre></td></tr></table></figure>
+
+<p>需要把即将加载的DLL文件的路径（字符串）告知目标进程（notepacLexe ）。因为任何内存空间都无法进行写入操作，故先使用VirtualAllocEx() API在目标进程（notepad.exe）的内存空间中分配一块缓冲区，且指定该缓冲区的大小为DLL文件路径字符串的长度（含Terminating NULL ）即可。</p>
+<blockquote>
+<p>VirtualAllocEx()函数的返回值（pRemoteBuf）为分配所得缓冲区的地址。该地址并不是程序（Inject.exe ）自身进程的内存地址，而是hProcess句柄所指目标进程（notepad.exe）的内存地址，请务必牢记这一点。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">WriteProcessMemory(hProcess, pRemoteBuf, (LPVOID) szDUName, dwBufSize, <span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>使用WriteProcessMemory() API将DLL路径字符串（“C:\work\dummy.dll”）写入分配所得缓冲区（pRemoteBuf）地址。WriteProcessMemoryO API所写的内存空间也是hProcess句柄所指的目标进程（notepad.exe ）的内存空间。这样，要注入的DLL文件的路径就被写入目标进程（notepad.exe ）的内存空间。</p>
+<blockquote>
+<p>Windows操作系统提供了调试API,借助它们可以访问其他进程的内存空间。其中具有代表性的有 VirtualAllocEx()、VirtualFreeEx()、WriteProcessMemory()、ReadProcessMemory()等。</p>
+</blockquote>
+<ul>
+<li>获取LoadLibraryW() API地址</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">hMod = GetModuleHandle(<span class="hljs-string">&quot;kernel32 .dll&quot;</span>);<br>pThreadProc = (LPTHREAD_STARTROUTINE)GetProcAddress(hMod, <span class="hljs-string">&quot;LoadLibraryW&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>调用LoadLibrary() API前先要获取其地址（LoadLibraryW()是LoadLibrary()的Unicode字符串版本）。</p>
+<p>最重要的是理解好以上代码的含义。我们的目标明明是获取加载到notepaclexe进程的kernel32.dll的LoadLibraryW() API的起始地址，但上面的代码却用来获取加载到InjectDll.exe进程的kernel32.dll的LoadLibraryW() API的起始地址。如果加载到notepad.exe进程中的kemel32.dll的地址与加载到InjectDll.exe进程中的kemel32.dll的地址相同，那么上面的代码就不会有什么问题。但 是如果kemel32.dll在每个进程中加载的地址都不同，那么上面的代码就错了，执行时会发生内存引用错误。</p>
+<p><strong>其实在Windows系统中，kernel32.dll在每个进程中的加载地址都是相同的。</strong></p>
+<p>《Windows核心编程》一书中对此进行了介绍，此后这一特性被广泛应用于DLL注入技术。</p>
+<blockquote>
+<p>根据OS类型、语言、版本不同，kernel32.dll加载的地址也不同。并且Vista&#x2F;7中应用了新的ASLR功能，每次启动时，系统DLL加载的地址都会改变。但是在系统运行期间它都会被映射（Mapping）到每个进程的相同地址。Windows操作系统中，<strong>DLL首次进入内存称为“加载”</strong>（Loading），以后其他进程需要使用相同DLL时不必再次加载，只要将加载过的DLL代码与资源<strong>映射</strong>一下即可，这种映射技术有利于提高内存的使用效率。</p>
+</blockquote>
+<p>像上面这样，OS核心DLL会被加载到自身固有的地址，DLL注入利用的就是Windows OS的这一特性（该特性也可能会被恶意使用，成为Windows安全漏洞）。所以，导入InjectDll.exe进程中的LoadLibraryW()地址与导入notepad.exe进程中的LoadLibraryW()地址是相同的。</p>
+<blockquote>
+<p>一般而言，DLL文件的ImageBase默认为0x10000000，依次加载a.dll与b.dll时，先加载的a.dll被正常加载到0x10000000地址处，后加载的b.dll无法再被加载到此，而是加载到其他空白地址空间，也就是说，该过程中发生了 DLL重定位（因为a.dll已经先被加载到它默认的地址处）。 </p>
+<p>若kemel32.dll加载到各个进程时地址各不相同，那么上述代码肯定是错误的。但实际在Windows操作系统中，kemel32.dll不管在哪个进程都会被加载至相同地址。为什么会这样呢？我借助PEView软件查看了 Windows操作系统的核心DLL文件的 ImageBase值，罗列如下表（Windows XP SP3版本，根据Windows更新不同，各值会有变化）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221194000215.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220221194000215"></p>
+<p>微软整理了一份OS核心DLL文件的ImageBase值，防止各DLL文件加载时出现区域重合，这样加载DLL就不会发生DLL重定位了。</p>
+</blockquote>
+<ul>
+<li>在目标进程中运行远程线程（Remote Thread）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">hThread = CreateRemoteThread(hProcess, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, pThreadProc, pRemoteBuf, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>pThreadProc = notepad.exe进程内存中的LoadLibrary()地址<br>pRemoteBuf = notepad.exe进程内存中的 “c:\work\myhack.dll” 字符串地址<br></code></pre></td></tr></table></figure>
+
+<p>一切准备就绪后，最后向notepad.exe发送一个命令，让其调用LoadLibraryW() API函数加载指定的DLL文件即可，遗憾的是Windows并未直接提供执行这一命令的API。但是我们可以另辟蹊径，使用CreateRemoteThread()这个API （在DLL注入时几乎总会用到）。CreateRemoteThread()API用来在目标进程中执行其创建出的线程，其函数原型如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">CreateRemoteThread(<br>    _In_ HANDLE hProcess,<br>    _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,<br>    _In_ SIZE_T dwStackSize,<br>    _In_ LPTHREAD_START_ROUTINE lpStartAddress,<br>    _In_opt_ LPVOID lpParameter,<br>    _In_ DWORD dwCreationFlags,<br>    _Out_opt_ LPDWORD lpThreadId<br>    );<br></code></pre></td></tr></table></figure>
+
+<p>除第一个参数hProcess外，其他参数与CreateThread()函数完全一样。hProcess参数是要执行线程的目标进程（或称“远程进程”、“宿主进程”）的句柄。IpStartAddress与IpParameter参数分别给出线程函数地址与线程参数地址。需要注意的是，这2个地址都应该在目标进程虚拟内存空间中（这样目标进程才能认识它们）。</p>
+<p>初次接触DLL注入技术的读者朋友可能会头昏脑涨、不知所云。本来想向其他进程注入DLL文件，这里为何突然出现线程运行函数呢？仔细观察线程函数ThreadProc()与LoadLibrary()API，可以从中得到一些启示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 这里直接搬运了PTHREAD_START_ROUTINE的定义更为准确</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-title function_">DWORD</span> <span class="hljs-params">(WINAPI *PTHREAD_START_ROUTINE)</span><span class="hljs-params">(</span><br><span class="hljs-params">    LPVOID lpThreadParameter</span><br><span class="hljs-params">    )</span>;<br><span class="hljs-keyword">typedef</span> PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;<br><br><br>HINSTANCE <span class="hljs-title function_">LoadLibrary</span><span class="hljs-params">(</span><br><span class="hljs-params">LPCTSTR lpLibFileName</span><br><span class="hljs-params"> <span class="hljs-comment">// address of filename of executable module</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>两函数都有一个4字节的参数，并返回一个4字节的值。也就是说，二者形态结构完全一样，灵感即源于此。调用CreateRemoteThread()时，只要将LoadLibrary()函数的地址传递给第四个参数IpStartAddress,把要注入的DLL的路径字符串地址传递给第五个参数IpParameter即可（必须是目标进程的虚拟内存空间中的地址）。由于前面已经做好了一切准备，现在调用该函数使目标进程加载指定的DLL文件就行了。</p>
+<p>其实，CreateRemoteThread()函数最主要的功能就是驱使目标进程调用LoadLibrary()函数，进而加载指定的DLL文件。</p>
+<h2 id="23-4-3-调试方法"><a href="#23-4-3-调试方法" class="headerlink" title="23.4.3 调试方法"></a>23.4.3 调试方法</h2><p>本节将介绍如何从DLL文件注入目标进程就开始调试。首先重新运行notepad.exe，然后使用Ollydbg2的Attach命令附加新生成的notepad.exe进程（使用最新版本的Ollydbg2进行DLL注入调试更方便）。</p>
+<p>使用调试器中的Attach命令附加运行中的进程后，进程就会暂停运行。按F9 让notepad.exe运行起来。然后如图23-11所示，在Option对话框的Events中复选“Pause on new module（DLL）” 一项。这样一来，每当有新的DLL被加载到notepadexe进程，都会在该DLL的EP处暂停。同样，进行DLL注入时也会在该DLL的EP处暂停使用InjectDll.exe将myhack.dll文件注入notepad.exe进程，此时调试器将暂停。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221195229539.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图23-11 Pause on new module（DLL）"></p>
+<p>调试器暂停的地方并不是myhack.dll的EP，而是一个名为MSASNl.dll模块的EP。加载myhack.dll前，需要先加载它导入的所有DLL文件，MSASNl.dll文件即在该过程中被加载。011yDbg2的Pause on new module（DLL）被选中时，每当加载新的dll文件，都暂停在相应DLL文件的EP处。不断按（F9）运行键，直到在myhack.dll的EP处暂停。 </p>
+<blockquote>
+<p>调试前，请先取消对Pause on new module（DLL）项的复选，恢复之前“未选中”状态。</p>
+</blockquote>
+<blockquote>
+<p>根据用户的系统环境，加载的DLL类型与个数可能有所不同。</p>
+</blockquote>
+<p>至此，对于使用CreateRemoteThread()函数进行DLL注入技术的讲解就完成了。初学时可能不怎么理解，反复认真阅读前面的讲解，实际动手操作，就较容易掌握</p>
+<blockquote>
+<p>使用CreateRemoteThread()函数注入相应DLL后，如何再次卸载注入的DLL,这部分内容请参考第24章。</p>
+</blockquote>
+<h1 id="23-5-Applnit-DLLs"><a href="#23-5-Applnit-DLLs" class="headerlink" title="23.5 Applnit_DLLs"></a>23.5 Applnit_DLLs</h1><p>进行DLL注入的第二种方法是使用注册表。Windows操作系统的注册表中默认提供了AppInt_DLLs与LoadAppInit_DLLs两个注册表项，如图23-14所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221195754400.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220221195754400"></p>
+<p>在注册表编辑器中，将要注入的DLL的路径字符串写入AppInit_DLLs项目，然后把LoadApp!nit_DLLs的项目值设置为1。重启后，指定DLL会注入所有运行进程。该方法操作非常简单，但功能相当强大。</p>
+<blockquote>
+<p>上述方法的工作原理是，User32.dll被加载到进程时，会读取AppInit_DLLs注册表项，若有值，则调用LoadLibrary() API加载用户DLL。所以，严格地说，相应DLL并不会被加载到所有进程，而只是、载至加载user32.dll的进程。请注意，Windows XP会忽略LoadAppInit_DLLs注册表项。</p>
+</blockquote>
+<h2 id="23-5-1-分析示例源码"><a href="#23-5-1-分析示例源码" class="headerlink" title="23.5.1 分析示例源码"></a>23.5.1 分析示例源码</h2><p><strong>myhack2.cpp</strong><br>下面分析一下myhack2.dll的源代码（myhack2.cpp ），如代码25-3所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// myhack2.cpp</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_CMD  <span class="hljs-string">L&quot;c:\\Program Files\\Internet Explorer\\iexplore.exe&quot;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_ADDR <span class="hljs-string">L&quot;http://www.naver.com&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_DST_PROC <span class="hljs-string">L&quot;notepad.exe&quot;</span></span><br><br>BOOL WINAPI <span class="hljs-title function_">DllMain</span><span class="hljs-params">(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)</span><br>&#123;<br>    TCHAR szCmd[MAX_PATH]  = &#123;<span class="hljs-number">0</span>,&#125;;<br>    TCHAR szPath[MAX_PATH] = &#123;<span class="hljs-number">0</span>,&#125;;<br>    TCHAR *p = <span class="hljs-literal">NULL</span>;<br>    STARTUPINFO si = &#123;<span class="hljs-number">0</span>,&#125;;<br>    PROCESS_INFORMATION pi = &#123;<span class="hljs-number">0</span>,&#125;;<br><br>    si.cb = <span class="hljs-keyword">sizeof</span>(STARTUPINFO);<br>    si.dwFlags = STARTF_USESHOWWINDOW;<br>    si.wShowWindow = SW_HIDE;<br><br>    <span class="hljs-keyword">switch</span>( fdwReason )<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH : <br>        <span class="hljs-keyword">if</span>( !GetModuleFileName( <span class="hljs-literal">NULL</span>, szPath, MAX_PATH ) )<br>            <span class="hljs-keyword">break</span>;<br>   <br>        <span class="hljs-keyword">if</span>( !(p = _tcsrchr(szPath, <span class="hljs-string">&#x27;\\&#x27;</span>)) )<br>            <span class="hljs-keyword">break</span>;<br><br>        <span class="hljs-keyword">if</span>( _tcsicmp(p+<span class="hljs-number">1</span>, DEF_DST_PROC) )<br>            <span class="hljs-keyword">break</span>;<br><br>        wsprintf(szCmd, <span class="hljs-string">L&quot;%s %s&quot;</span>, DEF_CMD, DEF_ADDR);<br>        <span class="hljs-keyword">if</span>( !CreateProcess(<span class="hljs-literal">NULL</span>, (LPTSTR)(LPCTSTR)szCmd, <br>                            <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, FALSE, <br>                            NORMAL_PRIORITY_CLASS, <br>                            <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, &amp;si, &amp;pi) )<br>            <span class="hljs-keyword">break</span>;<br><br>        <span class="hljs-keyword">if</span>( pi.hProcess != <span class="hljs-literal">NULL</span> )<br>            CloseHandle(pi.hProcess);<br><br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>   <br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>myhack2.dll的源代码非常简单，若当前加载自己的进程为“notepad.exe”，则以隐藏模式运行IE，连接指定网站。这样就可以根据不同目的执行多种任务了。</p>
+<h2 id="23-5-2-练习示例-myhack2-dll"><a href="#23-5-2-练习示例-myhack2-dll" class="headerlink" title="23.5.2 练习示例 myhack2.dll"></a>23.5.2 练习示例 myhack2.dll</h2><p>下面使用修改注册表项的方法做个DLL注入练习，注意操作顺序。 </p>
+<p><strong>复制文件</strong></p>
+<p>首先将要注入的DLL文件（myhack2.dll）复制到合适位置（在我电脑中的位置为C:\work\myhack2.dll）。</p>
+<p><strong>修改注册表项</strong><br>运行注册表编辑器regedit.exe,进入如下路径。</p>
+<p>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows</p>
+<p>编辑修改AppInit_DLLs表项的值，如图23-16所示（请输入myhack2.dll的绝对路径）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221200145391.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220221200145391"></p>
+<p>然后修改LoadAppInit_DLLs注册表项的值为1，如图23-17所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221200203443.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220221200203443"></p>
+<p><strong>重启系统</strong><br>注册表项修改完毕后，重启系统，使修改生效。系统重启完成后，使用Process Explorer查看myhack2.dll是否被注入所有（加载user32.dll的）进程。</p>
+<p>从图23-18可以看到，myhack2.dll成功注入所有加载user32.dll的进程。但由于它的目标进程仅是notepad.exe进程，所以在其他进程中不会执行任何动作。运行notepad.exe，可以看到IE被（以隐藏模式）执行，如图23-19所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221200330404.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图23-18 被注入的myhack2.dll"></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5.assets/image-20220221200341434-16454450529533.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图23-19 notepad.exe的myhack2.dll运行IE"></p>
+<blockquote>
+<p>AppInit_DLLs注册表键非常强大，通过它几乎可以向所有进程注入DLL文件。若被注入的DLL出现问题（Bug）,则有可能导致Windows无法正常启动，所以修改该AppInit DLLs前务必彻查。</p>
+</blockquote>
+<h1 id="23-6-SetWindowsHookEx"><a href="#23-6-SetWindowsHookEx" class="headerlink" title="23.6 SetWindowsHookEx()"></a>23.6 SetWindowsHookEx()</h1><p>注入DLL的第三个方法就是消息钩取，即用SetWindowsHookEx() API安装好消息“钩子”，然后由OS将指定DLL （含有“钩子”过程）强制注入相应（带窗口的）进程。其工作原理与使用方法在第21章中已有详细讲解，请参考。</p>
+<h1 id="23-7-小结"><a href="#23-7-小结" class="headerlink" title="23.7 小结"></a>23.7 小结</h1><p>本章我们学习了有关DLL注入的概念及具体的实现方法。这些内容在代码逆向分析中占据着很大比重，学习时要重点理解DLL注入技术的内部工作原理。此外，进程钩取与“打补丁”中也广泛应用DLL注入技术。</p>
+<p>Q.开始学习代码逆向分析前，是不是得先学汇编语言、C语言、Win32 API? </p>
+<p>A.我开始学习代码逆向分析技术时，完全不懂汇编语言（可能大部分代码逆向分析入员都如此）。入门阶段重要的不是汇编知识，而是调试器的使用方法、Windows内部结构等内容。C语言与Win32 API是一定要学好的，如果事先已经学过，那当然好；没学过也不要担心，遇到就随时查看并学习相关资料。初学时多碰壁反而是好事</p>
+<p>Q.我编写了一个DLL文件，想注入Explorer.exe进程，但杀毒软件总是报告病毒。</p>
+<p>A.向系统进程注入DLL时，大部分杀毒软件会根据行为算法将其标识为病毒并查杀。 </p>
+<p>Q.前面的讲解中提到“CreateRemoteThread()实际调用的是LoadLibrary()”，实际生成的<br>不是线程吗？ </p>
+<p>A.是的，会在目标进程中创建线程。与普通意义上的创建线程相比，调用LoadLibrary()占<br>据了很大比重，所以才这样说的（这可能给大家造成了混乱）。 </p>
+<p>Q.进程A不具有串口通信功能，我想使用DLL注入技术为进程添加该功能，这可以实现吗？ </p>
+<p>A.从技术角度来说，问题不大。只要把串口通信功能放入要注入的DLL即可。但如需与原程序联动，设计时必须进行更准确的分析，找到合适的方案（我认为这个问题其实就是灵活运用代码逆向分析技术的一个示例，即通过代码逆向分析技术，向程序中添加新功能或修改不足之处）。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第23章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第23章 DLL注入</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/21/逆向工程核心原理/第23章 DLL注入/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月21日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第24章 DLL卸载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器">
+                        <span class="hidden-mobile">第22章 恶意键盘记录器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

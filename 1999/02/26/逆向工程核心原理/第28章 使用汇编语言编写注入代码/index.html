@@ -1,0 +1,1245 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第28章 使用汇编语言编写注入代码">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220223204345689.png">
+<meta property="article:published_time" content="1999-02-26T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-19T10:47:59.083Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220223204345689.png">
+  
+  
+  
+  <title>第28章 使用汇编语言编写注入代码 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第28章 使用汇编语言编写注入代码"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-02-26 12:21" pubdate>
+          1999年2月26日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          128 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(22)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第28章 使用汇编语言编写注入代码</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月19日 晚上
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第28章使用汇编语言编写注入代码<br>本章将学习使用汇编语言编写注入代码的相关知识与技术。</p>
+<h1 id="28-1-目标"><a href="#28-1-目标" class="headerlink" title="28.1 目标"></a>28.1 目标</h1><p>首先借助OllyDbg的汇编功能，使用汇编语言编写注入代码（ThreadProc()函数）。使用汇编语言能够生成比C语言更自由、更灵活（非标准化的）的代码（如：直接访问栈、寄存器的功能），然后将纯汇编语言编写的ThreadProc()函数注入notepad.exe进程。学习本章要注意与前面讲过的（用C语言编写的）ThreadProc()比较，了解它们的不同点。</p>
+<h1 id="28-2-汇编编程"><a href="#28-2-汇编编程" class="headerlink" title="28.2 汇编编程"></a>28.2 汇编编程</h1><p>大家通常使用C&#x2F;C++语言编写程序，其中具有代表性的开发工具有Microsoft Visual C++与Borland C++ Builder。使用汇编语言编写程序时，常用的开发工具（Assembler）有MASM（Microsoft Macro Assembler）、TASM （Borland Turbo Assembler ）、FASM （Flat Assembler）等。</p>
+<p>就我个人而言，用C&#x2F;C++语言编写程序时使用MS Visual C++开发工具，用汇编语言编写程序时使用MASM编译器。MASM编译器支持多样化的Macro函数以及库文件，编程时使用起来非常方便，其便捷程度几乎与C语言相当。</p>
+<p>设置好MASM编译器后，就可以正常进行汇编编程（Assembly Programming）了。当然还可以在类似Visual C++的C语言开发工具中使用“内联汇编”（Inline Assembly），将汇编指令插入C语言代码。这是非常适合开发入员的方式。本章将向各位介绍一种更适合代码逆向分析的方式，就是使用OllyDbg中的汇编功能编写汇编程序。</p>
+<blockquote>
+<p>OllyDbg的汇编功能支持简单的汇编语言编程，这在代码逆向分析中相当有用（因为调试时经常需要修改各处代码）。</p>
+</blockquote>
+<h1 id="28-3-OllyDbg的汇编命令"><a href="#28-3-OllyDbg的汇编命令" class="headerlink" title="28.3 OllyDbg的汇编命令"></a>28.3 OllyDbg的汇编命令</h1><p>本节将使用OllyDbg的汇编命令编写汇编语言程序。首先使用OllyDbg打开asmtest.exe示例文件（asmtest.exe是为进行汇编语言编程测试而编写的可执行文件（无任何功能））。</p>
+<p>从代码区域的顶端部分（ 401000 ）开始看起，先向大家介绍一个OllyDbg的新命令New origin here，它把EIP更改为指定地址。在OllyDbg的代码窗口中移动光标到401000地址处，在鼠标右键菜单中选择New origin here（Ctrl+Gray*）菜单命令，如图28-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220223204345689.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-2 New origin here(Ctrl+Gray*)菜单命令"></p>
+<p>执行菜单命令后，EIP地址变为401000。</p>
+<p>调试时常常需要更改EIP值，所以New origin here菜单非常有用，希望各位记住它。</p>
+<blockquote>
+<p>New origin here命令仅用来改变EIP值，与直接通过调试方式转到指定地址是不一样的，因为寄存器与栈中内容并未改变。</p>
+</blockquote>
+<p>在401000地址处执行汇编命令（快捷键：Space），将弹岀输入汇编命令的窗口，如图28-4所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220223204545984.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-4 汇编功能"></p>
+<p>接下来就可以在OllyDbg中编写简单的汇编语言程序了</p>
+<blockquote>
+<p>建议大家在图28-4中取消（uncheck）对“Fill with NOP’s”的复选。OllyDbg的汇编命令用来向相应地址输入用户代码。若“Fill with NOP’s”项处于复选状态，输入代码长度短于已有代码时，剩余长度会填充为NOP （No Operation）指令，以整体对齐代码（Code Alignment）。为便于本章说明，我取消了对“Fill with NOP’s”项目的复选。</p>
+</blockquote>
+<h2 id="28-3-1-编写-ThreadProc-函数"><a href="#28-3-1-编写-ThreadProc-函数" class="headerlink" title="28.3.1 编写 ThreadProc()函数"></a>28.3.1 编写 ThreadProc()函数</h2><p>下面使用汇编语言编写ThreadProc()函数。与前面使用C语言编写的ThreadProc()函数相比，其不同之处在于，需要的Data （字符串）已包含在Code中。请各位参考图28-5输入汇编指令。各条汇编指令的作用将在后面讲解（输入时注意取消对“Fill with NOP’s”的复选，若出现误录，转到相应地址处重新输入即可）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224103919000.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-5 输入ThreadProc()"></p>
+<p>自上而下依次输入汇编指令，直到40102E地址处的CALL指令为止，各位的输入都正确吗？接下来，继续输入字符串。请先关闭Assemble窗口，在OllyDbg代码窗口中，移动光标至401033地址处，打开Edit窗口（快捷键：Ctrl+E）,如图28-6所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224104028783.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20220224104028783"></p>
+<p>在图28-6的Edit窗口向ASCII项输入“ReverseCore”。因字符串必须以NULL结束，故在HEX项的最后输入00值（取消Keep size选项）。像这样完成全部输入后，在OllyDbg中査看代码，如 图28-7所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224104204434.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-7 “ReverseCore”字符串区域"></p>
+<p>图28-7中灰色部分即是“ReverseCore”字符串区域，可以看到字符串使用非常奇怪的指令进行显示。这样显示的原因在于，OllyDbg的Disassembler （反汇编器）将字符串误认为IA-32指令了。其实，这是由于输入者在Code位置输入字符串引起的，是输入者的错，而不能怪罪OllyDbg的反汇编器。</p>
+<blockquote>
+<p>调试时常常会遇到这种反汇编（Disassemble）问题，有些反调试技术正是利用了这一点，后面讲解反调试时再向大家介绍。</p>
+</blockquote>
+<p>如图28-7所示，选中字符串后再执行Analysis命令（快捷键；Ctrl+A ）,得到图28-8。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224110537536.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-8 执行Analysis命令"></p>
+<p>OllyDbg的Analysis命令用来再次分析代码，再分析Unpack （解码的）代码时经常用到。</p>
+<p>图28-8中的代码是执行了Analysis命令之后的形式。在401033地址处可以清晰地看到前面输入的字符串“ReverseCore”，但是401000地址之后的指令却解析有误（OllyDbg 2.0也无法将代码与数据100%区分开来。事实上，机器本身很难分清它是字符串还是指令）。在图28-8中难以查看代码，使用鼠标右键菜单中的Analysis-Remove analysis from module命令可以将代码恢复原样。使用Remove analysis命令恢复代码，如图28-9所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224110712277.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-9 Remove analysis from module菜单"></p>
+<p>接下来，使用汇编命令从40103F地址处（位于401033地址的“ReverseCore”字符串后面的地址）开始继续输入指令如图28-10所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224111000874.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-10 从40103F地址处开始输入指令"></p>
+<p>然后使用编辑命令，在401044地址处输入字符串（“<a target="_blank" rel="noopener" href="http://www.reversecore.com”,不要忘记在最后添上null)如图28-11所示./">www.reversecore.com”，不要忘记在最后添上NULL）如图28-11所示。</a></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224111109696.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-11 输入字符串"></p>
+<p>再次使用汇编命令从401058地址处开始输入指令，如图28-12所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224111326807.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-12 汇编代码输入完成"></p>
+<p>至此已将ThreadProc()代码全部输入。图28-13显示了所有输入的代码，请各位对照查看自己输入的代码是否正确</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224111459486.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-13 ThreadProc()代码"></p>
+<blockquote>
+<p>401033、401044地址中的内容不是指令，而是字符串。由于OllyDbg会将字符串识别为指令，所以字符串看上去有些怪异。</p>
+</blockquote>
+<h2 id="28-3-2-保存文件"><a href="#28-3-2-保存文件" class="headerlink" title="28.3.2 保存文件"></a>28.3.2 保存文件</h2><p>编好代码后要保存。在OllyDbg代码菜单中，选择鼠标右键Copy to executable-All modifications菜单（参考图28-14）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224112107635.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-14 Copy to executable-All modifications菜单"></p>
+<p>如图28-15所示，弹岀确认消息框，单击“Copy all”按钮。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224112213235.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-15 单击“Copy all”按钮"></p>
+<p>然后弹出窗口，显示所有修改内容，在鼠标右键菜单中选择Save file项目，如图28-16所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224112253875.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-16 Save file菜单项目"></p>
+<p>之后弹岀保存文件对话框，输入文件名称（asmtest_patch.exe ）后保存。</p>
+<blockquote>
+<p>Assemble（Space）:输入汇编代码。<br>Analysis（Ctrl+A）:再次分析代码。<br>New origin here（Ctrl+Gray*）:更改 EIP。</p>
+</blockquote>
+<h1 id="28-4-编写代码注入程序"><a href="#28-4-编写代码注入程序" class="headerlink" title="28.4 编写代码注入程序"></a>28.4 编写代码注入程序</h1><p>本节将使用前面创建好的汇编代码编写代码注入程序（Injector）。</p>
+<h2 id="28-4-1-获取ThreadProc-函数的二进制代码"><a href="#28-4-1-获取ThreadProc-函数的二进制代码" class="headerlink" title="28.4.1 获取ThreadProc()函数的二进制代码"></a>28.4.1 获取ThreadProc()函数的二进制代码</h2><p>首先，使用OllyDbg工具打开前面创建的asmtest_patch.exe文件。我们前面编写的ThreadProc()函数地址为401000，在内存窗口中转到401000地址处（转移命令Ctrl+G），如图28-17所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224113019688.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-17 转到401000地址处"></p>
+<p>ThreadProc()函数的地址区间为401000~401061。如图28-17所示，选中该地址区域，在鼠标<br>右键菜单中依次选择Copy-To file项目（参考图28-18 ）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224113113596.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-18 Copy-To file菜单"></p>
+<p>接着，使用文本编辑器打开刚刚保存的文件（我使用的文本编辑器为GVIM，各位也可以使用自己熟悉的文本编辑器）。</p>
+<p>图28-19中显示的文本内容即为以Hex值形式表示的ThreadProc()函数，它们其实是一系列的IA-32指令，也是要注入目标进程的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224113923506.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-19文本编辑器"></p>
+<blockquote>
+<p>IA-32指令解析方法请参考第49章。</p>
+</blockquote>
+<p>如图28-20所示编辑文本文件，去除不必要的部分，每个字节前面加上前缀0x,各字节以逗号（,）分隔。适当应用文本编辑器的编辑功能（选择列、修改字符串）将带来很大便利。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224113806626.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-20 编辑内容"></p>
+<p>观察图28-20中编辑的文本内容，它们看上去就像C语言中的字节数组，这就是要注入的Hex代码（CodeInjection2.cpp文件中会用到）。</p>
+<h2 id="28-4-2-Codelnjection2-cpp"><a href="#28-4-2-Codelnjection2-cpp" class="headerlink" title="28.4.2 Codelnjection2.cpp"></a>28.4.2 Codelnjection2.cpp</h2><p>本节看看代码注入程序的源代码（CodeInjection2.cpp ）。从代码28-1中可以看到，图28-20中使用文本编辑器编辑的Hex代码被保存到名为g_InjectionCode的字节数组。</p>
+<blockquote>
+<p>以下源代码使用 MS Visual C++2010 Express Edition 编写而成，在 Windows XP&#x2F;7 32位操作系统中通过测试。为便于说明，代码中的返回值检查与异常处理代码均已省略。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// CodeInjection2.cpp</span><br><span class="hljs-comment">// reversecore@gmail.com</span><br><span class="hljs-comment">// http://www.reversecore.com</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">THREAD_PARAM</span> </span><br><span class="hljs-class">&#123;</span><br>    FARPROC pFunc[<span class="hljs-number">2</span>];               <span class="hljs-comment">// LoadLibraryA(), GetProcAddress()</span><br>&#125; THREAD_PARAM, *PTHREAD_PARAM;<br><br>BYTE g_InjectionCode[] = <br>&#123;<br>    <span class="hljs-number">0x55</span>, <span class="hljs-number">0x8B</span>, <span class="hljs-number">0xEC</span>, <span class="hljs-number">0x8B</span>, <span class="hljs-number">0x75</span>, <span class="hljs-number">0x08</span>, <span class="hljs-number">0x68</span>, <span class="hljs-number">0x6C</span>, <span class="hljs-number">0x6C</span>, <span class="hljs-number">0x00</span>,<br>    <span class="hljs-number">0x00</span>, <span class="hljs-number">0x68</span>, <span class="hljs-number">0x33</span>, <span class="hljs-number">0x32</span>, <span class="hljs-number">0x2E</span>, <span class="hljs-number">0x64</span>, <span class="hljs-number">0x68</span>, <span class="hljs-number">0x75</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x65</span>,<br>    <span class="hljs-number">0x72</span>, <span class="hljs-number">0x54</span>, <span class="hljs-number">0xFF</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0x68</span>, <span class="hljs-number">0x6F</span>, <span class="hljs-number">0x78</span>, <span class="hljs-number">0x41</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x68</span>,<br>    <span class="hljs-number">0x61</span>, <span class="hljs-number">0x67</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x42</span>, <span class="hljs-number">0x68</span>, <span class="hljs-number">0x4D</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x54</span>,<br>    <span class="hljs-number">0x50</span>, <span class="hljs-number">0xFF</span>, <span class="hljs-number">0x56</span>, <span class="hljs-number">0x04</span>, <span class="hljs-number">0x6A</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0xE8</span>, <span class="hljs-number">0x0C</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>,<br>    <span class="hljs-number">0x00</span>, <span class="hljs-number">0x52</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x76</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x72</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x43</span>, <span class="hljs-number">0x6F</span>,<br>    <span class="hljs-number">0x72</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0xE8</span>, <span class="hljs-number">0x14</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x77</span>, <span class="hljs-number">0x77</span>,<br>    <span class="hljs-number">0x77</span>, <span class="hljs-number">0x2E</span>, <span class="hljs-number">0x72</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x76</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x72</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x63</span>,<br>    <span class="hljs-number">0x6F</span>, <span class="hljs-number">0x72</span>, <span class="hljs-number">0x65</span>, <span class="hljs-number">0x2E</span>, <span class="hljs-number">0x63</span>, <span class="hljs-number">0x6F</span>, <span class="hljs-number">0x6D</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x6A</span>, <span class="hljs-number">0x00</span>,<br>    <span class="hljs-number">0xFF</span>, <span class="hljs-number">0xD0</span>, <span class="hljs-number">0x33</span>, <span class="hljs-number">0xC0</span>, <span class="hljs-number">0x8B</span>, <span class="hljs-number">0xE5</span>, <span class="hljs-number">0x5D</span>, <span class="hljs-number">0xC3</span><br>&#125;;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">004010ED    55               PUSH EBP</span><br><span class="hljs-comment">004010EE    8BEC             MOV EBP,ESP</span><br><span class="hljs-comment">004010F0    8B75 08          MOV ESI,DWORD PTR SS:[EBP+8]       ; ESI = pParam           </span><br><span class="hljs-comment">004010F3    68 6C6C0000      PUSH 6C6C                      </span><br><span class="hljs-comment">004010F8    68 33322E64      PUSH 642E3233</span><br><span class="hljs-comment">004010FD    68 75736572      PUSH 72657375</span><br><span class="hljs-comment">00401102    54               PUSH ESP                           ; - &quot;user32.dll&quot;</span><br><span class="hljs-comment">00401103    FF16             CALL DWORD PTR DS:[ESI]            ; LoadLibraryA(&quot;user32.dll&quot;)</span><br><span class="hljs-comment">00401105    68 6F784100      PUSH 41786F</span><br><span class="hljs-comment">0040110A    68 61676542      PUSH 42656761</span><br><span class="hljs-comment">0040110F    68 4D657373      PUSH 7373654D</span><br><span class="hljs-comment">00401114    54               PUSH ESP                           ; - &quot;MessageBoxA&quot;</span><br><span class="hljs-comment">00401115    50               PUSH EAX                           ; - hMod</span><br><span class="hljs-comment">00401116    FF56 04          CALL DWORD PTR DS:[ESI+4]          ; GetProcAddress(hMod, &quot;MessageBoxA&quot;)</span><br><span class="hljs-comment">00401119    6A 00            PUSH 0                             ; - MB_OK (0)</span><br><span class="hljs-comment">0040111B    E8 0C000000      CALL 0040112C</span><br><span class="hljs-comment">00401120                     &lt;ASCII&gt;                            ; - &quot;ReverseCore&quot;, 0</span><br><span class="hljs-comment">0040112C    E8 14000000      CALL 00401145</span><br><span class="hljs-comment">00401131                     &lt;ASCII&gt;                            ; - &quot;www.reversecore.com&quot;, 0</span><br><span class="hljs-comment">00401145    6A 00            PUSH 0                             ; - hWnd (0)</span><br><span class="hljs-comment">00401147    FFD0             CALL EAX                           ; MessageBoxA(0, &quot;www.reversecore.com&quot;, &quot;ReverseCore&quot;, 0)</span><br><span class="hljs-comment">00401149    33C0             XOR EAX,EAX                        </span><br><span class="hljs-comment">0040114B    8BE5             MOV ESP,EBP</span><br><span class="hljs-comment">0040114D    5D               POP EBP                            </span><br><span class="hljs-comment">0040114E    C3               RETN</span><br><span class="hljs-comment">*/</span><br><br><br>BOOL <span class="hljs-title function_">InjectCode</span><span class="hljs-params">(DWORD dwPID)</span><br>&#123;<br>    HMODULE         hMod            = <span class="hljs-literal">NULL</span>;<br>    THREAD_PARAM    param           = &#123;<span class="hljs-number">0</span>,&#125;;<br>    HANDLE          hProcess        = <span class="hljs-literal">NULL</span>;<br>    HANDLE          hThread         = <span class="hljs-literal">NULL</span>;<br>    LPVOID          pRemoteBuf[<span class="hljs-number">2</span>]   = &#123;<span class="hljs-number">0</span>,&#125;;<br><br>    hMod = GetModuleHandleA(<span class="hljs-string">&quot;kernel32.dll&quot;</span>);<br><br>    <span class="hljs-comment">// set THREAD_PARAM</span><br>    param.pFunc[<span class="hljs-number">0</span>] = GetProcAddress(hMod, <span class="hljs-string">&quot;LoadLibraryA&quot;</span>);<br>    param.pFunc[<span class="hljs-number">1</span>] = GetProcAddress(hMod, <span class="hljs-string">&quot;GetProcAddress&quot;</span>);<br><br>    <span class="hljs-comment">// Open Process</span><br>    <span class="hljs-keyword">if</span> ( !(hProcess = OpenProcess(PROCESS_ALL_ACCESS,               <span class="hljs-comment">// dwDesiredAccess</span><br>                                  FALSE,                            <span class="hljs-comment">// bInheritHandle</span><br>                                  dwPID)) )                         <span class="hljs-comment">// dwProcessId</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;OpenProcess() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-comment">// Allocation for THREAD_PARAM</span><br>    <span class="hljs-keyword">if</span>( !(pRemoteBuf[<span class="hljs-number">0</span>] = VirtualAllocEx(hProcess,                  <span class="hljs-comment">// hProcess</span><br>                                         <span class="hljs-literal">NULL</span>,                      <span class="hljs-comment">// lpAddress</span><br>                                         <span class="hljs-keyword">sizeof</span>(THREAD_PARAM),      <span class="hljs-comment">// dwSize</span><br>                                         MEM_COMMIT,                <span class="hljs-comment">// flAllocationType</span><br>                                         PAGE_READWRITE)) )         <span class="hljs-comment">// flProtect</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;VirtualAllocEx() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !WriteProcessMemory(hProcess,                               <span class="hljs-comment">// hProcess</span><br>                            pRemoteBuf[<span class="hljs-number">0</span>],                          <span class="hljs-comment">// lpBaseAddress</span><br>                            (LPVOID)&amp;param,                         <span class="hljs-comment">// lpBuffer</span><br>                            <span class="hljs-keyword">sizeof</span>(THREAD_PARAM),                   <span class="hljs-comment">// nSize</span><br>                            <span class="hljs-literal">NULL</span>) )                                 <span class="hljs-comment">// [out] lpNumberOfBytesWritten</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;WriteProcessMemory() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-comment">// Allocation for ThreadProc()</span><br>    <span class="hljs-keyword">if</span>( !(pRemoteBuf[<span class="hljs-number">1</span>] = VirtualAllocEx(hProcess,                  <span class="hljs-comment">// hProcess</span><br>                                         <span class="hljs-literal">NULL</span>,                      <span class="hljs-comment">// lpAddress</span><br>                                         <span class="hljs-keyword">sizeof</span>(g_InjectionCode),   <span class="hljs-comment">// dwSize</span><br>                                         MEM_COMMIT,                <span class="hljs-comment">// flAllocationType</span><br>                                         PAGE_EXECUTE_READWRITE)) ) <span class="hljs-comment">// flProtect</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;VirtualAllocEx() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !WriteProcessMemory(hProcess,                               <span class="hljs-comment">// hProcess</span><br>                            pRemoteBuf[<span class="hljs-number">1</span>],                          <span class="hljs-comment">// lpBaseAddress</span><br>                            (LPVOID)&amp;g_InjectionCode,               <span class="hljs-comment">// lpBuffer</span><br>                            <span class="hljs-keyword">sizeof</span>(g_InjectionCode),                <span class="hljs-comment">// nSize</span><br>                            <span class="hljs-literal">NULL</span>) )                                 <span class="hljs-comment">// [out] lpNumberOfBytesWritten</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;WriteProcessMemory() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>( !(hThread = CreateRemoteThread(hProcess,                    <span class="hljs-comment">// hProcess</span><br>                                       <span class="hljs-literal">NULL</span>,                        <span class="hljs-comment">// lpThreadAttributes</span><br>                                       <span class="hljs-number">0</span>,                           <span class="hljs-comment">// dwStackSize</span><br>                                       (LPTHREAD_START_ROUTINE)pRemoteBuf[<span class="hljs-number">1</span>],<br>                                       pRemoteBuf[<span class="hljs-number">0</span>],               <span class="hljs-comment">// lpParameter</span><br>                                       <span class="hljs-number">0</span>,                           <span class="hljs-comment">// dwCreationFlags</span><br>                                       <span class="hljs-literal">NULL</span>)) )                     <span class="hljs-comment">// lpThreadId</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;CreateRemoteThread() fail : err_code = %d\n&quot;</span>, GetLastError());<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    WaitForSingleObject(hThread, INFINITE);	<br><br>    CloseHandle(hThread);<br>    CloseHandle(hProcess);<br><br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>代码28-1中的注入代码与前面讲过的Codelnjection.cpp代码类似（调用的API也一样）。但它们最大的不同在于，代码28-1中的注入代码本身同时包含着代码所需的字符串数据。所以_THREAD_PARAM结构体中并不包含字符串成员，并且图28-20中的指令字节数组（g_InjectionCode ）替代了用C语言编写的ThreadProc()函数。若程序编写得更巧妙一些，甚至都可以不用_THREAD_PARAM结构体。每个人的具体实现细节都是不同的，可以根据自己的需要调整。重要的是，方法的实质都是一样的，即编写汇编代码，将生成的指令内联在注入程序的源代码中，进而<br>将其注入目标进程。将代码成功注入目标进程后，下面我们将通过调试来分析各汇编代码的含义。</p>
+<blockquote>
+<p>将上面的CodeInjection2.cpp与上一章中的Codeinjection.cpp源代码比较，可以明显看出它们的不同之处。</p>
+</blockquote>
+<h1 id="28-5-调试练习"><a href="#28-5-调试练习" class="headerlink" title="28.5 调试练习"></a>28.5 调试练习</h1><p>本节将notepad.exe进程注入使用汇编语言编写的代码，并通过调试了解其工作原理。</p>
+<h2 id="28-5-1-调试-notepad-exe"><a href="#28-5-1-调试-notepad-exe" class="headerlink" title="28.5.1 调试 notepad.exe"></a>28.5.1 调试 notepad.exe</h2><p>使用OllyDbg工具打开notepad.exe文件开始调试。按F9运行键，使notepad.exe处于Running （运行）状态。</p>
+<blockquote>
+<p>一定要使notepad.exe处于Running （运行）状态！！</p>
+</blockquote>
+<h2 id="28-5-2-设置OllyDbg-选项"><a href="#28-5-2-设置OllyDbg-选项" class="headerlink" title="28.5.2 设置OllyDbg 选项"></a>28.5.2 设置OllyDbg 选项</h2><p>进行代码注入时要在目标进程创建新线程，如图28-22所示，设置好OllyDbg的选项即可从注入的线程代码开始调试。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224122846596.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-22 复选Break on new thread项"></p>
+<p>这样，notepad.exe进程中有新线程生成时，调试器就会暂停在相应线程函数的开始代码处。</p>
+<h2 id="28-5-3-运行-Codelnjection2-exe"><a href="#28-5-3-运行-Codelnjection2-exe" class="headerlink" title="28.5.3 运行 Codelnjection2.exe"></a>28.5.3 运行 Codelnjection2.exe</h2><p>首先，使用Process Explorer查看notepad.exe进程的PID,如图28-23所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224123002966.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-23 notepad.exe进程的PID"></p>
+<p>以PID值作为参数，在命令行窗口中运行CodeInjection2.exe（以管理员身份运行），如图28-24所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224123118766.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-24 运行CodeInjection2.exe"></p>
+<h2 id="28-5-4-线程起始代码"><a href="#28-5-4-线程起始代码" class="headerlink" title="28.5.4 线程起始代码"></a>28.5.4 线程起始代码</h2><p>运行CodeInjection2.exe程序完成代码注入后，调试器会暂停在被注入的线程代码的起始位置，如图28-25所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224193820526.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-25 被注入的代码：ThreadProc()"></p>
+<blockquote>
+<p>不同运行环境下代码起始地址（ 1C0000 ）不同。</p>
+</blockquote>
+<p>下面详细分析图28-25中的代码。</p>
+<h1 id="28-6-详细分析"><a href="#28-6-详细分析" class="headerlink" title="28.6 详细分析"></a>28.6 详细分析</h1><h2 id="28-6-1-生成栈帧"><a href="#28-6-1-生成栈帧" class="headerlink" title="28.6.1 生成栈帧"></a>28.6.1 生成栈帧</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0000    55              push ebp<br>001C0001    8BEC            mov ebp,esp<br></code></pre></td></tr></table></figure>
+
+<p>上面是2条典型的生成栈帧指令，对它们感到陌生的朋友可以趁此机会记住： 55 8BEC。后面出现的指令使用压字符串入栈的技术，生成栈帧就可以在ThreadProc()函数终止时将栈清理干净。</p>
+<h2 id="28-6-2-THREAD-PARAM-结构体指针"><a href="#28-6-2-THREAD-PARAM-结构体指针" class="headerlink" title="28.6.2 THREAD_PARAM 结构体指针"></a>28.6.2 THREAD_PARAM 结构体指针</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0003    8B75 08         mov esi,dword ptr ss:[ebp+0x8]<br></code></pre></td></tr></table></figure>
+
+<p>生成栈帧后，[EBP+8]是传入函数的第一个参数，这里指THREAD_PARAM结构体指针。下面是THREAD_PARAM结构体的定义，它的成员是2个函数指针，分别用来保存LoadLibraryA()与GetProcAddress()的函数指针（谁获取了函数指针并保存呢？对，就是前面讲过的CodeInjection2.exe程序，它获取了函数的指针，向notepad.exe注入完成并运行线程时以参数形式保存）。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">THREAD_PARAM</span> </span><br><span class="hljs-class">&#123;</span><br>    FARPROC pFunc[<span class="hljs-number">2</span>];               <span class="hljs-comment">// LoadLibraryA(), GetProcAddress()</span><br>&#125; THREAD_PARAM, *PTHREAD_PARAM;<br></code></pre></td></tr></table></figure>
+
+<p>执行完1C0003地址处的<code>MOV ESI,DWORD PTR SS:[EBP+8]</code>指令后，进入ESI寄存器存储的地址查看，如图28-26所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194004973.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-26 查看THREAD_PARAM结构体"></p>
+<p>寄存器ESI中存储的地址为1A0000,该地址是CodeInjection2.exe为THREAD_PARAM结构体在notepad.exe进程内存空间中分配的内存缓冲区地址。</p>
+<blockquote>
+<p>不同用户系统环境下THREAD_PARAM结构体地址（ 1A0000 ）不同。</p>
+</blockquote>
+<p>观察图28-26中的内存窗口可以看到，280000地址处存储着2个4字节的值，它们就是函数LoadLibraryA()与GetProcAddress()的起始地址。为了更直观地查看函数的起始地址，需要设置OllyDbg内存窗口的视图选项。先移动光标到内存窗口，然后在鼠标右键菜单中依次选择Long-Address项目，如图28-27所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194034722.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-27 Long-Address菜单项目"></p>
+<p>选中图28-27中的菜单后，OllyDbg的内存窗口显示形式改变，如图28-28所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194120331.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-28 API起始地址"></p>
+<p>函数地址如图显示就更直观了。并且，Comment栏中与各行地址对应的API名称也一同出现（在鼠标右键菜单中选择Hex-Hex&#x2F;ASCII（16bytes）菜单，可以重新显示为Hex形式）。</p>
+<h2 id="28-6-3-“User32-dll”-字符串"><a href="#28-6-3-“User32-dll”-字符串" class="headerlink" title="28.6.3 “User32.dll” 字符串"></a>28.6.3 “User32.dll” 字符串</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0006    68 6C6C0000     push 0x6C6C<br>001C000B    68 33322E64     push 0x642E3233<br>001C0010    68 75736572     push 0x72657375<br></code></pre></td></tr></table></figure>
+
+
+
+<p>上面3行代码将“User32.dll”字符串压入栈，这种独特技术仅用于使用汇编语言编写的程序。地址1C0006处的PUSH 6C6C指令用来将6C6C压入栈，其中6C是ASCII码，对应字母<code>1</code>，所以该指令最终压入栈的是字符串<code>\0\0ll</code>。紧接着，1C000B与1C0010地址处的PUSH指令分别将字符串<code>d.23</code> 与<code>resu</code>压入栈。由于x86 CPU采用小端序标记法，再加上栈的逆向扩展特性，所 以字符串被逆向压入栈，请重点注意这个调试时必须掌握的内容。<br>自上而下跟踪代码到1C0015地址处，查看栈，如图28-29所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194330235.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-29 栈中存储着“user32.dll”字符串"></p>
+<p>像这样，使用PUSH指令可以把指定字符串压入栈。并且，注入代码时不必另外注入字符串数据，只要把它们包含到代码中，只注入代码即可。</p>
+<blockquote>
+<ul>
+<li><p>还有一种将字符串数据包含进代码的方法，后面会单独介绍。 </p>
+</li>
+<li><p>32位的OS中，PUSH指令一次只能将4字节大小的数据压入栈。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="28-6-4-压入“user32-dll”字符串参数"><a href="#28-6-4-压入“user32-dll”字符串参数" class="headerlink" title="28.6.4 压入“user32.dll”字符串参数"></a>28.6.4 压入“user32.dll”字符串参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0015    54              push esp<br></code></pre></td></tr></table></figure>
+
+<p>LoadLibraryA() API拥有1个参数，用来接收1个字符串的地址，该字符串是其要加载的DLL文件的名称。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">HINSTANCE <span class="hljs-title function_">LoadLibrary</span><span class="hljs-params">(</span><br><span class="hljs-params">LPCTSTR lpLibFileName</span><br><span class="hljs-params"> <span class="hljs-comment">// address of filename of executable module</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>从图28-29中可知，当前ESP的值为A3FF7C，它是“user32.dll”字符串的起始地址。地址1C0015处的<code>PUSH ESP</code>指令用来将“user32.dll”字符串的起始地址（A3FF7C）压入栈（参考图28-30 ）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194509304.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-30 1C0015地址处的PUSH指令"></p>
+<h2 id="28-6-5-调用-LoadLibraryA（-“user32-dll”）"><a href="#28-6-5-调用-LoadLibraryA（-“user32-dll”）" class="headerlink" title="28.6.5 调用 LoadLibraryA（ “user32.dll”）"></a>28.6.5 调用 LoadLibraryA（ “user32.dll”）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0016    FF16            call dword ptr ds:[esi]		; kernel32.LoadLibraryA<br></code></pre></td></tr></table></figure>
+
+<p>如图28-28所示，ESI寄存器中存储的地址值为1A0000，该地址中保存着LoadLibraryA() API的起始地址（ 77E2DC65 ），请看图28-31。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194710002.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-31 ESI寄存器"></p>
+<p>对汇编语言内存引用语法感到陌生的朋友，可以借此机会记住它。为了帮助大家更好地理解这一个过程，我们把上面的CALL指令展开，形式如下（[]类似于C语言中的指针引用）：</p>
+<p>*[ESI]&#x3D;[470000]&#x3D;77E2DC65 （address of kernel32.LoadLibraryA）</p>
+<p>&#x3D;存储在280000地址中的值</p>
+<p>*CALL[ESI]&#x3D;CALL[470000]&#x3D;CALL 77E2DC65 &#x3D;CALL Kernel32.LoadLibraryA</p>
+<p>执行位于1C0016地址处的CALL DWORD PTR DS:[ESI]指令后，就会调用LoadLibraryA() API,同时加载作为参数传入的user32.dll文件。由于notepad.exe进程运行时已经加载了user32.dll，所以它只会返回加载的地址</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194754214.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-32 USER32.dll加载地址"></p>
+<p>函数的返回地址保存在EAX中，所以从图28-32中可以看到EAX&#x3D;77D10000。选择OllyDbg菜单中的View-Executable modules[ALT+E]菜单项，可以查看加载到进程内存的所有DLL，如图28-23所示。可以清楚看到，user32.dll的加载地址就是77D10000。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224194924662.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-33 査看USER32.dll加载地址"></p>
+<h2 id="28-6-6-“MessageBoxA”-字符串"><a href="#28-6-6-“MessageBoxA”-字符串" class="headerlink" title="28.6.6 “MessageBoxA” 字符串"></a>28.6.6 “MessageBoxA” 字符串</h2><p>上面3条PUSH指令将字符串“MessageBoxA”压入栈（与前面将字符串“user32.dll”压入栈的方法相同）。调试到1C0022地址处的PUSH指令，字符串“MessageBoxA”被存储到栈中，如图28-34所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0018    68 6F784100     push 0x41786F		;&quot;&quot;\0Axo&quot;<br>001C001D    68 61676542     push 0x42656761		; &quot;Bega&quot;<br>001C0022    68 4D657373     push 0x7373654D		; &quot;sseM&quot;<br></code></pre></td></tr></table></figure>
+
+<p>上面3条PUSH指令将字符串“MessageBoxA”压入栈（与前面将字符串“user32.dll”压入栈的方法相同）。调试到1C0022地址处的PUSH指令，字符串“MessageBoxA”被存储到栈中，如图28-34所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224195735412.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-34 存储在栈中的“MessageBoxA”字符串"></p>
+<h2 id="28-6-7-调用-GetProcAddress（hMod-“MessageBoxA”）"><a href="#28-6-7-调用-GetProcAddress（hMod-“MessageBoxA”）" class="headerlink" title="28.6.7 调用 GetProcAddress（hMod, “MessageBoxA”）"></a>28.6.7 调用 GetProcAddress（hMod, “MessageBoxA”）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0027    54              push esp<br>001C0028    50              push eax                        ; user32.77D10000<br>001C0029    FF56 04         call dword ptr ds:[esi+0x4]     ; kernel32.GetProcAddress<br></code></pre></td></tr></table></figure>
+
+<p>当前ESP的值为95FF70（参考图28-34 ），所以1C0027地址处的<code>PUSH ESP</code>指令用来将‘MessageBoxA”字符串的地址（95FF70）压入栈（该字符串的地址被用作GetProcAddress() API的第二个参数，在1C0029地址处调用此API）。而当前EAX的值为77D10000,它是user32.dll模块的加载地址（参考图28-32），所以1C0028地址处的<code>PUSH EAX</code>指令用来将user32.dll的起始地址（hMod）压入栈（该字符串的地址被用作GetProcAddress() API的第一个参数，在1C0029地址处调用此API）。调试至此查看栈，如图28-35所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224200414325.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-35 栈内情形"></p>
+<p>ESI寄存器的值为1A0000,所以可以将[ESI+4]如下展开（参考图28-28、图28-31 ）:</p>
+<p>*[ESI+4]&#x3D;[1A0004]&#x3D;77E2CC94（address of kernel32.GetProcAddress）</p>
+<p>&#x3D;存储在280004地址的值</p>
+<p>*CALL [ESI+4]&#x3D;CALL [1A0004]&#x3D;CALL 77E2CC94&#x3D;CALL Kernel32.GetProcAddress</p>
+<p>所以1C0029地址处的 CALL DWORD PTR DS:[ESI+4]指令用来调用 GetProcAddress（77D10000，“MessageBoxA”）API函数。执行该条CALL指令后，user32.MessageBoxA() API的起始地址就会保存到EAX寄存器（系统环境不同，地址会有所不同。在我的系统环境下，EAX&#x3D;7793EA71 ）,如图28-36所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224200946995.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-36 MessageBoxA() API的起始地址"></p>
+<h2 id="28-6-8-压入-MessageBoxA-函数的参数1-MB-OK"><a href="#28-6-8-压入-MessageBoxA-函数的参数1-MB-OK" class="headerlink" title="28.6.8 压入 MessageBoxA()函数的参数1 - MB_OK"></a>28.6.8 压入 MessageBoxA()函数的参数1 - MB_OK</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C002C    6A 00           push 0x0<br></code></pre></td></tr></table></figure>
+
+<p>PUSH 0指令将0压入栈，0为MessageBoxA() API （后面会调用该API）的第四个参数（uType ）MessageBoxA() API共有4个参数，函数原型如代码28-3所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">MessageBox</span><span class="hljs-params">(</span><br><span class="hljs-params">HWND hWnd,</span><br><span class="hljs-params"> <span class="hljs-comment">// handle of owner window</span></span><br><span class="hljs-params">LPCTSTR lpText,</span><br><span class="hljs-params"> <span class="hljs-comment">// address of text in message box </span></span><br><span class="hljs-params">LPCTSTR lpCaption,</span><br><span class="hljs-params"> <span class="hljs-comment">// address of title of message box</span></span><br><span class="hljs-params">UINT uType</span><br><span class="hljs-params"> <span class="hljs-comment">// style of message box</span></span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>uType值为0，表示弹出的消息对话框为MB_OK，仅显示一个OK （确定）按钮。</p>
+</blockquote>
+<h2 id="28-6-9-压入-MessageBoxA-函数的参数2-“ReverseCore”"><a href="#28-6-9-压入-MessageBoxA-函数的参数2-“ReverseCore”" class="headerlink" title="28.6.9 压入 MessageBoxA()函数的参数2 - “ReverseCore”"></a>28.6.9 压入 MessageBoxA()函数的参数2 - “ReverseCore”</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C002E    E8 0C000000     call 001C003F<br>001C0033    52              push edx<br>001C0034    65:76 65        jbe short 001c009c<br>001C0037    72 73           jb short 001C00AC<br>001C0039    65:43           inc ebx<br>001C003B    6f              outs dx,dword ptr ds:[esi]<br>001C003C    72 65           jb short 001C00A3<br>001C003E    00E8            add al,ch<br></code></pre></td></tr></table></figure>
+
+<p>下面介绍“使用CALL指令将包含在代码间的字符串数据地址压入栈”的技术，该技术也仅能用在使用汇编语言编写的程序中。很明显，1C0033~1C003E地址区域是程序代码区域，但其内容实为“ReverseCore”字符串数据。也就是说，“ReverseCore”字符串的首地址为1C0033,它被用作MessageBoxA() API的第三个参数（lpCaption ）。</p>
+<p>将字符串作为参数传递给函数前，需要先把字符串地址压入栈，那么采用哪种方式好呢？继续调试位于1C002E地址处的CALL指令（StepIn（F7）），查看栈，如图28-37所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224202045773.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-37 1C003F代码"></p>
+<p>从栈中可以看到，“ReverseCore”字符串的起始地址1C0033被压入其中。也就是说，MessageBoxA()的第三个参数被压入栈。这个“花招”巧妙运用了CALL指令的“动作原理”。执 行1C0033地址处的CALL指令后，函数（1C003F ）终止并将返回地址（ 1C0033 ）压入（PUSH） 栈，然后再跳转到（JMP）相应的函数地址（1C003F）。也就是说，执行一条CALL指令相当于执行了PUSH与JMP两条指令。但1C003F实际并不是函数，不具有以RETN指令返回的形态。此处的CALL指令只是用来将紧接其后的“ReverseCore”字符串地址压入栈，然后转到下一条代码指令。大家现在应该理解这个很有意思的CALL指令用法了。</p>
+<h2 id="28-6-10-压入-MessageBoxA-函数的参数3-“www-reversecore-com”"><a href="#28-6-10-压入-MessageBoxA-函数的参数3-“www-reversecore-com”" class="headerlink" title="28.6.10 压入 MessageBoxA()函数的参数3 - “www.reversecore.com”"></a>28.6.10 压入 MessageBoxA()函数的参数3 - “<a target="_blank" rel="noopener" href="http://www.reversecore.com”/">www.reversecore.com”</a></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C003F    E8 14000000     call 001C0058<br>001C0044    77 77           ja short 001C00BD<br>001C0046    77 2E           ja short 001C0076<br>001C0048    72 65           jb short 001C00AF<br>001C004A    76 65           jbe short 001C00B1<br>001C004C    72 73           jb short 001C00C1<br>001C004E    65:636F 72      arpl word ptr gs:[edi+0x72],bp<br>001C0052    65              gs:<br>001C0053    2E:636F 6D      arpl word ptr cs:[edi+0x6D],bp<br>001C0057    006A 00         add byte ptr ds:[edx],ch<br></code></pre></td></tr></table></figure>
+
+
+
+<p>与“ReverseCore”字符串类似，上面的代码将MessageBoxA() API的第二个参数lpText字符串 （“<a target="_blank" rel="noopener" href="http://www.reversecore.com”)压入栈.上述代码中的1c0044~1c0057地址区域并非代码指令,而是字符串数据(“www.reversecore.com”)./">www.reversecore.com”）压入栈。上述代码中的1C0044~1C0057地址区域并非代码指令，而是字符串数据（“www.reversecore.com”）。</a></p>
+<p>1C003F地址处的CALL指令（与前面说明的一样）将紧接其后的“<a target="_blank" rel="noopener" href="http://www.reversecore.com”字符串的地址(1c0044/">www.reversecore.com”字符串的地址（1C0044</a> ）压入栈，然后转到下一条指令的地址处（1C0058 ）（参考图28-38 ）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224202636373.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-38"></p>
+<h2 id="28-6-11-压入-MessageBoxA-函数的参数4-NULL"><a href="#28-6-11-压入-MessageBoxA-函数的参数4-NULL" class="headerlink" title="28.6.11 压入 MessageBoxA()函数的参数4 -NULL"></a>28.6.11 压入 MessageBoxA()函数的参数4 -NULL</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C0058    6A 00           push 0x0<br></code></pre></td></tr></table></figure>
+
+<p>上面这条指令将MessageBoxA() API的第一个参数hWnd压入栈，该参数用来确定消息对话框所属的窗口句柄，这里压入NULL值，创建一个不属于任何窗口的消息对话框。</p>
+<h2 id="28-6-12-调用-MessageBoxA"><a href="#28-6-12-调用-MessageBoxA" class="headerlink" title="28.6.12 调用 MessageBoxA()"></a>28.6.12 调用 MessageBoxA()</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C005A    FFD0            call eax       ; user32.MessageBoxA<br></code></pre></td></tr></table></figure>
+
+<p>上面这条CALL指令调用MessageBoxA() API。指令中的EAX寄存器存储着MessageBoxA()API的起始地址（77D6EA11），该地址是前面调用GetProcAddress()后返回的值（参考图28-36、图28-38）。调试1C005A地址处的<code>CALL EAX</code>指令后，查看寄存器与栈，如图28-39所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224203059310.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-39 调用MessageBoxA()"></p>
+<p>执行<code>CALL EAX</code>指令即可弹出消息对话框，如图28-40所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81.assets/image-20220224203131442.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="图28-40 消息对话框"></p>
+<h2 id="28-6-13-设置ThreadProc-函数的返回值"><a href="#28-6-13-设置ThreadProc-函数的返回值" class="headerlink" title="28.6.13 设置ThreadProc()函数的返回值"></a>28.6.13 设置ThreadProc()函数的返回值</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C005C    33C0            xor eax,eax<br></code></pre></td></tr></table></figure>
+
+<p>注入notepad.exe进程的代码（ThreadProc()线程函数）执行完之前，还需要做一些准备工作，即用<code>XOR EAX,EAX</code>指令将线程函数的返回值设置为0。前面学过函数的返回值使用EAX寄存器，各位还记得吧？</p>
+<blockquote>
+<p><code>XOR EAX,EAX</code>指令能够又快又好地将EAX寄存器初始化为0（对CPU而言，它比使用MOV EAX，0指令更简单快捷）。</p>
+</blockquote>
+<h2 id="28-6-14-删除栈帧及函数返回"><a href="#28-6-14-删除栈帧及函数返回" class="headerlink" title="28.6.14 删除栈帧及函数返回"></a>28.6.14 删除栈帧及函数返回</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">001C005E    8BE5            mov esp,ebp<br>001C0060    5D              pop ebp<br>001C0061    C3              retn<br></code></pre></td></tr></table></figure>
+
+<p>最后，删除ThreadProc()函数开始时生成的栈帧，并使用RETN命令返回函数。栈帧在ThreadProc()函数中非常重要。对于前面使用PUSH指令压入栈的字符串，我们不需要费力地用POP命令逐个弹岀，只要使用上面几条删除栈帧的指令即可快速恢复原状。</p>
+<h1 id="28-7-小结"><a href="#28-7-小结" class="headerlink" title="28.7 小结"></a>28.7 小结</h1><p>对使用汇编语言编写的注入代码的说明到此结束。使用汇编语言编写程序要比使用c语言更加灵活自由，强烈建议大家尝试使用汇编语言编写更多更具创意的代码。对于刚接触汇编语言不久的朋友，我建议使用OllyDbg中的汇编指令，用它编写汇编代码更容易。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《逆向工程核心原理》 第28章</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第28章 使用汇编语言编写注入代码</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/02/26/逆向工程核心原理/第28章 使用汇编语言编写注入代码/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年2月26日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第29章 API钩取：逆向分析之“花”</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入">
+                        <span class="hidden-mobile">第27章 代码注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
