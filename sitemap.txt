@@ -1,3 +1,4 @@
+https://m0ck1ng-b1rd.github.io/2022/04/29/%E5%80%92%E8%85%BE/VMWare%E4%B8%8AArch+xfce4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%BE%8E%E5%8C%96/
 https://m0ck1ng-b1rd.github.io/2022/05/19/HTB/Unicode/
 https://m0ck1ng-b1rd.github.io/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/
 https://m0ck1ng-b1rd.github.io/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/
@@ -26,7 +27,6 @@ https://m0ck1ng-b1rd.github.io/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E
 https://m0ck1ng-b1rd.github.io/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%BA%94/
 https://m0ck1ng-b1rd.github.io/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80/
 https://m0ck1ng-b1rd.github.io/2021/12/07/vulstack/%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%BA%8C/
-https://m0ck1ng-b1rd.github.io/2022/04/29/%E5%80%92%E8%85%BE/VMWare%E4%B8%8AArch+xfce4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%BE%8E%E5%8C%96/
 https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/BountyHunter/
 https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Cap/
 https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Driver/
