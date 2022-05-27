@@ -1,0 +1,1382 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第54章 调试练习1:服务">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328140612349.png#crop=0&crop=0&crop=1&crop=1&id=eGcSI&originHeight=170&originWidth=455&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="article:published_time" content="1999-05-04T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:51:58.782Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328140612349.png#crop=0&crop=0&crop=1&crop=1&id=eGcSI&originHeight=170&originWidth=455&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+  
+  
+  
+  <title>第54章 调试练习1:服务 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第54章 调试练习1:服务"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-05-04 12:21" pubdate>
+          1999年5月4日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          78 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第54章 调试练习1:服务</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第54章调试练习1:服务</p>
+<p>从现在开始，我们将用多种示例程序练习调试，并通过这些调试练习进一步提高各位的调试水平。第一个调试示例是Windows服务程序，本章主要学习其调试方法。</p>
+<p>服务程序比较难调试，有时，即使是逆向分析经验丰富的入调试起来也并非易事。本章主要学习服务程序的调试方法，帮助各位掌握。</p>
+<h1 id="54-1-服务进程的工作原理"><a href="#54-1-服务进程的工作原理" class="headerlink" title="54.1 服务进程的工作原理"></a>54.1 服务进程的工作原理</h1><p>服务（Service）程序由SCM（Service Control Manager，服务控制管理器）管理。运行服务程序时，需要由服务控制器（Service Controller）执行启动命令。服务控制器向SCM提出服务控制请求，SCM向服务程序传递控制命令，并接收其返回的值（参考图54-1）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328140612349.png#crop=0&crop=0&crop=1&crop=1&id=eGcSI&originHeight=170&originWidth=455&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>服务控制器无法直接向服务程序下达命令，必须通过SCM传达。</p>
+<h2 id="54-1-1-服务控制器"><a href="#54-1-1-服务控制器" class="headerlink" title="54.1.1 服务控制器"></a>54.1.1 服务控制器</h2><p>Windows默认提供了服务控制器，在“控制面板”中单击“管理工具”，打开“管理工具”窗口，双击“服务”图标即可运行服务控制器，如图54-3所示（也可以直接在控制台窗口输入 “services.msc” 命令）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328140922887.png#crop=0&crop=0&crop=1&crop=1&id=A1gBH&originHeight=606&originWidth=823&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图54-3列出了设置在系统中的所有服务列表，在服务列表中选择想要控制的服务即可（启动&#x2F;停止&#x2F;暂停&#x2F;重启）。选中指定服务，单击“启动服务”按钮，弹出“服务控制”窗口，显示正在启动指定服务信息，如图所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328141505261.png#crop=0&crop=0&crop=1&crop=1&id=PwP3k&originHeight=235&originWidth=527&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>服务进程正常启动后，图54-4中的服务控制窗口消失，服务状态变为“已启动”。下面详细了解服务启动过程。</p>
+<h2 id="54-1-2服务启动过程"><a href="#54-1-2服务启动过程" class="headerlink" title="54.1.2服务启动过程"></a>54.1.2服务启动过程</h2><p>图54-5大致描述了服务程序的启动过程。</p>
+<p>所有服务程序都是由外部（服务控制器）调用StartService() API启动的（参考：若服务为自启动服务，则由SCM调用StartService()启动）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328141133671.png#crop=0&crop=0&crop=1&crop=1&id=VBDsL&originHeight=437&originWidth=716&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p><strong>服务进程启动过程</strong></p>
+<p>（1）服务控制器调用StartService()</p>
+<p>服务控制器调用StartService()时，SCM会创建相应服务进程，然后执行服务进程的EP代码。</p>
+<p>（2）服务进程调用StartServiceCtrlDispatcher()</p>
+<p>为了以服务形式运行，必须在服务进程内部调用StartServiceCtrlDispatcher() API来注册服务主函数SvcMain()的地址。调用StartServiceCtrlDispatcher()时，返回服务控制器的StartService()函 数。SCM调用服务进程的服务主函数SvcMain()。</p>
+<p>（3）服务进程调用SetServiceStatus()</p>
+<p>虽然已经创建了服务进程，但尚未以服务形式运行。当前状态仍为SERVICE_START_PENDING。在服务主函数SvcMain()内部调用SetServiceStatus（SERVICE_RUNNING）API后，才正式以服务进程形式运行（此时图54-4中的服务控制状态窗口消失）。</p>
+<p>综上所述，服务程序先由SCM创建进程，然后控制转移给SvcMain()函数，调用SetServiceStatus<br>（SERVICE_RUNNING）API,这样才能以服务进程的形式运行。对服务进程尚不熟悉的朋友，请<br>认真阅读上面关于服务进程启动过程的描述。下面通过一个简单的示例程序（DebugMe1.exe）来<br>帮助各位进一步了解服务进程的工作原理。</p>
+<blockquote>
+<p>示例程序在Windows XP&#x2F;7（32位）中正常运行</p>
+</blockquote>
+<h1 id="54-2-DebugMe1-exe-示例讲解"><a href="#54-2-DebugMe1-exe-示例讲解" class="headerlink" title="54.2 DebugMe1 .exe 示例讲解"></a>54.2 DebugMe1 .exe 示例讲解</h1><p>DebugMe1.exe进程以2种形式运行，一种为常规运行形式，负责服务的安装与删除；另一种<br>由SCM以服务形式运行。常规运行时需要接收运行参数（install或者uninstall）,以服务形式运行<br>时则不需要。</p>
+<h2 id="54-2-1安装服务"><a href="#54-2-1安装服务" class="headerlink" title="54.2.1安装服务"></a>54.2.1安装服务</h2><p>为了将示例程序安装为服务，我们先将其复制到合适的文件夹，然后运行图54-6所示的命令。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328142516586.png#crop=0&crop=0&crop=1&crop=1&id=hJTzx&originHeight=174&originWidth=855&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>服务安装成功后，可以在服务列表中看到，如图54-7所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328142552207.png#crop=0&crop=0&crop=1&crop=1&id=U9oyw&originHeight=248&originWidth=828&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从服务列表可以看到，服务名为SvcTest。选中它，在菜单栏中依次选择“操作-属性”菜单，打开属性窗口即可查看有关该服务的更多信息（也可以选择服务，在鼠标右键中选择“属性”菜单），如图54-8所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328142645134.png#crop=0&crop=0&crop=1&crop=1&id=PDnn8&originHeight=344&originWidth=826&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>弹出服务属性对话框，如图54-9所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328142716333.png#crop=0&crop=0&crop=1&crop=1&id=ksT6v&originHeight=553&originWidth=561&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>服务属性对话框的“常规”选项卡中包含了所有服务相关信息。SvcTest服务程序的可执行文件路径为：C:\Users\admin\Desktop\test\DebugMe1.exe（示例程序的安装路径），并且服务的“启动类型”为“手动”（需要运行时要手动启动），当前的“服务状态”为“已停止”。</p>
+<blockquote>
+<p>服务启动类型大致可分为手动与自动这2种。为了方便，上述示例程序采用了手动启动方式。若启动类型为自动方式，则系统启动时即运行服务。</p>
+</blockquote>
+<h2 id="54-2-2-启动服务"><a href="#54-2-2-启动服务" class="headerlink" title="54.2.2 启动服务"></a>54.2.2 启动服务</h2><p>下面开始启动服务，选中SvcTest服务，单击“启动服务”按钮，如图54-10所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328143024329.png#crop=0&crop=0&crop=1&crop=1&id=GrjJT&originHeight=229&originWidth=830&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>服务成功启动后，服务进程（DebugMe1.exe）也就运行起来，如图54-11所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328143844359.png#crop=0&crop=0&crop=1&crop=1&id=b4BNi&originHeight=462&originWidth=1091&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图54-11中需要注意的是，SvcTest服务的进程（DebugMe1.exe）是以services.exe进程的子进程（Child）形式运行的。其实，所有服务进程都以该形式运行。Services.exe进程就是SCM。示例程序DebugMe1.exe的功能相当简单，它经过一定时间间隔输岀调试字符串（调用OutputDebugString() API）。使用DebugView实用工具可以查看输出的调试字符串，如图54-12所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328143928740.png#crop=0&crop=0&crop=1&crop=1&id=w3UY3&originHeight=212&originWidth=745&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>Windows Vista以上的系统中需要用管理员权限来运行DebugView，在菜单栏中依次选择Capture-Capture Global Win32菜单才能捕获输出的调试字符串，如图54-13所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328143959804.png#crop=0&crop=0&crop=1&crop=1&id=FN2vb&originHeight=410&originWidth=741&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="54-2-3-源代码"><a href="#54-2-3-源代码" class="headerlink" title="54.2.3 源代码"></a>54.2.3 源代码</h2><p>下面看看DebugMe1.exe的源代码（DebugMe1.cpp）。</p>
+<p><strong>#main()</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR *argv[])<br>&#123; <br>    TCHAR szPath[MAX_PATH] = &#123;<span class="hljs-number">0</span>,&#125;;<br>    SERVICE_TABLE_ENTRY DispatchTable[] = <br>    &#123; <br>        &#123; SVCNAME, (LPSERVICE_MAIN_FUNCTION)SvcMain &#125;, <br>        &#123; <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span> &#125; <br>    &#125;; <br><br>    <span class="hljs-keyword">if</span>( argc == <span class="hljs-number">1</span> )<br>    &#123;<br>        <span class="hljs-keyword">if</span> (!StartServiceCtrlDispatcher( DispatchTable )) <br>        &#123; <br>            _tprintf(<span class="hljs-string">L&quot;StartServiceCtrlDispatcher() failed!!! [%d]\n&quot;</span>, <br>                GetLastError()); <br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( argc == <span class="hljs-number">2</span> )<br>    &#123;<br>        <span class="hljs-keyword">if</span>( !GetModuleFileName(<span class="hljs-literal">NULL</span>, szPath, MAX_PATH) )<br>        &#123;<br>            _tprintf(<span class="hljs-string">L&quot;GetModuleFileName() failed! [%d]\n&quot;</span>, <br>                GetLastError());<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span>( _tcsicmp(argv[<span class="hljs-number">1</span>], <span class="hljs-string">L&quot;install&quot;</span>) == <span class="hljs-number">0</span> )<br>        &#123;<br>            InstallService(SVCNAME, szPath);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( _tcsicmp(argv[<span class="hljs-number">1</span>], <span class="hljs-string">L&quot;uninstall&quot;</span>) == <span class="hljs-number">0</span> )<br>        &#123;<br>            UninstallService(SVCNAME);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            _tprintf(<span class="hljs-string">L&quot;Wrong parameters!!!\n&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    _tprintf(<span class="hljs-string">L&quot;\nUSAGE : %s &lt;install | uninstall&gt;\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从main()函数代码可以看到，根据有无运行参数，程序可分别以服务模式（无参数）或常规模式（有参数）运行。以服务模式运行时会调用StartServiceCtrlDispatcher() API，启动服务主函数（SvcMain()）；以常规模式运行时，根据所给参数的种类，分别调用InstallService()&#x2F;UninstallService()函数，它们分别用来安装或卸载服务（由于这2个函数比较简单，此处不再详细说明，请各位参考示例源码以及MSDN分析）。</p>
+<p><strong>#SvcMain()</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c">VOID WINAPI <span class="hljs-title function_">SvcMain</span><span class="hljs-params">(DWORD argc, LPCTSTR *argv)</span><br>&#123;<br>    <span class="hljs-comment">// Service Control Handler</span><br>    g_hServiceStatusHandle = RegisterServiceCtrlHandler( <br>        SVCNAME, <br>        SvcCtrlHandler);<br>    <span class="hljs-keyword">if</span>( !g_hServiceStatusHandle )<br>    &#123; <br>        OutputDebugString(<span class="hljs-string">L&quot;RegisterServiceCtrlHandler() failed!!!&quot;</span>); <br>        <span class="hljs-keyword">return</span>; <br>    &#125; <br><br>    <span class="hljs-comment">// Service Status -&gt; SERVICE_RUNNING</span><br>    g_ServiceStatus.dwCurrentState = SERVICE_RUNNING;<br>    SetServiceStatus(g_hServiceStatusHandle, &amp;g_ServiceStatus);<br><br>    <span class="hljs-comment">// Print debug string</span><br>    <span class="hljs-keyword">while</span>( TRUE )<br>    &#123;<br>        OutputDebugString(<span class="hljs-string">L&quot;[SvcTest] service is running...&quot;</span>);<br>        Sleep(<span class="hljs-number">3</span> * <span class="hljs-number">1000</span>);        <span class="hljs-comment">// 3 sec</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上是SvcMain()函数代码。先调用RegisterServiceCtrlHandler() API来注册服务处理函数（SvcCtrlHandler），然后调用SetServiceStatus() API将服务状态修改为SERVICE_RUNNING（此时图54-4中的服务控制窗口消失）。最后在while循环中每隔3秒调用1次OutputDebugString()函数，输出调试字符串。本示例服务（SvcTest）的功能非常简单，仅用来输岀调试字符串。</p>
+<h1 id="54-3-服务进程的调试"><a href="#54-3-服务进程的调试" class="headerlink" title="54.3 服务进程的调试"></a>54.3 服务进程的调试</h1><p>要想准确调试服务程序，就不能像对待普通程序一样直接用调试器启动并调试，而需要将调试器附加到SCM运行的服务进程上。这正是调试服务进程的困难之处，但理解了服务的工作原理后，解决起来就变得相当简单。</p>
+<h2 id="54-3-1-问题在于SCM"><a href="#54-3-1-问题在于SCM" class="headerlink" title="54.3.1 问题在于SCM"></a>54.3.1 问题在于SCM</h2><p>服务进程由SCM运行，这是服务进程调试的核心所在。</p>
+<p>□服务进程由SCM运行。</p>
+<p>□服务核心代码主要存在于服务主函数（SvcMain()）中。</p>
+<p>□服务主函数（SvcMain()）由SCM正常调用。</p>
+<p>我们要调试的是服务主函数（SvcMain()）,但使用调试器打开服务程序的可执行文件并开始调试时，服务主函数并不运行，所以调试时需要将SCM运行的服务进程附加到调试器。</p>
+<h2 id="54-3-2-调试器无所不能"><a href="#54-3-2-调试器无所不能" class="headerlink" title="54.3.2 调试器无所不能"></a>54.3.2 调试器无所不能</h2><p>使用调试器打开服务可执行文件无法直接调试服务主函数（SvcMainO）代码。原因在于，SCM不会调用服务主函数（因非由SCM运行，故不能运行它）。但这并不意味着没有解决方法。因为调试器拥有被调试进程的强大权限，所以可以先将调试位置强制指定为服务主函数（如：OllyDbg的New origin here菜单），然后再调试。使用这种方法调试服务主函数不会有什么大问题，如果这种方法有效，建议各位使用。不过，使用这种方法必须拥有强大的调试器权限才行，服务进程行为比较复杂时，使用该方法就可能无法顺利完成调试。</p>
+<h2 id="54-3-3-常用方法"><a href="#54-3-3-常用方法" class="headerlink" title="54.3.3 常用方法"></a>54.3.3 常用方法</h2><p>调试服务最常用的方法是，先将SCM运行的服务进程附加到调试器后再调试。思路很简单，<br>但执行方法可能有问题。因为SCM运行服务后再进行附加操作的话，此时的核心代码（服务主函<br>数）已开始运行。因此，需要在SCM创建服务进程并运行EP代码前附加到调试器，这需要一定<br>的调试技巧，后面的练习示例中将介绍。</p>
+<h1 id="54-4-服务调试练习"><a href="#54-4-服务调试练习" class="headerlink" title="54.4 服务调试练习"></a>54.4 服务调试练习</h1><p>下面以DebugMe1.exe服务程序为例练习服务调试。</p>
+<h2 id="54-4-1-直接调试：强制设置EIP"><a href="#54-4-1-直接调试：强制设置EIP" class="headerlink" title="54.4.1 直接调试：强制设置EIP"></a>54.4.1 直接调试：强制设置EIP</h2><p>首先，使用调试器直接打开服务程序，学习服务程序的调试方法。分析调试服务程序的EP代码与main()函数代码时，采用的调试方法与调试普通应用程序没有什么不同。但一般而言，服务程序的主要代码存在于服务主函数（SvcMain()）与服务处理函数（SvcHandler()）中。</p>
+<p>由调试器而非SCM运行的服务进程不会调用SvcMain()与SvcHandler()函数。所以需要先得到这两个函数的地址，然后再将调试位置移动到那里。在OllyDbg调试器中打开DebugMe1.exe程序，调试运行到main()函数处显示代码，如图54-14所示。</p>
+<p>在40106C地址处可以看到StartServiceCtrlDispatcher() API。对于EXE文件形态的Windows服务程序而言，必须在其EP代码内部调用StartServiceCtrlDispatcher() API，将服务主函数（SvcMain()）的地址通知给SCM。所以，查找该API即可获得SvcMain()地址。</p>
+<blockquote>
+<p>对于DLL文件形式的Windows服务而言，服务主函数（默认为ServiceMain）为导出函数，SCM会调用运行导出函数，所以不需要另外调用StartServiceCtrlDispatcher()API（若想把服务主函数的名称修改为其他名称（非ServiceMain），只要向相关注册表注册即可）。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328152443217.png#crop=0&crop=0&crop=1&crop=1&id=jUfOw&originHeight=668&originWidth=1218&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>StartServiceCtrIDispatcher() API 的 pServiceTable参数为 SERVICE_TABLE_ENTRY结构体指针。跟踪该结构体即可得到服务名称字符串（“SvcMain”）与服务主函数（SvcMain()）的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">SERVICE_TABLE_ENTRY</span> &#123;</span><br>  LPSTR                    lpServiceName;<br>  LPSERVICE_MAIN_FUNCTION  lpServiceProc;<br>&#125; SERVICE_TABLE_ENTRY, *LPSERVICE_TABLE_ENTRY;<br></code></pre></td></tr></table></figure>
+
+<p>图54-14中，调试运行到40106C地址处的CALL DWORD PTR DS:[StartServiceCtrlDispatcher()]指令后，查看栈，如图54-15所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328154133937.png#crop=0&crop=0&crop=1&crop=1&id=IvUWN&originHeight=109&originWidth=1350&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>pServiceTable（12FD24）的第一个成员（40A9CC）为 “SvcHost” 字符串，第二个成员（401320）为SvcMain()函数的地址。</p>
+<blockquote>
+<p>在图54-14中可以看到，从401038地址开始为设置SERVICE_TABLE_ENTRY结构体的代码。</p>
+</blockquote>
+<p>使用OllyDbg调试器中的Ctrl+G命令，转到SvcMain()函数地址处（401320），SvcMain()函数如图54-17所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328154414269.png#crop=0&crop=0&crop=1&crop=1&id=TvUe4&originHeight=422&originWidth=1089&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>为了从401320地址开始调试，需要先将调试位置（准确地说，是被调试进程的EIP值）修改到此处。单击鼠标右键，在弹出菜单中选择New origin here选项，调试位置即被修改为服务主函数（401320），除EIP寄存器外，其他值（栈、除EIP外的寄存器）都保持不变。</p>
+<p>现在开始调试SvcMain()即可。</p>
+<blockquote>
+<p>采用以上方式调试服务主函数（SvcMain()）时需要注意：由于服务进程不是由SCM 正常启动运行的，所以调用与服务相关的部分API时可能引发异常。比如，在图54-17中执行40132A 地址处的 CALL DWORD PTR DS:[RegisterServiceCtrlHandlerW]指令，就会发生EXCEPTION_ACCESS_VIOLATION（0xC0000005）异常。为了 避免这种异常，可以在调试器中强制跳过对相关API的调用，也可以像图54-20一样设置调试器选项。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328154939448.png#crop=0&crop=0&crop=1&crop=1&id=kBYjU&originHeight=497&originWidth=611&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>若在OllyDbg调试器中复选Memory access violation项，就会忽略内存非法访问异常，调试可以继续。</p>
+</blockquote>
+<p>以上方法虽然不是什么硬性规定，但大多数情况下用来调试服务主函数是不会有什么大问题的。当然，有时上面的方法也会失灵，无法正常帮助我们完成调试，此时可以尝试接下来要讲解的方法。</p>
+<h2 id="54-4-2-服务调试的常用方法：“附加”方式"><a href="#54-4-2-服务调试的常用方法：“附加”方式" class="headerlink" title="54.4.2 服务调试的常用方法：“附加”方式"></a>54.4.2 服务调试的常用方法：“附加”方式</h2><p>根据不同情况，我们有时需要将SCM正式运行的服务进程附加到调试器调试。这一过程需要应用一些简单的调试技术。为了帮助各位更好地理解该过程，下面用图54-21简单描述调试技术的具体操作步骤（以调试EP代码为准）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328200439441.png#crop=0&crop=0&crop=1&crop=1&id=VB33B&originHeight=334&originWidth=363&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>以上操作流程的核心是，将服务进程附加到调试器前要进入无限循环，使服务进程的重要代码无法运行。原理非常简单，但具体实施时要充分考虑Service Start Timeout（服务启动超时）这一因素，确保上述操作在规定时间内（默认为30秒）完成。</p>
+<blockquote>
+<p>启动服务后，SCM会在一定时间内（Service Start Timeout）等待服务状态变为STATUS_RUNNING。若规定时间内服务状态未改变，SCM就会引发ERROR_SERVICE_REQUEST_TIMEOUT错误，然后终止相关服务进程。</p>
+</blockquote>
+<p>也就是说，将服务进程附加到调试器后的30秒内，必须把服务进程的状态变更为STATUS_RUNNING。而要更改服务状态，必须调用位于服务主函数的SetServiceStatus() API。但30秒内完成以上操作流程相当困难，所以具体操作前需要增加服务启动超时时间。</p>
+<p><strong>（1）安装服务</strong></p>
+<p>首先将示例程序（DebugMe1.exe）安装为Windows服务（参考图54-6）。</p>
+<p><strong>（2）增加服务启动超时时间</strong></p>
+<p>运行注册表编辑器（regedit.exe），创建ServicesPipeTimeout注册表项（DWORD类型），如下所示（参考图54-22）。</p>
+<blockquote>
+<p>注意注意，这里书中写的是ServicePipeTimeout，少了一个s，这样的话是不起作用的</p>
+</blockquote>
+<p><code>[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control] ServicesPipeTimeout</code></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328202059906.png#crop=0&crop=0&crop=1&crop=1&id=d6Ymu&originHeight=402&originWidth=1158&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>ServicesPipeTimeout并不存在默认值，所以需要创建新值，单位为毫秒（Millisecond），这里<br>设置其值为60 x 60 x 24 x 1000&#x3D;86400000（24小时），这个时间足够了。设置好后重启系统，使之<br>生效，然后就有足够时间调试了。</p>
+<blockquote>
+<p>设置ServicesPipeTimeout值会对系统中的所有服务产生影响，尽量不要在重要的电脑中设置它，建议各位在调试专用电脑中设置。</p>
+</blockquote>
+<p><strong>（3）修改文件：设置无限循环</strong></p>
+<p>接下来，开始向服务可执行文件（EXE或者DLL）的EP地址覆写无限循环（Infinite Loop）代码。使用Stud_PE实用工具，查看DebugMe1.exe文件的EP地址（RVA&#x2F;RAW），如图54-23所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328203454672.png#crop=0&crop=0&crop=1&crop=1&id=s6ql6&originHeight=450&originWidth=623&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>EP的文件偏移（FileOffset&#x3D;RAW）为C24。然后使用HxD实用工具转到该地址处，如图54-24所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328203550913.png#crop=0&crop=0&crop=1&crop=1&id=e6s1E&originHeight=85&originWidth=717&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>原EP代码的前2个字节为0xEB、0xC0（希望各位记住）。在调试器中查看该位置，如图54-25所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328204743703.png#crop=0&crop=0&crop=1&crop=1&id=cS4y9&originHeight=147&originWidth=492&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>0xEB、0xC0是CALL指令的一部分，把它们分别修改为0xEB、0xFE，如图54-26所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328204617867.png#crop=0&crop=0&crop=1&crop=1&id=oDKfA&originHeight=102&originWidth=718&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>使用OllyDbg调试器查看修改后的EP代码，如图54-27所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328204914805.png#crop=0&crop=0&crop=1&crop=1&id=fEUNO&originHeight=84&originWidth=555&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<blockquote>
+<p>虽然可以背诵0xEB、0xFE，但尽量理解其原理会比较好。从IA-32用户手册上可知，操作码0xEB是近距离（Short Distance）JMP指令，带有1个字节大小的值，该值为Signed Value（有符号数），指的是“与Next EIP的相对距离”，计算时有如下公式：</p>
+<p>Jump Address&#x3D;Next EIP(401826)+0xFE(-2)&#x3D;401824</p>
+<p>许多JMP&#x2F;CALL指令都使用上面这样的“相对距离”，请各位熟记上述计算方法。关于IA-32指令的详细说明请参考第49章。</p>
+</blockquote>
+<p>（4）启动服务</p>
+<p>启动SvcTest服务（参考图54-10）。使用Process Explorer查看SvcTest服务进（DebugMe1.exe），<br>可以发现服务进程陷入无限循环，CPU占有率升至近100%，如图54-28所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328205809719.png#crop=0&crop=0&crop=1&crop=1&id=tVRmB&originHeight=137&originWidth=549&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<blockquote>
+<p>实际测试被限定在了50%</p>
+</blockquote>
+<blockquote>
+<p>若系统为Windows 7，启动服务进程时会弹出警告信息框，如图54-29所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220328205844998.png#crop=0&crop=0&crop=1&crop=1&id=kdosw&originHeight=247&originWidth=534&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>错误1503就是ERROR_SERVICE_REQUEST_TIMEOUT错误，因为终止的不是服务进程，所以可以继续。</p>
+<ul>
+<li>若向注册表添加ServicesTimeOut之前出现上述错误，服务进程就会终止执行。 </li>
+<li>在Windows XP系统下向注册表添加ServicesTimeOut后，不会出现上述信息框。</li>
+</ul>
+</blockquote>
+<p><strong>（5）附加至调试器</strong></p>
+<p>在OllyDbg调试器的菜单栏中依次选择File-Attach菜单，选择DebugMe1.exe进程，将其附加到调试器后，调试器在系统库区域（ntdll.DbgBreakPoint）暂停，如图54-31所示。</p>
+<blockquote>
+<p>使用 Ollydbg2.0 后 暂停的地方是死循环的地点，即原本的EntryPoint</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220329193208873.png#crop=0&crop=0&crop=1&crop=1&id=zMGbL&originHeight=127&originWidth=1060&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p><strong>（6）修改进程：删除无限循环</strong></p>
+<p>使用Ctrl+G命令转到DebugMe1.exe进程的EP地址处（VA: 401824）（参考图54-23、图54-25、 图54-27）。</p>
+<p>先按F2键在EP地址处设置断点，然后按F9键运行，如图54-32所示，控制在EP地址处停下来。 在401824地址处使用OllyDbg的编辑功能（Ctrl+E）,将指令恢复为原来的指令代码（0xE8、0xC0），如图54-33所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220329193333114.png#crop=0&crop=0&crop=1&crop=1&id=jEa9a&originHeight=302&originWidth=637&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从图54-34中可以看到，指令代码已经被修改为原来的指令代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220329193355040.png#crop=0&crop=0&crop=1&crop=1&id=td96A&originHeight=126&originWidth=661&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>接下来只要调试目标代码就可以了。</p>
+<blockquote>
+<p>图54-34的状态并非服务正常运行的状态<img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220329195828328.png#crop=0&crop=0&crop=1&crop=1&id=hM2t8&originHeight=427&originWidth=1243&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload>，需要在服务主函数中调用SetServiceStatus() API将服务状态更改为 SERVICE_RUNNING状态才行。</p>
+</blockquote>
+<p>在图54-35中继续调试，调用完401357地址处的SetServiceStatus() API后，SvcTest服务进程（DebugMe1.exe）的状态就变为“启动”状态，如图54-36所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1.assets/image-20220329195903228.png#crop=0&crop=0&crop=1&crop=1&id=R1I5q&originHeight=394&originWidth=438&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h1 id="54-5小结"><a href="#54-5小结" class="headerlink" title="54.5小结"></a>54.5小结</h1><p>本章讲解了服务进程的工作原理及调试方法。虽然没有什么特别难的内容，但如果不理解服务工作原理，就无法准确调试服务主函数。因此，不要只是背下服务进程的调试技术，而要把学习重点放在理解其工作原理上。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第54章 调试练习1:服务</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/05/04/逆向工程核心原理/第54章 调试练习1：服务/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年5月4日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/01/writeup/CISCN%202020%20%E7%BA%BF%E4%B8%8A%E5%88%9D%E8%B5%9B%20%E7%94%B5%E8%84%91%E8%A2%AB%E9%BB%91%20WP/" title="CISCN 2020 线上初赛 电脑被黑 WP">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CISCN 2020 线上初赛 电脑被黑 WP</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术">
+                        <span class="hidden-mobile">第53章 高级反调试技术</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

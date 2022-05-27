@@ -1,0 +1,1338 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第37章 x64处理器">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317221053443.png#alt=image-20220317221053443">
+<meta property="article:published_time" content="1999-03-07T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:54:17.899Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317221053443.png#alt=image-20220317221053443">
+  
+  
+  
+  <title>第37章 x64处理器 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第37章 x64处理器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-03-07 12:21" pubdate>
+          1999年3月7日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第37章 x64处理器</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第37章x64处理器</p>
+<p>要在64位环境中进行代码逆向分析，需要具备x64CPU的基础知识，本章将与各位一起学习。</p>
+<h1 id="37-1-X64中新增或变更的项目"><a href="#37-1-X64中新增或变更的项目" class="headerlink" title="37.1 X64中新增或变更的项目"></a>37.1 X64中新增或变更的项目</h1><p>为了保持向下兼容，x64是在原有x86基础上扩展而来的。要在x64系统中进行代码逆向分析，必须先了解x64中新增或变更的内容。</p>
+<blockquote>
+<p>我们平时很少接触IA-64,此处略去不谈。x64中新增的内容比我们想象的要多得多，这里只讲解与代码逆向分析有关的部分。更详细的内容请参考Intel用户手册以及MSDN等相关信息。</p>
+</blockquote>
+<h2 id="37-1-1-64位"><a href="#37-1-1-64位" class="headerlink" title="37.1.1 64位"></a>37.1.1 64位</h2><p>64位系统中内存地址为64位（8个字节），使用64位大小的指针。所以含有绝对地址（VA）的指令大小比原来增加了4个字节。同样，寄存器的大小以及栈的基本单位也变为64位。</p>
+<h2 id="37-1-2内存"><a href="#37-1-2内存" class="headerlink" title="37.1.2内存"></a>37.1.2内存</h2><p>x64系统中进程虚拟内存的实际大小为16TB（Trea Byte： 10）（内核空间与用户空间各占</p>
+<p>8TB）。与x86的4GB（GigaByte: 109）相比，大小增加了非常多。</p>
+<blockquote>
+<p>用64位可以表示的数为2M&#x3D;16EB（Exa Byte: 10）,日常生活中不会看到这么大的数。所以64位的CPU理论上可以支持16EB大小的内存寻址（Memory Addressing）,但是考虑到实际性能，x64与IA-64都不支持这么大的虚拟内存，因为它会导致巨大的系统开销耗费在内存管理上。</p>
+</blockquote>
+<h2 id="37-1-3通用寄存器"><a href="#37-1-3通用寄存器" class="headerlink" title="37.1.3通用寄存器"></a>37.1.3通用寄存器</h2><p>x64系统中，通用寄存器的大小扩展到64位（8个字节），数量也增加到18个（新增了R8~R15寄存器）。x64系统下的所有通用寄存器的名称均以字母“R”开头（x86以字母“E”开头），如 图37-1所示。</p>
+<p>为了实现向下兼容，支持访问寄存器的8位、16位、32位（例：AL、AX、EAX）。</p>
+<blockquote>
+<p>64位本地模式中不使用段寄存器：CS、DS、ES、SS、FS、GS，它们仅用于向下兼容32位程序。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220313130550781.png#alt=image-20220313130550781" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="37-1-4-CALL-x2F-JMP-指令"><a href="#37-1-4-CALL-x2F-JMP-指令" class="headerlink" title="37.1.4 CALL&#x2F;JMP 指令"></a>37.1.4 CALL&#x2F;JMP 指令</h2><p>32位的x86系统中，CALL&#x2F;JMP指令的使用形式为“地址指令CALL&#x2F;JMP”。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">Address		Instruction		Disassembly<br>--------------------------------------------------------------<br><span class="hljs-number">00401000</span>	FF1500504000	CALL DWORD PTR DS:[<span class="hljs-number">00405000</span>]	;CALL <span class="hljs-number">75</span>CE1E12 (LoadLibraryW)<br>...<br><span class="hljs-number">00401030</span> 	FF2510504000 	JMP DWORD PTR DS:[<span class="hljs-number">00405010</span>]		;JMP <span class="hljs-number">75</span>CE10EF (Sleep)<br>    <br>    <br><span class="hljs-number">00405000</span>	<span class="hljs-number">121</span>ECE75	; <span class="hljs-number">75</span>CE1E12 (Kernel32!LoadLibraryW)<br>...<br><span class="hljs-number">00405010</span> 	EF10CE75 	; <span class="hljs-number">75</span>CE10EF (Kernel32!Sleep)<br></code></pre></td></tr></table></figure>
+
+<p>FF15XXXXXXXX指令用于调用API,其中XXXXXXXX “绝对地址”指向IAT区域的某个位置。x64系统中仍使用相同指令，但解析方法不同。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">Address		Instruction		Disassembly<br>--------------------------------------------------------------<br><span class="hljs-number">00000001</span>`<span class="hljs-number">00401000</span>	FF15FA3F00O0	CALL DWORD PTR DS:[<span class="hljs-number">00000001</span>`<span class="hljs-number">00405000</span>]	;CALL <span class="hljs-number">75</span>CE1E12 (LoadLibraryW)<br>...<br><span class="hljs-number">00000001</span>`<span class="hljs-number">00401030</span> 	FF250A400O00 	JMP DWORD PTR DS:[<span class="hljs-number">00000001</span>`<span class="hljs-number">00405010</span>]		;JMP <span class="hljs-number">75</span>CE10EF (Sleep)<br>    <br>    <br><span class="hljs-number">00000001</span>`<span class="hljs-number">00405000</span>	<span class="hljs-number">121</span>ECE7500000000	; <span class="hljs-number">00000000</span>`<span class="hljs-number">75</span>CE1E12 (Kernel32!LoadLibraryW)<br>...<br><span class="hljs-number">00000001</span>`<span class="hljs-number">00405010</span> 	EF10CE7500000000	; <span class="hljs-number">00000000</span>`<span class="hljs-number">75</span>CE10EF (Kernel32!Sleep)<br></code></pre></td></tr></table></figure>
+
+<p>首先指令地址由原来的4个字节变为8个字节，然后，x86中FF15指令后跟着4个字节的绝对地</p>
+<p>址（VA）而是不想当然的8个字节。若x64中也采用与x86相同的方式，则FF15后面应该跟着8个字节的绝对地址（VA），这样指令的长度就增加了。为了防止增加指令长度，x64系统中指令后面仍然跟着4个字节大小的地址，只不过该地址被解析为“相对地址”（RVA）。所以上面的指令列表中，FF15后面的4个字节（3FFA）被识别为相对地址，并通过下面的方法将相对地址转换为绝对地址。</p>
+<p>0000000<code>00401000+3FFA+6=00000001</code>00405000</p>
+<p>□ 0000000&#96;00401000： CALL 指令地址</p>
+<p>□ 3FFA：相对（地址）</p>
+<p>□ 6： CALL指令（FF15XXXXXXXX)长度</p>
+<p>□ 0000000&#96;00405000：变换后的绝对地址</p>
+<p>由于0000000<code>00405000地址中存储着00000000</code>75CE1E12值，所以上面出现的第一个CALL</p>
+<p>指令最后被解析为CALL 00000000&#96;75CElE12。</p>
+<blockquote>
+<p>关于指令解析方法请参考第49章“IA-32指令”。</p>
+</blockquote>
+<h2 id="37-1-5函数调用约定"><a href="#37-1-5函数调用约定" class="headerlink" title="37.1.5函数调用约定"></a>37.1.5函数调用约定</h2><p>x64系统中另一个重要的不同是函数调用约定。前面介绍过，32位系统中使用的函数调用约定包括cdecl、stdcall、fastcall等几种，但64位系统中它们统一为一种变形的fastcall。64位fastcall中最多可以把函数的4个参数存储到寄存器中传递。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>整数型</th>
+<th>实数型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1st</td>
+<td>RCX</td>
+<td>XMM0</td>
+</tr>
+<tr>
+<td>2nd</td>
+<td>RDX</td>
+<td>XMM1</td>
+</tr>
+<tr>
+<td>3rd</td>
+<td>R8</td>
+<td>XMM2</td>
+</tr>
+<tr>
+<td>4th</td>
+<td>R9</td>
+<td>XMM3</td>
+</tr>
+</tbody></table>
+<p>各参数顺序由寄存器确定，比如第一个参数总是存储在RCX（实数时为XMM0）中。若函数的参数超过4个，则与栈并用。也就是说，从第五个参数开始会存入栈来传递。此外，函数返回 时传递参数过程中所用的栈由<strong>调用者</strong>清理。看上去x64系统下的fastcall就像是32位系统下函数调用约定cdecl与fastcall方式的混合（所以前面我们把它称为变形的fastcall）。使用这种新的fastcall可以大大加快函数调用的速度。还有一点比较有意思的是，函数的前4个参数明明使用寄存器传递，但是栈中仍然为这4个参数预留了空间（32个字节）（下面的栈部分会详细讲解）。</p>
+<h2 id="37-1-6-栈-amp-栈帧"><a href="#37-1-6-栈-amp-栈帧" class="headerlink" title="37.1.6 栈&amp;栈帧"></a>37.1.6 栈&amp;栈帧</h2><p>Windows 64位OS中使用栈与栈帧的方式也发生了变化。简言之，栈的大小比函数实际需要</p>
+<p>的大小要大得多。调用子函数（Sub Function）时，不再使用PUSH命令来传递参数，而是通过MOV指令操作寄存器与预定的栈来传递。使用VC++创建的x64程序代码中几乎看不到PUSH&#x2F;POP指令。并且创建栈帧时也不再使用RBP寄存器，而是直接使用RSP寄存器来实现。</p>
+<blockquote>
+<p>使用Visual C++编译32位程序时，若开启了编译器的优化功能，则几乎看不到使用EBP寄存器的栈帧。</p>
+</blockquote>
+<p>该方式的优点是，调用子函数时不需要改变栈指针（RSP），函数返回时也不需要清理栈指</p>
+<p>针，这样能够大幅提升程序的运行速度。下面通过一个练习示例进一步了解32位与64位栈工作原理的不同。</p>
+<h1 id="37-2-练习：Stack32-exe-amp-Stack64-exe"><a href="#37-2-练习：Stack32-exe-amp-Stack64-exe" class="headerlink" title="37.2 练习：Stack32.exe &amp; Stack64.exe"></a>37.2 练习：Stack32.exe &amp; Stack64.exe</h1><p>通过CreateFile() API简单了解一下栈在32位与64位环境下分别是如何工作的，并比较它们工</p>
+<p>作方式的不同。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    HANDLE hFile = INVALID_HANDLE_VALUE;<br>    <br>    hFile = CreateFileA(<span class="hljs-string">&quot;c:\\work\\ReverseCore.txt&quot;</span>,    <span class="hljs-comment">// 1st - (string)</span><br>                        GENERIC_READ,                   <span class="hljs-comment">// 2nd - 0x80000000</span><br>                        FILE_SHARE_READ,                <span class="hljs-comment">// 3rd - 0x00000001</span><br>                        <span class="hljs-literal">NULL</span>,                           <span class="hljs-comment">// 4th - 0000000000</span><br>                        OPEN_EXISTING,                  <span class="hljs-comment">// 5th - 0x00000003</span><br>                        FILE_ATTRIBUTE_NORMAL,          <span class="hljs-comment">// 6th - 0x00000080</span><br>                        <span class="hljs-literal">NULL</span>);                          <span class="hljs-comment">// 7th - 0x00000000</span><br><br>    <span class="hljs-keyword">if</span>( hFile != INVALID_HANDLE_VALUE )<br>        CloseHandle(hFile);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>首先使用Visual Studio 2012具将代码37-1分别编译为32位程序（Stack32.exe）与64位程序（Stack64.exe）。</p>
+<h2 id="37-2-1-Stack32-exe"><a href="#37-2-1-Stack32-exe" class="headerlink" title="37.2.1 Stack32.exe"></a>37.2.1 Stack32.exe</h2><p>下面先调试32位Stack32.exe程序。使用OllyDbg工具打开Stack32.exe，转到main()函数处（401000），如图37-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317221053443.png#alt=image-20220317221053443" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>首先分析Stack32.exe的main()函数特征。</p>
+<p>特征一，不使用栈帧。由于代码比较简单，变量又少，开启编译器的优化选项后，栈帧会被省略。</p>
+<p>特征二，调用子函数（CreateFileA、CloseHandle）时使用栈传递参数。</p>
+<p>特征三，使用PUSH指令压入栈的函数参数不需要main()函数清理。在32位环境中采用stdcall方式调用Win32 API时，由被调用者（CreateFileA、CloseHandle）清理栈。在图37-2中跟踪代码到401017地址的CreateFileA()函数处，查看栈，如图37-3所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317221215693.png#alt=image-20220317221215693" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>可以看到，函数的7个参数全部被压入栈。接着使用StepInto（F7）命令，进入CreateFileA() API，如图37-4所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317222745820.png#alt=image-20220317222745820" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从图37-4中可以看到，CreateFileA() API使用了栈帧。并在调用CreateFileW() API之前使用PUSH指令将接收的参数压入栈。这样栈中就有了2份相同的参数（它们的区别在于第一份的7个参数为ASCII字符串格式，第二份的7个参数为Unicode字符串形式），如图37-5所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317222511828.png#alt=image-20220317222511828" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图37-5描述的是调用CreateFileW() API时栈中的情形。从图中可以清楚看到，相同参数被重复存入栈。以上就是我们熟知的在32位环境中调用函数时栈的工作原理。</p>
+<h2 id="37-2-2-Stack64-exe"><a href="#37-2-2-Stack64-exe" class="headerlink" title="37.2.2 Stack64.exe"></a>37.2.2 Stack64.exe</h2><p>下面调试64位Stack64.exe程序。使用WinDbg（x64）分析Stack64.exe的反汇编代码，如图37-6所示。</p>
+<blockquote>
+<p>正常运行&#x2F;调试本示例文件需要Windows XP&#x2F;Vista&#x2F;7 64位环境支持</p>
+</blockquote>
+<p>图37-6是在x64dbg 中调试Stack64.exe的画面。WinDbg下的64位程序的反汇编代码不带注释，且看上去比较复杂，简单整理如代码37-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220317230818266.png#alt=image-20220317230818266" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-number">0000000140001000</span> | <span class="hljs-number">48</span>:<span class="hljs-number">83</span>EC <span class="hljs-number">48</span>               | sub rsp,<span class="hljs-number">48</span>                              <br><span class="hljs-number">0000000140001004</span> | <span class="hljs-number">45</span>:<span class="hljs-number">33</span>C9                  | xor r9d,r9d                         ; <span class="hljs-number">4</span>th - pSecurity   <br><span class="hljs-number">0000000140001007</span> | <span class="hljs-number">48</span>:C74424 <span class="hljs-number">30</span> <span class="hljs-number">00000000</span>    | mov qword ptr ss:[rsp+<span class="hljs-number">30</span>],<span class="hljs-number">0</span>         ; <span class="hljs-number">7</span>th - hTemplateFile<br><span class="hljs-number">0000000140001010</span> | <span class="hljs-number">48</span>:<span class="hljs-number">8</span>D0D A1110000         | lea rcx,qword ptr ds:[<span class="hljs-number">1400021B</span>8]    ; <span class="hljs-number">1</span>st - FileName<br><span class="hljs-number">0000000140001017</span> | <span class="hljs-number">45</span>:<span class="hljs-number">8</span>D41 <span class="hljs-number">01</span>               | lea r8d,qword ptr ds:[r9+<span class="hljs-number">1</span>]         ; <span class="hljs-number">3</span>rd - ShareMode<br><span class="hljs-number">000000014000101B</span> | BA <span class="hljs-number">00000080</span>              | mov edx,<span class="hljs-number">80000000</span>                    ; <span class="hljs-number">2</span>nd - Access<br><span class="hljs-number">0000000140001020</span> | C74424 <span class="hljs-number">28</span> <span class="hljs-number">80000000</span>       | mov dword ptr ss:[rsp+<span class="hljs-number">28</span>],<span class="hljs-number">80</span>        ; <span class="hljs-number">6</span>th - Attributes<br><span class="hljs-number">0000000140001028</span> | C74424 <span class="hljs-number">20</span> <span class="hljs-number">03000000</span>       | mov dword ptr ss:[rsp+<span class="hljs-number">20</span>],<span class="hljs-number">3</span>         ; <span class="hljs-number">5</span>th - Mode<br><span class="hljs-number">0000000140001030</span> | FF15 CA0F0000            | call qword ptr ds:[&lt;&amp;CreateFileA&gt;]      <br><span class="hljs-number">0000000140001036</span> | <span class="hljs-number">48</span>:<span class="hljs-number">83F</span>8 FF               | cmp rax,FFFFFFFFFFFFFFFF                <br><span class="hljs-number">000000014000103</span>A | <span class="hljs-number">74</span> <span class="hljs-number">09</span>                    | je <span class="hljs-built_in">stack</span><span class="hljs-number">.140001045</span>                      <br><span class="hljs-number">000000014000103</span>C | <span class="hljs-number">48</span>:<span class="hljs-number">8B</span>C8                  | mov rcx,rax                             <br><span class="hljs-number">000000014000103F</span> | FF15 C30F0000            | call qword ptr ds:[&lt;&amp;CloseHandle&gt;]      <br><span class="hljs-number">0000000140001045</span> | <span class="hljs-number">33</span>C0                     | xor eax,eax                             <br><span class="hljs-number">0000000140001047</span> | <span class="hljs-number">48</span>:<span class="hljs-number">83</span>C4 <span class="hljs-number">48</span>               | add rsp,<span class="hljs-number">48</span>                              <br><span class="hljs-number">000000014000104B</span> | C3                       | ret<br></code></pre></td></tr></table></figure>
+
+<p>Stack64.exe代码具有如下几个特征。</p>
+<p>特征一，使用“变形”的栈帧。在代码起始部分分配48h（72d）字节大小的栈，最后在RET命令之前释放。这样大小的栈对于存储局部变量、函数参数等足够了。还有一点需要注意的是，栈操作并未使用RBP寄存器，而直接使用RSP寄存器。</p>
+<p>特征二，几乎没有使用PUSH&#x2F;POP指令。请认真看看调用CreateFileA()API时设置参数的代码（00000001<code>40001004~00000001</code>40001028）。第 1<del>4个参数使用寄存器（RCX、RDX、R8、R9）， 第5</del>7个参数使用栈。main()函数开始执行时，使用MOV指令将参数放入分配的栈。有意思的是，并未看到调用者清理栈（64位fastcall的特征）的代码，原因在于子函数使用的是分配给main()函数的栈，子函数本身不会分配到栈或扩展栈。main()函数的栈管理由main()函数自身负责，子函数不需要管理通过栈传递的参数。</p>
+<p>特征三，第五个参数之后的参数在栈中的存储位置。调用CreateFileA() API前要设定参数，设置顺序比较混乱（函数参数在32位程序中会依序压入栈）。第1-4个参数使用寄存器（RCX、RDX、R8、R9）,从第五个参数开始使用栈，但第五个参数在栈中的存储位置显得有些奇怪。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0000000140001028 | C74424 20 03000000       | mov dword ptr ss:[rsp+20],3         ; 5th - Mode<br></code></pre></td></tr></table></figure>
+
+<p>从以上代码可以看到，第五个参数在栈中的存储位置为[rsp+20h]，并未指向栈顶（[rsp]）。原因在于，虽然x64系统中第1~4个参数使用寄存器传递，但栈中仍然为它们预留了同等大小的空间（20h&#x3D;32d&#x3D;4param*8字节）。所以，第五个参数开始的参数从栈的[rsp+20h]位置（非[rsp]位置）开始保存（这样预留的栈空间也可以在子函数中使用）。接下来进入CreateFileA() API查看。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00000000778731F0 	 48:895C24 08             	 mov qword ptr ss:[rsp+8],rbx            <br>00000000778731F5 	 48:896C24 10             	 mov qword ptr ss:[rsp+10],rbp           <br>00000000778731FA 	 48:897424 18             	 mov qword ptr ss:[rsp+18],rsi           <br>00000000778731FF 	 57                       	 push rdi                                <br>0000000077873200 	 48:83EC 60               	 sub rsp,60                              <br>0000000077873204 	 8BFA                     	 mov edi,edx                             <br>0000000077873206 	 48:8BD1                  	 mov rdx,rcx                             <br>0000000077873209 	 48:8D4C24 50             	 lea rcx,qword ptr ss:[rsp+50]           <br>000000007787320E 	 49:8BF1                  	 mov rsi,r9                              <br>0000000077873211 	 41:8BE8                  	 mov ebp,r8d                             <br>0000000077873214 	 FF15 26950700            	 call qword ptr ds:[&lt;&amp;RtlInitAnsiStringE <br>000000007787321A 	 85C0                     	 test eax,eax                            <br>000000007787321C 	 0F88 EC5A0100            	 js kernel32.77888D0E                    <br>		<br>...		<br>		<br>0000000077873263 	 8BD7                     	 mov edx,edi                             <br>0000000077873265 	 E8 86FEFFFF              	 call kernel32.778730F0                  <br>000000007787326A 	 48:85C0                  	 test rax,rax                            <br>000000007787326D 	 0F85 765A0100            	 jne kernel32.77888CE9                   <br>0000000077873273 	 48:8B8424 A0000000       	 mov rax,qword ptr ss:[rsp+A0]           <br>000000007787327B 	 4C:8BCE                  	 mov r9,rsi                              <br>000000007787327E 	 44:8BC5                  	 mov r8d,ebp                             <br>0000000077873281 	 48:894424 30             	 mov qword ptr ss:[rsp+30],rax           <br>0000000077873286 	 8B8424 98000000          	 mov eax,dword ptr ss:[rsp+98]           <br>000000007787328D 	 8BD7                     	 mov edx,edi                             <br>000000007787328F 	 894424 28                	 mov dword ptr ss:[rsp+28],eax           <br>0000000077873293 	 8B8424 90000000          	 mov eax,dword ptr ss:[rsp+90]           <br>000000007787329A 	 48:8BCB                  	 mov rcx,rbx                             <br>000000007787329D 	 894424 20                	 mov dword ptr ss:[rsp+20],eax           <br>00000000778732A1 	 E8 E2FEFFFF              	 call &lt;JMP.&amp;CreateFileW&gt;                 <br>00000000778732A6 	 48:8BD8                  	 mov rbx,rax                             <br>00000000778732A9 	 48:8D4C24 40             	 lea rcx,qword ptr ss:[rsp+40]           <br>00000000778732AE 	 FF15 1C990700            	 call qword ptr ds:[&lt;&amp;RtlFreeUnicodeStri <br>00000000778732B4 	 48:8BC3                  	 mov rax,rbx                             <br>00000000778732B7 	 48:8B5C24 70             	 mov rbx,qword ptr ss:[rsp+70]           <br>00000000778732BC 	 48:8B6C24 78             	 mov rbp,qword ptr ss:[rsp+78]           <br>00000000778732C1 	 48:8BB424 80000000       	 mov rsi,qword ptr ss:[rsp+80]           <br>00000000778732C9 	 48:83C4 60               	 add rsp,60                              <br>00000000778732CD 	 5F                       	 pop rdi                                 <br>00000000778732CE 	 C3                       	 ret<br></code></pre></td></tr></table></figure>
+
+<p>先看一下由寄存器与栈传递来的参数（参考图37-7）。栈传递的参数之上是参数1-4的预留空间（00000000<code>0012FEE0~00000000</code>0012FEF8）（参考图37-8）。虽然未在传递函数参数时使用，但是从代码37-3的前3个指令可以看到向该空间赋值的操作（有时采用这种方式使用）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220318135046644.png#alt=image-20220318135046644" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8.assets/image-20220318135504279.png#alt=image-20220318135504279" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>最后谈谈代码37-3中的CreateFileA()的栈帧。由于该函数较长且复杂，所以分配了60h（96d）大小的栈。遇到上面这种情况，调CreateFileW()时使用寄存器和栈，与32位环境下的情形是一致的，重复的值被放入栈。</p>
+<blockquote>
+<p>如果CreateFileA()是一个非常简单的函数，自身不需要使用栈帧，不向栈放入重复值的情形下，可以原样调用CreateFileW()函数。函数用中，64位的这种调用方式要比32位的调用方式好得多。</p>
+</blockquote>
+<h1 id="37-3小结"><a href="#37-3小结" class="headerlink" title="37.3小结"></a>37.3小结</h1><p>x64并不只是x86的扩展，设计时做了非常大的改变，Windows 64位OS与开发工具中也存在很多与32位系统不同的部分。现在正处于32位到64位的过渡期，各种信息稀少且杂乱。但制造商非常细心地考虑了HW&#x2F;SW的向下兼容性，相信能够平稳渡过整个过渡期。64位时代真正到来时，与逆向分析工具及逆向分析方法相关的信息会得到更新升级，进行代码逆向分析会更轻松。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第37章 x64处理器</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/03/07/逆向工程核心原理/第37章 x64处理器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年3月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第38章 PE32+</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算">
+                        <span class="hidden-mobile">第36章 64位计算</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

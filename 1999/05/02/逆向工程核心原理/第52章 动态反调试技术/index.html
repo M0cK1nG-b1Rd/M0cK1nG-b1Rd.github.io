@@ -1,0 +1,1691 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第52章 动态反调试技术">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323201434522.png#alt=image-20220323201434522">
+<meta property="article:published_time" content="1999-05-02T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:52:08.998Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323201434522.png#alt=image-20220323201434522">
+  
+  
+  
+  <title>第52章 动态反调试技术 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第52章 动态反调试技术"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-05-02 12:21" pubdate>
+          1999年5月2日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          146 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第52章 动态反调试技术</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第52章动态反调试技术</p>
+<p>本章讲解动态组别中的反调试技术。运用动态反调试技术可以不断阻止对程序代码的跟踪调试。与静态反调试技术相比，动态反调试技术难度更高，破解难度也更大。</p>
+<h1 id="52-1动态反调试技术的目的"><a href="#52-1动态反调试技术的目的" class="headerlink" title="52.1动态反调试技术的目的"></a>52.1动态反调试技术的目的</h1><p>反调试技术的目的就是隐藏和保护程序代码与数据，使之无法进行逆向分析。PE保护器中一般会大量应用动态反调试技术，以保护源程序的核心算法。在调试器中调试运行（应用了动态反调试技术的）.程序时，动态反调试技术就会干扰调试器，使之无法正常跟踪查找源程序的核心代码（OEP）。</p>
+<blockquote>
+<p>一名优秀的代码逆向分析入员能够克服各种困难，顺利完成逆向分析任务。但是分析应用了动态反调试技术的程序时，仍然会比较费力，且分析时间也会大大增加</p>
+</blockquote>
+<h1 id="52-2异常"><a href="#52-2异常" class="headerlink" title="52.2异常"></a>52.2异常</h1><p>异常（Exception)常用于反调试技术。正常运行的进程发生异常时，在SEH机制的作用下， OS会接收异常，然后调用进程中注册的SEH处理。但是，若进程（被调试者）在调试运行中发生异常，调试器就会接收处理。利用该特征可判断进程是正常运行还是调试运行，然后根据不同结果执行不同操作，这就是反调试技术的原理。</p>
+<blockquote>
+<p>关于利用SEH的反调试工作原理及破解之法请参考第48章。</p>
+</blockquote>
+<h2 id="52-2-1-SEH"><a href="#52-2-1-SEH" class="headerlink" title="52.2.1 SEH"></a>52.2.1 SEH</h2><p>代码52-1列出了Windows操作系统中的一些典型异常。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c">STILL_ACTIVE						(<span class="hljs-number">0x00000103</span>L)<br>EXCEPTION_ACCESS_VIOLATION			(<span class="hljs-number">0xC0000005</span>L)<br>EXCEPTION_DATATYPE_MISALIGNMENT		(<span class="hljs-number">0x80000002</span>L)<br>EXCEPTION_BREAKPOINT				(<span class="hljs-number">0x80000003</span>L)<br>EXCEPTION_SINGLE_STEP				(<span class="hljs-number">0x80000004</span>L)<br>EXCEPTION_ARRAY_BOUNDS_EXCEEDED		(<span class="hljs-number">0xC000008C</span>L)<br>EXCEPTION_FLT_DENORMAL_OPERAND		(<span class="hljs-number">0xC000008D</span>L)<br>EXCEPTION_FLT_DIVIDE_BY_ZERO		(<span class="hljs-number">0xC000008E</span>L)<br>EXCEPTION_FLT_INEXACT_RESULT		(<span class="hljs-number">0xC000008F</span>L)<br>EXCEPTION_FLT_INVALID_OPERATION		(<span class="hljs-number">0xC0000090</span>L)<br>EXCEPTION_FLT_OVERFLOW				(<span class="hljs-number">0xC0000091</span>L)<br>EXCEPTION_FLT_STACK_CHECK			(<span class="hljs-number">0xC0000092</span>L)<br>EXCEPTION_FLT_UNDERFLOW				(<span class="hljs-number">0xC0000093</span>L)<br>EXCEPTION_INT_DIVIDE_BY_ZERO		(<span class="hljs-number">0xC0000094</span>L)<br>EXCEPTION_INT_OVERFLOW				(<span class="hljs-number">0xC0000095</span>L)<br>EXCEPTION_PRIV_INSTRUCTION			(<span class="hljs-number">0xC0000096</span>L)<br>EXCEPTION_IN_PAGE_ERROR				(<span class="hljs-number">0xC0000006</span>L)<br>EXCEPTION_ILLEGAL_INSTRUCTION		(<span class="hljs-number">0xC000001D</span>L)<br>EXCEPTION_NONCONTINUABLE_EXCEPTION	(<span class="hljs-number">0xC0000025</span>L)<br>EXCEPTION_STACK_OVERFLOW			(<span class="hljs-number">0xC00000FD</span>L)<br>EXCEPTION_INVALID_DISPOSITION		(<span class="hljs-number">0xC0000026</span>L)<br>EXCEPTION_GUARD_PAGE				(<span class="hljs-number">0x80000001</span>L)<br>EXCEPTION_INVALID_HANDLE			(<span class="hljs-number">0xC0000008</span>L)<br>CONTROL_C_EXIT						(<span class="hljs-number">0xC000013A</span>L)<br></code></pre></td></tr></table></figure>
+
+<p><strong>EXCEPTION_BREAKPOINT</strong></p>
+<p>Windows操作系统中最具代表性的异常是断点异常。Breakpoint指令触发异常时，若程序处于正常运行状态，则自动调用已经注册过的SEH;若程序处于调试运行状态，则系统会立刻停止运行程序，并将控制权转给调试器。一般而言，异常处理器中都含有修改EIP值的代码。修改调试器选项可以把处在调试中的进程产生的相关异常转给操作系统，自动调用SEH处理。但即便如此，在异常处理器中适当应用静态反调试技术，也能够轻松判断进程是否处于调试状态。此外，EIP值在异常处理器内部如何变化也不得而知，这意味着，必须跟踪进入异常处理器才能继续调试。</p>
+<p>若程序中仅应用了几个基于SEH的反调试技法，则很容易破解。但若应用了数十乃至数百个这样的反调试技法，调试速度就会大大降低，失误的风险也会大增。</p>
+<ul>
+<li>练习</li>
+</ul>
+<p>先在OllyDbg调试器中打开示例程序（DynAD_SEH.exe)，然后在401000地址处设置好断点并运行，如图52-1所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323201434522.png#alt=image-20220323201434522" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图52-1中的代码是基于INT3异常的反调试代码，代码执行流如图52-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323201532130.png#alt=image-20220323201532130" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>下面逐个分析代码执行流各阶段的代码（请各位边调试边跟着学习）。</p>
+<p><strong>#1.安装SEH</strong></p>
+<p>首先在以下代码中安装SEH （40102C）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401011	PUSH 40102C					; SEH<br>00401016 	PUSH DWORD PTR FS:[0]<br>0040101D	MOV DWORD PTR FS:[0],ESP<br></code></pre></td></tr></table></figure>
+
+<p><strong>#2.发生INT3异常</strong></p>
+<p>以下代码用来触发INT3异常。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-number">00401024</span> INT3<br></code></pre></td></tr></table></figure>
+
+<p><strong>#3-1.调试运行——终止进程</strong></p>
+<p>若进程处于调试运行状态，则需要由调试器（此处为OllyDbg)处理异常。INT3指令是CPU中断（Interrupt)命令，<strong>在用户模式的调试器中什么也不做</strong>，继续执行其下的命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401025	MOV EAX,-1		; -1 (0xFFFFFFFF)<br>0040102A	JMP EAX<br></code></pre></td></tr></table></figure>
+
+<p>因进程处于调试中，故跳转到非法地址处（FFFFFFFF )，无法继续调试。</p>
+<blockquote>
+<p>以上练习示例中，进程处于调试状态时会直接终止运行，逆向分析入员能够借此轻松把握在什么地方遭受了反调试。但是有些保护器会将代码执行跳转到垃圾代码。逆向分析入员跟踪这些冗长的垃圾代码时会精疲力尽，而且进程终止时，也很难把握在哪里遭受了反调试技术的“狙击”。这是一种非常狡猾的伎俩，很容易让入陷入迷途。</p>
+</blockquote>
+<p><strong>#3-2.正常运行（非调试运行）——运行SEH</strong></p>
+<p>若进程为非调试运行，那么执行到INT3指令时就会调用执行前面已经注册过的SEH。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0040102C	MOV EAX,DWORD PTR SS:[ESP+C]<br>00401031	MOV EBX,401040<br>00401036	MOV DWORD PTR DS:[EAX+B8],EBX<br>0040103D	XOR EAX,EAX<br>0040103F	RETN<br></code></pre></td></tr></table></figure>
+
+<p><code>SS:[ESP+C]</code>是<code>CONTEXT *pContext</code>结构体的指针，而<code>CONTEXT *pContext</code>结构体正是SEH的第三个参数，它是一个发生异常的线程CONTEXT结构体。DS:[EAX+B8]指向pContext→Eip成员，所以401036地址处的MOV指令用来将该结构体的EIP值修改为401040。然后，异常处理器返回0 （ExceptionContinueExecution）。接下来，发生异常的线程再次从修改后的EIP地址处（401040)开始运行。SEH函数定义如下，请参考。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c">EXCEPTION_DISPOSITION <span class="hljs-title function_">ExceptHandler</span><br><span class="hljs-params">( </span><br><span class="hljs-params">    EXCEPTION_RECORD 				*pRecord,</span><br><span class="hljs-params">    EXCEPTION_REGISTRATION_RECORD	*pFrame,</span><br><span class="hljs-params">    CONTEXT 						*pContext,</span><br><span class="hljs-params">    PVOID 							pValue</span><br><span class="hljs-params">)</span>;<br><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> _<span class="hljs-title">EXCEPTION_DISPOSITION</span></span><br><span class="hljs-class">&#123;</span><br>	ExceptionContinueExecution = <span class="hljs-number">0</span>,	<span class="hljs-comment">// 继续执行代码</span><br>	ExceptionContinueSearch = <span class="hljs-number">1</span>,	<span class="hljs-comment">// 运行下一个异常处理器</span><br>	ExceptionNestedException = <span class="hljs-number">2</span>,	<span class="hljs-comment">// 在OS内部使用</span><br>	ExceptionCollidedUnwind = <span class="hljs-number">3</span>		<span class="hljs-comment">// 在OS内部使用</span><br>&#125; EXCEPTION_DISPOSITION;<br></code></pre></td></tr></table></figure>
+
+<p>以下是CONTEXT结构体的定义（已标出各成员的偏移量)。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">CONTEXT</span> &#123;</span><br><br>    DWORD ContextFlags;<br><br>    DWORD   Dr0; <span class="hljs-comment">// 04h</span><br>    DWORD   Dr1; <span class="hljs-comment">// 08h</span><br>    DWORD   Dr2; <span class="hljs-comment">// 0Ch</span><br>    DWORD   Dr3; <span class="hljs-comment">// 10h</span><br>    DWORD   Dr6; <span class="hljs-comment">// 14h</span><br>    DWORD   Dr7; <span class="hljs-comment">// 18h</span><br><br>    FLOATING_SAVE_AREA FloatSave;<br><br>    DWORD   SegGs; <span class="hljs-comment">// 88h</span><br>    DWORD   SegFs; <span class="hljs-comment">// 90h</span><br>    DWORD   SegEs; <span class="hljs-comment">// 94h</span><br>    DWORD   SegDs; <span class="hljs-comment">// 98h</span><br><br>    DWORD   Edi; <span class="hljs-comment">// 9Ch</span><br>    DWORD   Esi; <span class="hljs-comment">// A0h</span><br>    DWORD   Ebx; <span class="hljs-comment">// A4h</span><br>    DWORD   Edx; <span class="hljs-comment">// A8h</span><br>    DWORD   Ecx; <span class="hljs-comment">// ACh</span><br>    DWORD   Eax; <span class="hljs-comment">// B0h</span><br><br>    DWORD   Ebp; <span class="hljs-comment">// B4h</span><br>    DWORD   Eip; <span class="hljs-comment">// B8h</span><br>    DWORD   SegCs; <span class="hljs-comment">// BCh              // MUST BE SANITIZED</span><br>    DWORD   EFlags; <span class="hljs-comment">// C0h             // MUST BE SANITIZED</span><br>    DWORD   Esp; <span class="hljs-comment">// C4h</span><br>    DWORD   SegSs; <span class="hljs-comment">// C8h</span><br><br>    BYTE    ExtendedRegisters[MAXIMUM_SUPPORTED_EXTENSION];<br><br>&#125; CONTEXT;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>若不处理异常且EIP值保持不变，返回ExceptionContinueExecution时会再次执行401024地址处的INT3指令，同时再次调用执行40102C地址处的SEH，最终陷入无限循环，造成栈溢出，导致进程终止。</p>
+</blockquote>
+<p><strong>#4.删除SEH</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401040	POP DWORD PTR FS:[0]<br>00401047	ADD ESP,4<br></code></pre></td></tr></table></figure>
+
+<p>进程正常运行时，#1中注册的SEH（40102C）就会被删除（若进程处于调试运行，#3-1中的代码就会造成进程非正常终止)。</p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>如图52-3所示，在Debugging options对话框的Exceptions选项卡中，复选“INT3 breaks”后，调试器就会忽略被调试进程中发生的INT3异常，而由自身的SEH处理。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323203151621.png#alt=image-20220323203151621" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>如图52-3设置好调试选项，进程调试过程中遇到INT3指令时，调试器不会停下来，而会自动调用执行被调试进程的SEH （与正常运行一样）。请各位自行测试，先分别在SEH（40102C）与代码正常运行处（401040）设置断点，然后按F9键运行程序。</p>
+<blockquote>
+<p>有时，在某些环境（OS、调试器插件Bug等）中使用StepInto（F7）或StepOver（F8）命令跟踪INT3指令会导致调试器非正常终止。遇到这种情况时，请按照以上说明设置好断点后再按F9运行程序。</p>
+</blockquote>
+<h2 id="52-2-2-SetUnhandledExceptionFilter"><a href="#52-2-2-SetUnhandledExceptionFilter" class="headerlink" title="52.2.2 SetUnhandledExceptionFilter()"></a>52.2.2 SetUnhandledExceptionFilter()</h2><p>进程中发生异常时，若SEH未处理或注册的SEH根本不存在，会发生什么呢？此时会调用执行系统的kernel32!UnhandledExceptionFilter() API。该函数内部会运行系统的最后一个异常处理器（名为Top Level Exception Filter或Last Exception Filter）。系统最后的异常处理器通常会弹出错误消息框，然后终止进程运行，如图52-4所示。</p>
+<p>值得注意的是，kernel32!UnhandledExceptionFilter()内部调用了ntdll!NtQuerylnformationProcess（ProcessDebugPort）API （静态反调试技术），以判断是否正在调试进程。若进程正常运行（非调试运行），则运行系统最后的异常处理器；若进程处于调试中，则将异常派送给凋试器。通过kernel32!SetUnhandledExceptionFilter()API可以修改系统最后的异常处理器（Top Level Exception Filter），函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">LPTOP_LEVEL_EXCEPTION_FILTER <span class="hljs-title function_">SetUnhandledExceptionFilter</span><span class="hljs-params">(</span><br><span class="hljs-params">  [in] LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>调用该函数修改系统最后异常处理器时，只要将新的Top Level Exception Filter函数地址传递给函数的IpTopLevelExceptionFilter参数即可（返回值为上一个Last Exception Filter函数地址）。TopLevel Exception Filter函数定义如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">EXCEPTION_POINTERS</span> &#123;</span><br>  PEXCEPTION_RECORD ExceptionRecord;<br>  PCONTEXT          ContextRecord;<br>&#125; EXCEPTION_POINTERS, *PEXCEPTION_POINTERS;<br><br>LONG <span class="hljs-title function_">TopLevelExceptionFilter</span><span class="hljs-params">(</span><br><span class="hljs-params">	PEXCEPTION_POINTERS pExcept</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>基于异常的反调试技术中，通常先特意触发异常，然后在新注册的Last Exception Filter内部判断进程正常运行还是调试运行，并根据判断结果修改EIP值。系统在此过程中自行判断调试与否。这种反调试技术融合了静态与动态方法，下面通过练习示例进一步学习。</p>
+<ul>
+<li>练习</li>
+</ul>
+<p>首先在OllyDbg调试器中打开示例程序（DynAD_SUEF.exe），在401030地址处设置断点后运行（参考图52-5）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220323205323919.png#alt=image-20220323205323919" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>下面边调试代码边了解程序执行流及反调试工作原理。首先调用printf()函数输出字符串，代码如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401030     55             PUSH EBP<br>00401031     8BEC           MOV EBP,ESP<br>00401033     68 A0994000    PUSH DynAD_SU.004099A0     ;  ASCII &quot;SEH : SetUnhandledExceptionFilter()<br>00401038     E8 4A000000    CALL DynAD_SU.00401087<br>0040103D     83C4 04        ADD ESP,4<br></code></pre></td></tr></table></figure>
+
+<p>然后，调用SetUnhandledExceptionFilter()来注册新的Top Level Exception Filter（新的Exception Filter函数中包含异常处理代码）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401040     68 00104000    PUSH DynAD_SU.00401000			; pTopLevelFilter = DynAD_SU.00401000<br>00401045     FF15 00804000  CALL DWORD PTR DS:[&lt;&amp;KERNEL32.SetUnhandledExceptionFilter&gt;<br>0040104B     A3 3CCB4000    MOV DWORD PTR DS:[40CB3C],EAX	; 保存Old Filter的地址<br></code></pre></td></tr></table></figure>
+
+<p>在Top Level Exception Filter（401000）与Kernel32!UnhandledExceptionFilter() API设置好断点。位于401045地址处的CALL指令用来将401000地址处的函数注册为Top Level Exception Filter。‘然后强制触发异常，代码如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401050     33C0           XOR EAX,EAX<br>00401052     8900           MOV DWORD PTR DS:[EAX],EAX<br></code></pre></td></tr></table></figure>
+
+<p>若执行401052地址处的指令，程序将尝试向尚未定义的进程虚拟内存地址（0）写入值，这会引发无效的内存非法访问异常。接着，程序会在设有断点的Kernel32!UnhandledExceptionFilter()API内部自动暂停（因异常未处理，故系统要运行它），如图52-6所示。</p>
+<blockquote>
+<p>跟着书本调试到这里的时候发现图52-6和Window 7 展示出来的有很大不同，和XP的一致。看起来微软对这个API进行了一些修改。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324100843767.png#alt=image-20220324100843767" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>请注意7C863EF1地址处的CALL ntdll!NtQueryInformationProcess()API指令，其第二个参数传入的值为ProcessDebugPort （7）。前一章中讲过，它是一种静态反调试技术，用来探测调试器。</p>
+<blockquote>
+<p>也就是Windows官方也使用了一定的反调试手段。</p>
+</blockquote>
+<p>为了继续调试，调用该函数后需要将第三个参数[EBP-124]的值（原值为FFFFFFFF）修改为0 （参考图52-7）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324101236740.png#alt=image-20220324101236740" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>继续跟踪调试，出现图52-8所示的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324101938068.png#alt=image-20220324101938068" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>7C86402F地址处的CALL EBX指令用来调用前面注册的New Top Level Exception Filter函数（401000）。接下来继续跟踪Exception Filter函数，如图52-9所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324103154245.png#alt=image-20220324103154245" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>地址401003代码中的[40CB3C]是Old Top Level Exception Handler地址（在图52-5的代码中备份过）。在401009地址处再次调用SetUnhandledExceptionFilter()，恢复Exception Filter。401015地址处的ADD指令将EIP的值增加了4。由图52-5可知，发生异常的代码地址为401052，将该值加4变为401056。也就是说，返回Exception Filter后，继续从401056地址处执行代码（在401056地址处设置好断点后即可继续调试）。以上示例代码并不复杂，多调试几次就能充分理解其原理。</p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>利用SetUnhandledExceptionFilter()API反调试的技术综合运用了静态&amp;动态技术。因此，破解时要先使Kernel32!UnhandledExceptionFilter()（静态技术）内部调用的ntdll!NtQueryInformationProcess()API失效（使用API钩取等技术）。然后调用SetUnhandledExceptionFilter() API跟踪注册的Exception Filter,在正常运行时确定要跳到哪个地址即可。</p>
+<blockquote>
+<p>除上述内容外，还有许多基于异常触发的反调试技术。特别是基于SEH的反调试技术在实际中使用得非常多，希望各位通过大量练习来掌握。</p>
+</blockquote>
+<h1 id="52-3-Timing-Check"><a href="#52-3-Timing-Check" class="headerlink" title="52.3 Timing Check"></a>52.3 Timing Check</h1><p>在调试器中逐行跟踪程序代码比程序正常运行（非调试运行）耗费的时间要多岀很多。Timing Check技术通过计算运行时间的差异来判断进程是否处于被调试状态（参考图52-10）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324111841007.png#alt=image-20220324111841007" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>基于Timing Check的反调试原理相当简单，破解之法也不难，只要直接操作获取的时间信息或比较时间的语句即可。但实际操作中，该反调试技术通常与其他反调试技术并用，导致反调试的破解过程变得异常困难（特别是这些代码不明显时，破解的难度会更大）。</p>
+<blockquote>
+<p>Timing Check技术也常常用作反模拟技术（Anti-Emulating）。程序在模拟器中运行时，运行速度要比程序正常运行（非模拟器中运行）慢很多，所以Timing Check技术也能用来探测程序是否在模拟器中运行。</p>
+</blockquote>
+<h2 id="52-3-1-时间间隔测量法"><a href="#52-3-1-时间间隔测量法" class="headerlink" title="52.3.1 时间间隔测量法"></a>52.3.1 时间间隔测量法</h2><p>测量时间间隔的方法有很多种，常用方法如下所示：</p>
+<ol>
+<li><strong>Counter based method</strong></li>
+</ol>
+<p>RDTSC</p>
+<p>kernel32!QueryPerformanceCounter() &#x2F; ntdll!NtQueryPerformanceCounter()</p>
+<p>kernel32!GetTickCount()</p>
+<p>2.<br><strong>Time based method</strong></p>
+<p>timeGetTime()</p>
+<p>_ftime()</p>
+<p>如代码52-4所示，测量时间间隔的方法大致分为两大类，一类是利用CPU的计数器（Counter），另一类是利用系统的实际时间（Time）。接下来学习基于RDTSC （Read Time Stamp Counter，读取时间戳计数器）的反调试技术。</p>
+<blockquote>
+<pre><code class="hljs">计数器的准确程度由高到低排列如下：
+</code></pre>
+</blockquote>
+<blockquote>
+<pre><code class="hljs">RDTSC&gt;NtQueryPerformanceCounter()&gt;GetTickCount()
+</code></pre>
+</blockquote>
+<blockquote>
+<p>NtQueryPerformanceCounter()与 GetTickCount()使用相同硬件（Performance Counter）,但二者准确程度不同（NtQueryPerformanceCounter()准确度更高）。而 RDTSC是CPU内部的计数器，其准确程度最高。基于时间的方法与基于计数器的方法在实现过程上比较类似，原理也差不多。</p>
+</blockquote>
+<h2 id="52-3-2-RDTSC"><a href="#52-3-2-RDTSC" class="headerlink" title="52.3.2 RDTSC"></a>52.3.2 RDTSC</h2><p>x86 CPU中存在一个名为TSC （Time Stamp Counter，时间戳计数器）的64位寄存器。CPU对</p>
+<p>每个Clock Cycle （时钟周期）计数，然后保存到TSC。RDTSC是一条汇编指令，用来将TSC值读</p>
+<p>入EDX:EAX寄存器（TSC大小为64位，其高32位被保存至EDX寄存器，低32位被保存至EAX寄</p>
+<p>存器）。</p>
+<ul>
+<li>练习：DynAD_RDTSC.exe</li>
+</ul>
+<p>为了加深各位对Timing Check反调试技术的认识，下面调试示例程序（DynAD_RDTSC.exe）。 在OllyDbg调试器中打开示例程序，转到401000地址处，如图52-11所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324191016393.png#alt=image-20220324191016393" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>下面简单介绍图52-11中的代码流（请各位亲自调试）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs assembly">;第一次执行RDTSC指令-将TSC保存到EDX:EAX (64位）<br>0040101C	RDTSC<br><br>;将结果值放入栈<br>0040101E	PUSH EDX<br>0040101F	PUSH EAX<br><br>;用于消耗时间的揭环（实际代码相当复杂)<br>00401020	XOR EAX,EAX<br>00401022	MOV ECX,3E8<br>00401027	INC EAX<br>00401028	LOOPD SHORT 00401027<br><br>;第二次执行RDTSC指令<br>0040102A	RDTSC<br><br>;第一次求得的TSC从栈中输入EDI:ESI<br>0040102C	POP ESI<br>0040102D	POP EDI<br><br>;比较1 - Count的high order bits<br>0040102E	CMP EDX,EDI<br>00401030	JA SHORT 0040103E<br><br>;比较2 - Count的low order bits<br>;若比特定值（0xFFFFFF）大，则断定处于调试状态<br>00401032	SUB EAX,ESI<br>00401034	MOV DWORD PTR SS:[EBP-4],EAX<br>00401037	CMP EAX,0FFFFFF<br>0040103C	JB SHORT 00401042<br><br>;在比较语句作用下进入异常触发代码，进程非正常终止<br>0040103E	XOR EAX,EAX<br>00401040	MOV DWORD PTR DS: [EAX]，EAX ;异常！ ！！ ;忽略比较语句，继续运行<br>00401042	POPAD<br></code></pre></td></tr></table></figure>
+
+<p>从上述代码可以看出，2次RDTSC指令调用之间存在一定的时间间隔，通过计算时间差值（Delta）来判断进程是否处于调试状态。Delta值不固定，一般在0xFFFF<del>0xFFFFFFFF之间取值。40101C</del>40102A地址间的代码区域中，只要执行1次StepInto（F7）或StepOver（F8）命令，Count的间隔就会大于0xFFFFFFFF。</p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>有几种方法可以破解以上反调试技术。</p>
+<p>（1）不使用跟踪命令，直接使用RUN命令越过相关代码。 在40102C地址处设置断点后运行。虽然运行速度略慢于正常运行速度，但与代码跟踪相比要快很多。</p>
+<p>（2）操作第二个RDTSC的结果值（EDX:EAX）0</p>
+<p>操作第二个RDTSC的结果值，使之与第一个结果值相同，从而顺利通过CMP语句。</p>
+<p>（3）操纵条件分支指令（CMP&#x2F;Jcc）。</p>
+<p>在调试器中强制修改Flags的值，阻止执行跳转至40103E地址处。大部分Jcc指令会受CF或ZF的影响，只要修改这些标志即可控制Jcc指令。</p>
+<p>CF与ZF全为0时，JA指令执行跳转动作。只要将CF与ZF之一的值修改为1，JA指令即失效。继续调试，40103C地址处JB指令会直接跳过异常触发代码（401040）（参考图52-12、图52-13）。</p>
+<blockquote>
+<p>若想学习更多有关Jcc指令分支条件的知识，请前往Intel网站参考用户手册（Intel 64 and IA-32 Architectures Software Developer’s Manual）。</p>
+</blockquote>
+<p>（4）利用内核模式驱动程序使RDTSC指令失效。</p>
+<p>利用内核模式驱动程序可以从根本上使基于RDTSC的动态反调试技术失效（其实，Olly Advanced Plugin就釆用了该方法）。</p>
+<blockquote>
+<p>以上练习示例仅用于向各位说明相应的工作原理，所以代码都非常简单。但实际的反调试代码中，RDTSC指令与CMP&#x2F;Jcc条件分支指令并不醒目，而是巧妙地设置到代码各处，再加上与其他反调试技术（SEH、动态方法）并用，效果非常强大，破解起来也比较困难。</p>
+</blockquote>
+<h1 id="52-4-陷阱标志"><a href="#52-4-陷阱标志" class="headerlink" title="52.4 陷阱标志"></a>52.4 陷阱标志</h1><p>陷阱标志指EFLAGS寄存器的第九个（Index 8）比特位，如图52-14所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220324193142529.png#alt=image-20220324193142529" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="52-4-1-单步执行"><a href="#52-4-1-单步执行" class="headerlink" title="52.4.1 单步执行"></a>52.4.1 单步执行</h2><p>TF值设置为1时，CPU将进入单步执行（Single Step）模式。单步执行模式中，CPU执行1条指令后即触发1个EXCEPTION_SINGLE_STEP异常，然后陷阱标志会自动清零（0）。该EXCEPTION_SINGLE_STEP异常可以与SEH技法结合，在反调试技术中用于探测调试器。</p>
+<ul>
+<li>练习</li>
+</ul>
+<p>下面用个简单的练习来了解“修改陷阱标志进行反调试”的工作原理。首先在OllyDbg调试器中打开示例程序（DynAD_SingleStep.exe），转到401000地址处，如图52-15所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325140611749.png#alt=image-20220325140611749" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>下面对重要的程序代码进行说明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs assembly">;注册SEH<br>00401011    68 36104000   PUSH 00401036<br>00401016    64:FF35 00000 PUSH DWORD PTR FS:[0]<br>0040101D    64:8925 00000 MOV DWORD PTR FS:[0],ESP                 ; Installs SE handler 401036<br><br>;通过栈修改EFLAGS寄存器（无法直接修改）<br>00401024    9C            PUSHFD							;将EFLAGS寄存器的值压入栈<br>00401025    36:810C24 000 OR DWORD PTR SS:[ESP],00000100	;将TF位设置为1<br>0040102D    9D            POPFD								;将修改后的TF值存入EFLAGS<br><br>;执行下列指令后触发EXCEPTION_SINGLE_STEP异常<br>;1)若为正常运行，则运行前面注册过的SEH (401036)<br>;2)若为调试运行，则继续执行以下指令<br>0040102E    90            NOP<br><br>;调试运行时继续运行以下代码<br>0040102F    B8 FFFFFFFF   MOV EAX,-1<br>00401034    FFE0          JMP EAX<br></code></pre></td></tr></table></figure>
+
+<p>从上述代码可以看岀，因无法直接修改EFLAGS寄存器的值，故使用PUSHFD&#x2F;POPFD指令与OR运算指令修改陷阱标志的值。 在OllyDbg调试器中继续运行程序代码到40102E地址处，如图52-16所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325141233619.png#alt=image-20220325141233619" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从寄存器窗口可以看到，EFLAGS寄存器（EFL）的值已经被修改为312，陷阱标志已成功设置为1 （我的系统环境下，EFLAGS的初始值为212）。从现在开始，CPU进入单步执行模式。下面执行40102E地址处的NOP指令（使用StepInto（F7）、StepOver（F8）、Run（F9）中的任意一个）。</p>
+<p>如预想的一样，发生了EXCEPTION_SINGLE_STEP异常，如图52-17所示。</p>
+<blockquote>
+<p>这里不知道为什么用Ollydbg2.0的时候POPFD没能更改EFLAGS，使用Ollydbg1.0才成功</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325142421714.png#alt=image-20220325142421714" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>观察图52-17中的寄存器窗口可以发现，EFLAGS寄存器（EFL）的值又变为了202。也就是说，单步执行模式下，CPU执行完1条指令后，陷阱标志即被自动清零（0）。这也意味着CPU在发生EXCEPTION_SINGLE_STEP异常后又切换至正常运行模式。如图所示，发生异常时，若程序进程非调试运行，则运行SEH执行正常代码；若程序进程处于调试中，则无法转到SEH，继续执行40102F地址处的指令。在40102F地址处执行StepInto（F7）命令，调试继续进行（请注意陷阱标志已经清零了）。然后执行401034地址处的JMP EAX （0xFFFFFFF）指令，进程非正常终止。程序的运行就像这样被分为正常运行与调试运行。</p>
+<blockquote>
+<p>以上示例代码耍了个“陷阱标志”花招，使进程终止执行。有时，程序中可能会包含大量类似的伪代码来迷惑代码逆向分析入员。他们调试程序时甚至都不会发现自己已经遭受反调试技术的误导，陷入伪代码调试的迷雾。经过相当一段时间的调试后才猛然发现有些不对劲，再回过头去寻找迷途之处可就不容易了。有些程序中存在着很多类似“花招”，从精神和肉体上折磨着代码逆向分析入员，防止他们调试程序。</p>
+</blockquote>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>首先，修改OllyDbg调试器选项（忽略EXCEPTION_SINGLE_STEP异常），让被调试者直接处理EXCEPTION_SINGLE_STEP异常，如图52-18所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325144047478.png#alt=image-20220325144047478" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>然后，在注册SEH的地址处（401036）设置断点。执行40102E地址处的指令后，调试器就会停在SEH的断点处。在新的EIP地址处再次设置断点，接着运行即可跟踪正常代码（参考图52-19）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325144304737.png#alt=image-20220325144304737" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<blockquote>
+<p>为什么Ollydbg不能直接跟踪新的EIP呢？</p>
+</blockquote>
+<h2 id="52-4-2-INT-2D"><a href="#52-4-2-INT-2D" class="headerlink" title="52.4.2 INT 2D"></a>52.4.2 INT 2D</h2><p>INT 2D原为内核模式中用来触发断点异常的指令，也可以在用户模式下触发异常。但程序<strong>调试运行</strong>时<strong>不会触发异常，只是忽略</strong>。这种在正常运行与调试运行中表现出的不同可以很好地应用于反调试技术。下面调试INT 2D指令，了解其几个有趣的特征。</p>
+<ol>
+<li><strong>忽略下条指令的第一个字节</strong></li>
+</ol>
+<p>在<strong>调试模式</strong>中执行完INT 2D指令后（StepInto&#x2F;StepOver）,下条指令的第一个字节将被忽略，后一个字节会被识别为新的指令继续执行，如图52-20所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325144535551.png#alt=image-20220325144535551" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图52-20中，40101E地址处的INT 2D指令（CD 2D执行完后，401020地址处的<code>MOV EAX,5DEB</code>指令（B8 EB5D0000）中，第一个字节B8将被忽略（参考图52-21）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325144549288.png#alt=image-20220325144549288" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>最终，401021地址处的指令被重新解析为2条指令：<code>JMP 401080</code> （EB5D）、 <code>ADD BYTE PTRDS:[EAX],AL</code> （0000）,它们完全不同于原指令<code>MOV EAX,5DEB</code>（B8 EB5D0000）。像这样，基于INT 2D的反调试技术能够形成较强的代码混淆（Obfuscated Code）效果，从而在一定程度上防止代码逆向分析入员调试程序。</p>
+<blockquote>
+<p>改变代码字节顺序（Code Byte Ordering）扰乱程序代码的方法称为代码混淆技术，该技术常用于动态反调试技术。</p>
+</blockquote>
+<ol start="2">
+<li><strong>—直运行到断点处</strong></li>
+</ol>
+<p>INT 2D指令的另一特征是，使用StepInto（F7）或StepOver（F8）命令跟踪INT 2D指令时，程序不会停在其下条指令开始的地方，而是一直运行，直到遇到断点，就像使用RUN（F9）命令运行程序一样。</p>
+<blockquote>
+<p>以上只是INT 2D指令在OllyDbg调试中表现出的特征，它在其他调试器中的行为略有不同。在OllyDbg调试中执行INT 2D指令后，程序不会单步暂停，而是一直运行。原因在于，执行完INT 2D指令后，原有的代码字节顺序被打乱了。也就是说，若指令在程序执行过程中改变，则程序不能单步暂停，而是一直执行，可以将其视为一种Bug。所以执行完INT 2D指令后，要想停止跟踪代码，需要事先在相应地址处设置断点。</p>
+</blockquote>
+<p><strong>练习：DynAD_INT 2D.exe</strong></p>
+<p>为了帮助各位进一步了解基于INT 2D的反调试技术工作原理，下面做个简单的调试练习（DynAD_INT 2D.exe）。首先在调试器中打开示例程序，转到401000地址处，如图52-22所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325145100933.png#alt=image-20220325145100933" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>程序正常运行（非调试运行）时，执行完40101E地址处的INT 2D指令后，发生异常，转去运行SEH （40102A）。在异常处理器中先把EIP值修改为401044,然后将[EBP-4]变量（局部变量[JEBP-4]是BOOL类型变量，用来检测是否存在调试器）的值设置为0 （FALSE）。然后转到401044地址处继续执行，最后执行40105B地址处的CMP&#x2F;JE条件分支指令，向控制台输岀字符串（“Not Debugging”）。</p>
+<p>程序调试运行时，执行INT 2D指令后不会运行SEH（就像前面所说的，忽略。），而是跳过1个字节（90），继续执行401021地址处的MOV指令，将[EBP-4]变量设置为1 （TRUE），然后跳转到401044地址处继续执行，向控制台输出“Debugging”字符串。可用图52-23简单表示上面2个执行过程。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325145602875.png#alt=image-20220325145602875" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>我们可以从以上练习示例中看到，401044地址到40105B地址（条件分支指令（CMP&#x2F;JE））间的代码都会被执行，所以只要简单修改代码即可破解这种反调试技术。但实际的程序调试过程中，有时必须跟踪SEH逐行调试代码，此时就需要一种方法使程序执行到SEH。利用陷阱标志能够使程序轻松进入SEH执行。</p>
+<p>首先，设置OllyDbg调试器的选项，使之忽视EXCEPTION_SINGLE_STEP异常，如图52-18所示。然后运行程序至40101E地址处，如图52-24所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325150055564.png#alt=image-20220325150055564" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>如图52-24所示，调试器在40101E地址的INT 2D指令处暂停，然后在要前往的（已注册过的）SEH处（40102A）设置断点。</p>
+<p>如图56-25所示 ，双击TF或修改EFL值（+0x100），将TF设置为1。从现在开始，CPU进入单步执行模式。单步执行模式下，CPU执行1条指令即触发异常，然后进入SEH处理（请参考前面介绍过的单步执行示例）。接下来，按F7键（Steplnto）或F8键（StepOver）执行40101E地址处的INT 2D指令。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325150427284.png#alt=image-20220325150427284" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>虽然执行了40101E地址处的INT 2D指令，但并未发生异常，TF的值也未变为0 （在前面的DynAD_SingleStep.exe示例中我们知道，CPU在单步模式下执行1条指令即触发异常，且TF值会清零），如图52-26所示。原因在于，INT 2D指令原为内核指令，在用户模式的调试器中不会被识别为正常指令。因此调试器在401020地址处的NOP指令处暂停。TF&#x3D;0时，跟踪INT 2D指令后，其下条指令的第一个字节会被忽略，程序继续执行；但TF&#x3D;1时，其后面的1个字节不会被忽略，代码仍被正常识别。接下来，按F7键（Steplnto）或F8键（StepOver）执行NOP指令。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325150841943.png#alt=image-20220325150841943" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>在单步执行模式下执行正常指令NOP后，就会触发异常，调试暂停在设有断点的SEH处，同 时TF值清零（参考图52-27）。这样我们就能进入指定SEH继续调试了。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325150800839.png#alt=image-20220325150800839" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h1 id="52-5-0xCC-探测"><a href="#52-5-0xCC-探测" class="headerlink" title="52.5 0xCC 探测"></a>52.5 0xCC 探测</h1><p>程序调试过程中，我们一般会设置许多软件断点。断点对应的x86指令为 “0xCC”。若能检测到该指令，即可判断程序是否处于调试状态。基于这一想法的反调试技术称为 “0xCC探测”技术。</p>
+<blockquote>
+<p>我们需要认真思考在代码中查找断点的方法。因为0xCC既可以用作操作码，也可以用作移位值、立即数、数据、地址等。所以，“在进程内存的代码区域中只扫描0xCC”的做法并不可靠。</p>
+</blockquote>
+<p>图52-28中，010073AC地址处设置了断点。虽然调试器会将8B视作操作码，但被调试进程的实际内存中，8B已被修改成CC。而指令的移位值中也存在CC。因此，单纯扫描CC很难准确判断断点。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325151426556.png#alt=image-20220325151426556" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="52-5-1-API-断点"><a href="#52-5-1-API-断点" class="headerlink" title="52.5.1 API 断点"></a>52.5.1 API 断点</h2><p>若只调试程序中的某个局部功能，一个比较快的方法是先在程序要调用的API处设置好断点，再运行程序。运行暂停在相应断点处后，再查看存储在栈中的返回地址。“跟踪返回地址调试相应部分”的方式能够大幅缩小代码调试范围。反调试技术中，探测这些设置在API上的断点就能准确判断当前进程是否处于调试状态。一般而言，断点都设置在API代码的开始部分，所以，只要检测API代码的第一个字节是否为CC即可判断岀当前进程是否处于调试之中。</p>
+<blockquote>
+<p>逆向分析人员常用的API列表</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>[内存]</strong></th>
+<th><strong>[文件]</strong></th>
+<th><strong>[寄存器]</strong></th>
+<th><strong>[网络]</strong></th>
+<th><strong>[其他]</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReadProcessMemory</td>
+<td>CreateFile</td>
+<td>RegCreateKeyEx</td>
+<td>WSAStartup</td>
+<td>OpenProcessToken</td>
+</tr>
+<tr>
+<td>WriteProcessMemory</td>
+<td>ReadFile</td>
+<td>RegDeleteKey</td>
+<td>socket</td>
+<td>OpenSCManager</td>
+</tr>
+<tr>
+<td>VirtualAlloc</td>
+<td>WriteFile</td>
+<td>RegDeleteValue</td>
+<td>inetaddr</td>
+<td>ControlService</td>
+</tr>
+<tr>
+<td>VirtualAllocEx</td>
+<td>CopyFile</td>
+<td>RegEnumKeyEx</td>
+<td>closesocket</td>
+<td>SetServiceStatus</td>
+</tr>
+<tr>
+<td>VirtualProtect</td>
+<td>CreateDirectory</td>
+<td>RegQueryValueEx</td>
+<td>getservbyname</td>
+<td>OpenMutex</td>
+</tr>
+<tr>
+<td>VirtualProtectEx</td>
+<td>DeleteFile</td>
+<td>RegSetValue</td>
+<td>gethostbybname</td>
+<td>GetProcAddress</td>
+</tr>
+<tr>
+<td>VirtualQuery</td>
+<td>MoveFile</td>
+<td>RegSetValueEx</td>
+<td>htons</td>
+<td>OutputDebugString</td>
+</tr>
+<tr>
+<td>VirtualQueryEx</td>
+<td>MoveFileEx</td>
+<td></td>
+<td>connect</td>
+<td>LookupPrivilegeValue</td>
+</tr>
+<tr>
+<td></td>
+<td>FindFirstFile</td>
+<td></td>
+<td>inethtoa</td>
+<td>CreateService</td>
+</tr>
+<tr>
+<td></td>
+<td>FindNextFile</td>
+<td></td>
+<td>recv</td>
+<td>DeleteService</td>
+</tr>
+<tr>
+<td></td>
+<td>GetFileSize</td>
+<td></td>
+<td>send</td>
+<td>QueryServiceStatusEx</td>
+</tr>
+<tr>
+<td></td>
+<td>GetWindowsDirectory</td>
+<td></td>
+<td>HttpOpenRequest</td>
+<td>FindWindow</td>
+</tr>
+<tr>
+<td></td>
+<td>GetSystemDirectory</td>
+<td></td>
+<td>HttpSendRequest</td>
+<td>GetModuleFileNameA</td>
+</tr>
+<tr>
+<td></td>
+<td>GetFileAttributes</td>
+<td></td>
+<td>HttpQuerylnfo</td>
+<td>AdjustTokenPrivileges</td>
+</tr>
+<tr>
+<td></td>
+<td>SetFileAttributes</td>
+<td></td>
+<td>InternetCloseHandle</td>
+<td>OpenService</td>
+</tr>
+<tr>
+<td></td>
+<td>SetFilePointer</td>
+<td></td>
+<td>InternetConnect</td>
+<td>RegisterServiceCtrlHandler</td>
+</tr>
+<tr>
+<td></td>
+<td>CreateFileMapping</td>
+<td></td>
+<td>InternetGetConnectedState</td>
+<td>CreateMutex</td>
+</tr>
+<tr>
+<td></td>
+<td>MapViewOfFile</td>
+<td></td>
+<td>InternetOpen</td>
+<td>LoadLibrary</td>
+</tr>
+<tr>
+<td></td>
+<td>MapViewOfFileEx</td>
+<td></td>
+<td>InternetOpenUrl</td>
+<td>GetCommandLine</td>
+</tr>
+<tr>
+<td></td>
+<td>UnmapViewOfFile</td>
+<td></td>
+<td>InternetReadFile</td>
+<td>…</td>
+</tr>
+<tr>
+<td></td>
+<td>_open</td>
+<td></td>
+<td>URLDownloadToFile</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>_write</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>_read</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>_lseek</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>_tell</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li>练习</li>
+</ul>
+<p>下面以保存文件时使用的kernel32!CreateFileW()API为例，向各位介绍基于API断点检测的反调试方法。首先，在OllyDbg调试器中单击鼠标右键，依次选择Search for - Name in all modules菜单，如图52-29所示</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325154131550.png#alt=image-20220325154131550" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>选择Name in all modules菜单后，在All name对话框中双击CreateFileW()API，然后按F2键在API代码的开始处设置好断点，如图52-30所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325154307044.png#alt=image-20220325154307044" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>这样就在API代码开始的第一个字节设置好了断点（虽然在调试器中未看到代码发生改变，但其实API代码开始的第一个字节已被改为CC）。然后获取kernel32!CreateFileW() API的起始地址检测代码的第一个字节，即可判断进程是否处于调试之中。</p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>针对上面这种反调试技术的行之有效的方法是，向系统API设置断点时尽量避开第一个字节，将之设置在代码的中间部分（图52-30中将断点设置在7C8107F2之下）。此外，设置硬件断点也能避开上面这种反调试技术。</p>
+<h2 id="52-5-2-比较校验和"><a href="#52-5-2-比较校验和" class="headerlink" title="52.5.2 比较校验和"></a>52.5.2 比较校验和</h2><p>检测代码中设置的软件断点的另一个方法是，比较特定代码区域的校验和（Checksum）值。比如，假定程序中401000~401070地址区域的校验和值为0x12345678，在该代码区域中调试时，必然会设置一些断点（0xCC），如此一来，新的校验和值就与原值不一样了。像这样，比较校验和值即可判断进程是否处于调试状态（参考图52-31）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325155639928.png#alt=image-20220325155639928" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p><strong>练习：DynAD_Checksum.exe</strong></p>
+<p>计算校验和来检测软件断点是常用的反调试技术之一，下面做个简单的调试练习，帮助各位理解该反调试技术的工作原理。在OllyDbg调试器中打开示例程序（DynAD_Checksum.exe）并转到401000地址处，如图52-32所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF.assets/image-20220325160022513.png#alt=image-20220325160022513" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>如图52-32所示，程序的核心代码是求校验和值的循环（位于40102A地址处），及其下方的CMP&#x2F;JE条件分支指令（位于401035地址处）。先分析一下求校验和值的循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0040102A     3E:0FB61E       MOVZX EBX,BYTE PTR DS:[ESI]<br>0040102E     03C3            ADD EAX,EBX                            ;  EAX: new checksum value<br>00401030     D1C0            ROL EAX,1<br>00401032     46              INC ESI<br>00401033     E2 F5           LOOPD SHORT DynAD_Ch.0040102A<br></code></pre></td></tr></table></figure>
+
+<p>40102A地址处ESI的初始值为401000 （参考40101F地址处的MOV指令），而ECX被用作LoopCount （循环计数），其值为70 （参考401024地址处的SUB指令）。代码中的循环用来计算401000-40106F区域的校验和值，先读取1个字节值，再执行ADD与ROL指令计算，然后将值保存到EAX寄存器（循环次数就是循环计数）。</p>
+<blockquote>
+<p>求代码缓冲区之校验和的方法多种多样，也有众多可应用的算法，只要验证相关内存区域当前的校验和值与原值是否一样即可。实际运用中通常会使用CRC32（Cyclic Redundancy Check,循环冗余校验）算法，它检错能力强，运算速度快。</p>
+</blockquote>
+<p>像这样求得校验和值后，接下来要将其与原值比较，并执行条件分支语句。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00401035     3B05 C0BD4000  CMP EAX,DWORD PTR DS:[40BDC0]           ;  Original checksum value<br>0040103B     74 07          JE SHORT DynAD_Ch.00401044<br></code></pre></td></tr></table></figure>
+
+<p>在上面循环中求得的当前校验和值被保存到EAX寄存器，程序开发时计算的校验和值保存在[40BDC0]中。比较它们，若不同，则表明40100~40106F代码区域中设有断点，或者代码已被修改。</p>
+<ul>
+<li>破解之法</li>
+</ul>
+<p>从理论上讲，只要不在计算CRC的代码区域中设置断点或修改其中代码，基于校验和的反调试技术就会失效。但这本身也可能成为反调试技术觊觎的地方（因为调试变得更加困难）。因此，最好的破解方法是修改CRC比较语句。比如在前面的示例中，只要将40103B地址处的指令修改为<code>JMP 40105D</code>即可。当然也可以在调试器中强制修改要跳转（JMP）的地址。与其他反调试技术类似，基于校验和比较的反调试代码会巧妙隐藏于程序各处，可能存在数十个乃至数百个比较校验和的代码，这大大增加了破解难度，调试自然也变得困难多了。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第52章 动态反调试技术</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/05/02/逆向工程核心原理/第52章 动态反调试技术/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年5月2日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第53章 高级反调试技术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术">
+                        <span class="hidden-mobile">第51章 静态反调试技术</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

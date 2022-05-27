@@ -1,0 +1,1335 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第40章 64位调试">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318192646597.png#alt=image-20220318192646597">
+<meta property="article:published_time" content="1999-03-31T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:53:44.289Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318192646597.png#alt=image-20220318192646597">
+  
+  
+  
+  <title>第40章 64位调试 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第40章 64位调试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-03-31 12:21" pubdate>
+          1999年3月31日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          100 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第40章 64位调试</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第40章64位调试</p>
+<p>本章将学习64位环境中的调试方法。64位环境中（x64+Windows OS 64位），32位进程与64位进程彼此共存，所以在64位环境中应当能够调试PE32与PE32+这2种文件。本章学习过程中还要就各种情形下调试的热点展开讨论，让大家进一步加深对64位环境下调试的理解。</p>
+<p>本章讲解中将不会涉及有关IA-64调试的内容。IA-64（Itanium）搭载于高性能服务器中，我们一般不会接触到。由于Windbg与IDA Pro都支持x64与IA-64,所以可以正常使用它们调试IA-64。需要注意的是，IA-64的指令体系不同于x64&#x2F;x86，详细分析代码时请参考Intel用户手册。</p>
+<h1 id="40-1-x64环境下的调试器"><a href="#40-1-x64环境下的调试器" class="headerlink" title="40.1 x64环境下的调试器"></a>40.1 x64环境下的调试器</h1><p>x64芯片从诞生之日起就完全支持X86，所以32位OS与64位OS都可以安装。Windows 64位OS不仅可以运行64位进程（PE32+类型），还可以同时（向下兼容）运行32位进程（PE32类型）。 在32位&#x2F;64位CPU、OS、进程彼此共存的情形下整理了各OS与进程可用的调试器（参考表40-1）。</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>PE32</th>
+<th>PE32+</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>32位</td>
+<td>OllyDbg、 IDA Pro、 WinDbg</td>
+<td>IDA Pro(DisassembIe only)</td>
+</tr>
+<tr>
+<td>64位</td>
+<td>OllyDbg、 IDA Pro、 WinDbg</td>
+<td>IDA Pro、WinDbg</td>
+</tr>
+</tbody></table>
+<p>在32位OS中无法调试PE32+文件，但是使用IDA Pro可以查看PE32+文件内的反汇编代码。另外，令人遗憾的是，OllyDbg调试器并不支持PE32+文件。因此，进行PE32+调试时必须在64位OS中使用IDA Pro正式版本和Windbg 64位版本还有x64dbg。下面通过一个练习文件（WOW64Test_x64.exe）</p>
+<p>来学习在64位环境（x64&amp;Windows 7 64位）下调试的方法。</p>
+<h1 id="40-2-64位调试"><a href="#40-2-64位调试" class="headerlink" title="40.2 64位调试"></a>40.2 64位调试</h1><p>本节继续以前面的WOW64测试文件（WOW64Test_x64.exe）作为练习示例进行64位调试练习。</p>
+<p><strong>练习示例：WOW64Test</strong></p>
+<p>先看示例文件的源代码（WOW64Test.cpp）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;windows.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Shlobj.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;Shell32.lib&quot;</span>)</span><br><br><span class="hljs-type">int</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR* argv[])<br>&#123;<br>    HKEY    hKey                = <span class="hljs-literal">NULL</span>;<br>    HANDLE  hFile               = INVALID_HANDLE_VALUE;<br>    TCHAR   szPath[MAX_PATH]    = &#123;<span class="hljs-number">0</span>,&#125;;<br><br>    <span class="hljs-comment">////////////////</span><br>    <span class="hljs-comment">// system32 folder</span><br>    <span class="hljs-keyword">if</span>( GetSystemDirectory(szPath, MAX_PATH) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;1) system32 path = %s\n&quot;</span>, szPath);<br>    &#125;<br><br>    <span class="hljs-comment">////////////////</span><br>    <span class="hljs-comment">// File size</span><br>    _tcscat_s(szPath, <span class="hljs-string">L&quot;\\kernel32.dll&quot;</span>);<br>    hFile = CreateFile(szPath, GENERIC_READ, FILE_SHARE_READ, <span class="hljs-literal">NULL</span>, <br>                       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="hljs-literal">NULL</span>);<br>    <span class="hljs-keyword">if</span>( hFile != INVALID_HANDLE_VALUE )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;2) File size of \&quot;%s\&quot; = %d\n&quot;</span>, <br>        szPath, GetFileSize(hFile, <span class="hljs-literal">NULL</span>));<br>        CloseHandle(hFile);<br>    &#125;<br><br>    <span class="hljs-comment">////////////////</span><br>    <span class="hljs-comment">// Program Files</span><br>    <span class="hljs-keyword">if</span>( SHGetSpecialFolderPath(<span class="hljs-literal">NULL</span>, szPath, <br>                               CSIDL_PROGRAM_FILES, FALSE) )<br>    &#123;<br>        _tprintf(<span class="hljs-string">L&quot;3) Program Files path = %s\n&quot;</span>, szPath);<br>    &#125;<br><br>    <span class="hljs-comment">////////////////</span><br>    <span class="hljs-comment">// Registry</span><br>    <span class="hljs-keyword">if</span>( ERROR_SUCCESS == RegCreateKey(HKEY_LOCAL_MACHINE, <br>                                      <span class="hljs-string">L&quot;SOFTWARE\\ReverseCore&quot;</span>, &amp;hKey) )<br>    &#123;<br>        RegCloseKey(hKey);<br>        _tprintf(<span class="hljs-string">L&quot;4) Create Registry Key : HKLM\\SOFTWARE\\ReverseCore\n&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>WOW64Test示例程序非常简单，它先调用GetSystemDirectory()、CreateFile()、SHGetSpecialFolderPath()、RegCreateKey()这4个API，然后输出运行结果。64位系统环境下，X86应用程序是通过WOW64模式运行的，所以系统文件夹与重要的注册表键都要重定向，本示例明确表明了这一点。</p>
+<p>借助Visual C++2010 Express EditionX具将上述源代码分别编译为x86（ WOW64Test_x86.exe）与x64程序（WOW64Test_x64.exe）,然后运行，如图40-1所示。</p>
+<p>下节分别调试这2个程序。</p>
+<blockquote>
+<p>在Windows XP&#x2F;Vista&#x2F;7 64位系统下才能正常调试示例文件。</p>
+</blockquote>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318192646597.png#alt=image-20220318192646597" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h1 id="40-3-PE32：-WOW64Test-x86-exe"><a href="#40-3-PE32：-WOW64Test-x86-exe" class="headerlink" title="40.3 PE32： WOW64Test_x86.exe"></a>40.3 PE32： WOW64Test_x86.exe</h1><p>Windows 64位OS中，PE32文件（SYS文件除外）通过WOW64模式运行。原32位环境中使用的逆向分析工具大部分可以照常使用，但是OllyDbg 1.10对x64环境支持得并不好，建议使用OllyDbg 2.0版本。</p>
+<blockquote>
+<p>（1） OllyDbg 1.10无法直接在WOW64环境中运行，但是安装Olly Advanced（或AdvancedOlly）插件后，复选x64选项即可正常运行（参考图40-2）。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://tuts4you.com/download.php7view.75">http://tuts4you.com/download.php7view.75</a></p>
+<p>Olly Advanced是一个非常有用的插件，它修正了 OllyDbg本身的Bug,也提供了反调试等功能。大部分OllyDbg用户都安装使用。</p>
+<blockquote>
+<p>（2）使用VC++ 2010编写的基于控制台的EXE文件中，用户代码一般都存在于代码节区的<strong>顶端</strong>位置，请记住这一点。</p>
+</blockquote>
+<h2 id="40-3-1-EP-代码"><a href="#40-3-1-EP-代码" class="headerlink" title="40.3.1 EP 代码"></a>40.3.1 EP 代码</h2><p>打开WOW64Test x86.exe文件后，调试器自动暂停在EP代码处，如图40-3所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318193101660.png#alt=image-20220318193101660" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>前面已经分析过由VC++2010工具生成的（基于控制台的）PE32文件的EP代码，此处不再赘述。接下来直接查找main()函数。</p>
+<h2 id="40-3-2-Startup-代码"><a href="#40-3-2-Startup-代码" class="headerlink" title="40.3.2 Startup 代码"></a>40.3.2 Startup 代码</h2><p>跟踪004013F5地址处的JMP 0040128F指令，岀现如图40-4所示的Startup代码</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318193222767.png#alt=image-20220318193222767" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>WOW64Test_x86是一个控制台程序，所以Startup代码内部存在调用main()函数的CALL指令。若刚开始学逆向分析技术时遇到CALL指令，建议跟踪进人函数，详细了解各函数的代码。</p>
+<blockquote>
+<p>刚开始的时候不要跟踪进入得太深，深入1-depth查看代码即可。熟悉调试之后再逐渐加深，熟悉更深层次的代码。这种训练对于把握Visual C++的Startup代码与用户代码的区别有很大帮助。一名经过良好训练的逆向分析人员在实际的代码分析过程中能够快速跳过Startup代码，直接找到用户代码，即使在比较混乱的地方也不会轻易迷路而徘徊不定。</p>
+</blockquote>
+<h2 id="40-3-3-main-函数"><a href="#40-3-3-main-函数" class="headerlink" title="40.3.3 main()函数"></a>40.3.3 main()函数</h2><p>下面查找main()函数。已知信息罗列如下，我们将通过这些信息来查找main()函数。</p>
+<p>（1）被调试者（WOW64Test_x86.exe）是一个基于控制台的应用程序。</p>
+<p>由此我们可以猜想到，WOW64Test_x86.exe调用main()函数前会先调用GetCommandLine()API。这是因为调用main()函数之前需要先把<code>main(int argc,char* argv[])</code>函数的参数存储到栈（x64环境下为寄存器）中。也就是说，在GetCommandLine()API设置好断点后，查看返回地址即可查找到调用main()函数的部分。此外，调用main()函数前argc与argv参数被存储在栈（x64环境下为寄存器）中，仔细查看栈（或者寄存器）也能直接找到调用main()函数的部分。</p>
+<p>（2）调用GetSystemDirectory()、GetFileSize()、CreateFile()等API。</p>
+<p>应用程序中使用的API很明确时，直接在相应API上设置断点，通过其返回地址也可以直接查找并进人main()函数代码。</p>
+<p>（3） 在画面中输出由上述API获取的信息。</p>
+<p>使用OllyDbg强大的字符串检索功能，可以直接查找并定位到指定代码处。下面我们使用第三项来查找main()函数。在OllyDbg代码窗口的鼠标右键菜单中选择Search for-All referenced strings项，如图40-5所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318193548657.png#alt=image-20220318193548657" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>图40-5中列岀了程序中出现的所有字符串，双击顶端的00401058地址即显示出main()函数代码，如40-6所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318193755968.png#alt=image-20220318193755968" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>可以清楚看到，函数栈帧从401000地址开始，即401000地址是mainO函数的开始部分（该地址就是第一个.text节区的起始地址）。在64位环境中调试PE32文件的方法与在32位环境中的调试</p>
+<p>方法是一样的。但是部分代码逆向分析工具在64位环境中无法正常使用，所以使用前必须确认。</p>
+<h1 id="40-4-PE32-：-WOW64Test-x64-exe"><a href="#40-4-PE32-：-WOW64Test-x64-exe" class="headerlink" title="40.4 PE32+： WOW64Test_x64.exe"></a>40.4 PE32+： WOW64Test_x64.exe</h1><p>要在64位环境中正常调试PE32+文件，需要使用IDA Pro或Windbg调试工具（参考表40-1）。此处我们选用免费的WinDbg调试器来调试PE32+文件，学习调试过程中注意与前面介绍过的</p>
+<p>OllyDbg+PE32的调试方法比较。</p>
+<p>运行WinDbg64调试器，使用Open Executable…菜单，开始调试WOW64Test_x64.exe文件，如图40-7所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318194002923.png#alt=image-20220318194002923" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h3 id="40-4-1系统断点"><a href="#40-4-1系统断点" class="headerlink" title="40.4.1系统断点"></a>40.4.1系统断点</h3><p>如图40-8所示，调试暂停在系统断点（ntdll.dll区域）。由于WinDbg中没有“暂停在进程EP处”的选项，所以需要从当前暂停位置直接转到EP处。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318194125999.png#alt=image-20220318194125999" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="40-4-2-EP-代码"><a href="#40-4-2-EP-代码" class="headerlink" title="40.4.2 EP 代码"></a>40.4.2 EP 代码</h2><p>首先要获取EP地址，输入显示进程PE文件头的命令，如图40-9所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318194255460.png#alt=image-20220318194255460" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>EP地址（RVA）为142C，使用g命令转到该地址处，如图40-10所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318194414485.png#alt=image-20220318194414485" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>WinDbg默认仅显示1行命令，使用下列命令增加指令显示的条数。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">u</span> <span class="hljs-symbol">&lt;address&gt;</span>L&lt;<span class="hljs-built_in">line</span> <span class="hljs-keyword">number</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>图40-11是使用Visual C++ 2010工具创建的PE32+文件的EP Startup代码。请将它与图40-3中PE32文件的EP代码比较。CALL+JMP指令结构是一样的。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318194514924.png#alt=image-20220318194514924" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<h2 id="40-4-3-Startup-代码"><a href="#40-4-3-Startup-代码" class="headerlink" title="40.4.3 Startup 代码"></a>40.4.3 Startup 代码</h2><p>跟踪（t）位于00000001’40001439地址处的JMP指令，增加指令显示的条数后[u eip L60]，可</p>
+<p>以看所有Startup代码，如代码40-2所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs assembly">0:000&gt; u eip L60<br>WOW64Test_x64+0x142c:<br>00000001`4000142c 4883ec28        sub     rsp,28h<br>00000001`40001430 e8072a0000      call    WOW64Test_x64+0x3e3c (00000001`40003e3c)<br>00000001`40001435 4883c428        add     rsp,28h<br>00000001`40001439 e976feffff      jmp     WOW64Test_x64+0x12b4 (00000001`400012b4)<br>00000001`4000143e cc              int     3<br>00000001`4000143f cc              int     3<br>00000001`40001440 48894c2408      mov     qword ptr [rsp+8],rcx<br>00000001`40001445 4881ec88000000  sub     rsp,88h<br>00000001`4000144c 488d0d0dbf0000  lea     rcx,[WOW64Test_x64+0xd360 (00000001`4000d360)]<br>00000001`40001453 ff151f7c0000    call    qword ptr [WOW64Test_x64+0x9078 (00000001`40009078)]<br>00000001`40001459 488b05f8bf0000  mov     rax,qword ptr [WOW64Test_x64+0xd458 (00000001`4000d458)]<br>00000001`40001460 4889442458      mov     qword ptr [rsp+58h],rax<br>00000001`40001465 4533c0          xor     r8d,r8d<br>00000001`40001468 488d542460      lea     rdx,[rsp+60h]<br>00000001`4000146d 488b4c2458      mov     rcx,qword ptr [rsp+58h]<br>00000001`40001472 e8f5750000      call    WOW64Test_x64+0x8a6c (00000001`40008a6c)<br>00000001`40001477 4889442450      mov     qword ptr [rsp+50h],rax<br>00000001`4000147c 48837c245000    cmp     qword ptr [rsp+50h],0<br>00000001`40001482 7441            je      WOW64Test_x64+0x14c5 (00000001`400014c5)<br>00000001`40001484 48c744243800000000 mov   qword ptr [rsp+38h],0<br>00000001`4000148d 488d442448      lea     rax,[rsp+48h]<br>00000001`40001492 4889442430      mov     qword ptr [rsp+30h],rax<br>00000001`40001497 488d442440      lea     rax,[rsp+40h]<br>00000001`4000149c 4889442428      mov     qword ptr [rsp+28h],rax<br>00000001`400014a1 488d05b8be0000  lea     rax,[WOW64Test_x64+0xd360 (00000001`4000d360)]<br>00000001`400014a8 4889442420      mov     qword ptr [rsp+20h],rax<br>00000001`400014ad 4c8b4c2450      mov     r9,qword ptr [rsp+50h]<br>00000001`400014b2 4c8b442458      mov     r8,qword ptr [rsp+58h]<br>00000001`400014b7 488b542460      mov     rdx,qword ptr [rsp+60h]<br>00000001`400014bc 33c9            xor     ecx,ecx<br>00000001`400014be e8a3750000      call    WOW64Test_x64+0x8a66 (00000001`40008a66)<br>00000001`400014c3 eb22            jmp     WOW64Test_x64+0x14e7 (00000001`400014e7)<br>00000001`400014c5 488b842488000000 mov     rax,qword ptr [rsp+88h]<br>00000001`400014cd 48890584bf0000  mov     qword ptr [WOW64Test_x64+0xd458 (00000001`4000d458)],rax<br>00000001`400014d4 488d842488000000 lea     rax,[rsp+88h]<br>00000001`400014dc 4883c008        add     rax,8<br>00000001`400014e0 48890511bf0000  mov     qword ptr [WOW64Test_x64+0xd3f8 (00000001`4000d3f8)],rax<br>00000001`400014e7 488b056abf0000  mov     rax,qword ptr [WOW64Test_x64+0xd458 (00000001`4000d458)]<br>00000001`400014ee 488905dbbd0000  mov     qword ptr [WOW64Test_x64+0xd2d0 (00000001`4000d2d0)],rax<br>00000001`400014f5 488b842490000000 mov     rax,qword ptr [rsp+90h]<br>00000001`400014fd 488905dcbe0000  mov     qword ptr [WOW64Test_x64+0xd3e0 (00000001`4000d3e0)],rax<br>00000001`40001504 c705b2bd0000090400c0 mov dword ptr [WOW64Test_x64+0xd2c0 (00000001`4000d2c0)],0C0000409h<br>00000001`4000150e c705acbd000001000000 mov dword ptr [WOW64Test_x64+0xd2c4 (00000001`4000d2c4)],1<br>00000001`40001518 488b05e9aa0000  mov     rax,qword ptr [WOW64Test_x64+0xc008 (00000001`4000c008)]<br>00000001`4000151f 4889442468      mov     qword ptr [rsp+68h],rax<br>00000001`40001524 488b05e5aa0000  mov     rax,qword ptr [WOW64Test_x64+0xc010 (00000001`4000c010)]<br>00000001`4000152b 4889442470      mov     qword ptr [rsp+70h],rax<br>00000001`40001530 ff152a7b0000    call    qword ptr [WOW64Test_x64+0x9060 (00000001`40009060)]<br>00000001`40001536 89051cbe0000    mov     dword ptr [WOW64Test_x64+0xd358 (00000001`4000d358)],eax<br>00000001`4000153c b901000000      mov     ecx,1<br>00000001`40001541 e8aa290000      call    WOW64Test_x64+0x3ef0 (00000001`40003ef0)<br>00000001`40001546 33c9            xor     ecx,ecx<br>00000001`40001548 ff150a7b0000    call    qword ptr [WOW64Test_x64+0x9058 (00000001`40009058)]<br>00000001`4000154e 488d0d7b7d0000  lea     rcx,[WOW64Test_x64+0x92d0 (00000001`400092d0)]<br>00000001`40001555 ff15f57a0000    call    qword ptr [WOW64Test_x64+0x9050 (00000001`40009050)]<br>00000001`4000155b 833df6bd000000  cmp     dword ptr [WOW64Test_x64+0xd358 (00000001`4000d358)],0<br>00000001`40001562 750a            jne     WOW64Test_x64+0x156e (00000001`4000156e)<br>00000001`40001564 b901000000      mov     ecx,1<br>00000001`40001569 e882290000      call    WOW64Test_x64+0x3ef0 (00000001`40003ef0)<br>00000001`4000156e ff15d47a0000    call    qword ptr [WOW64Test_x64+0x9048 (00000001`40009048)]<br>00000001`40001574 ba090400c0      mov     edx,0C0000409h<br>00000001`40001579 488bc8          mov     rcx,rax<br>00000001`4000157c ff15be7a0000    call    qword ptr [WOW64Test_x64+0x9040 (00000001`40009040)]<br>00000001`40001582 4881c488000000  add     rsp,88h<br>00000001`40001589 c3              ret<br>00000001`4000158a cc              int     3<br>00000001`4000158b cc              int     3<br>00000001`4000158c 4c8bdc          mov     r11,rsp<br>00000001`4000158f 49895b08        mov     qword ptr [r11+8],rbx<br>00000001`40001593 49896b18        mov     qword ptr [r11+18h],rbp<br>00000001`40001597 49897320        mov     qword ptr [r11+20h],rsi<br>00000001`4000159b 49895310        mov     qword ptr [r11+10h],rdx<br>00000001`4000159f 57              push    rdi<br>00000001`400015a0 4154            push    r12<br>00000001`400015a2 4155            push    r13<br>00000001`400015a4 4156            push    r14<br>00000001`400015a6 4157            push    r15<br>00000001`400015a8 4883ec40        sub     rsp,40h<br>00000001`400015ac 4d8b7908        mov     r15,qword ptr [r9+8]<br>00000001`400015b0 4d8b31          mov     r14,qword ptr [r9]<br>00000001`400015b3 8b4104          mov     eax,dword ptr [rcx+4]<br>00000001`400015b6 498b7938        mov     rdi,qword ptr [r9+38h]<br>00000001`400015ba 4d2bf7          sub     r14,r15<br>00000001`400015bd 4d8be1          mov     r12,r9<br>00000001`400015c0 4c8bea          mov     r13,rdx<br>00000001`400015c3 488be9          mov     rbp,rcx<br>00000001`400015c6 a866            test    al,66h<br>00000001`400015c8 0f85ed000000    jne     WOW64Test_x64+0x16bb (00000001`400016bb)<br>00000001`400015ce 49637148        movsxd  rsi,dword ptr [r9+48h]<br>00000001`400015d2 49894bc8        mov     qword ptr [r11-38h],rcx<br>00000001`400015d6 4d8943d0        mov     qword ptr [r11-30h],r8<br>00000001`400015da 488bc6          mov     rax,rsi<br>00000001`400015dd 3b37            cmp     esi,dword ptr [rdi]<br>00000001`400015df 0f8381010000    jae     WOW64Test_x64+0x1766 (00000001`40001766)<br>00000001`400015e5 4803c0          add     rax,rax<br>00000001`400015e8 488d5cc70c      lea     rbx,[rdi+rax*8+0Ch]<br></code></pre></td></tr></table></figure>
+
+<p>到现在为止，我们已经通过OllyDbg调试器看到过许多用VC编写的PE32文件的Startup代 码。但这还是第一次通过WinDbg调试器查看VC编写的PE32+文件，所以我们将Startup代码全部显示出来。与图40-4中PE32文件的Startup代码相比，它们看上去非常相似。像这样调试一般的应用程序时，由于没有符号文件（Symbol: *.pdb），代码中没有任何注释，看上去非常“荒凉”。若调试VC++文件的经验不多，在上述代码中每当遇到CALL指令时可以跟踪进人，查看代码（再次强调，我强烈建议初学者这样做，熟悉Startup代码是非常重要的）。</p>
+<h2 id="40-4-4-main-函数"><a href="#40-4-4-main-函数" class="headerlink" title="40.4.4 main()函数"></a>40.4.4 main()函数</h2><p>WOW64Test_x64.exe是基于控制台的应用程序，在GetCommandLineW()函数处设置断点后，从断点处开始跟踪到main()函数调用处。首先在kernel32!GetCommandLineW()API处设置断点。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">bp </span>&lt;<span class="hljs-keyword">address或模块名称!API名称&gt;</span><br><span class="hljs-keyword"></span>这里为 <span class="hljs-keyword">bp </span>kernel32!GetCommandLineW<br></code></pre></td></tr></table></figure>
+
+<p>接下来运行（g）调试器，调试器在GetCommandLineW()API处暂停，如图40-12所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318195139121.png#alt=image-20220318195139121" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>然后查看栈中存储的返回地址（Return Address）,如图40-13所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318195315241.png#alt=image-20220318195315241" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从图40-14可以看到，返回地址为00000001&#96;40001381，跟踪转到该地址处。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318195607669.png#alt=image-20220318195607669" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>地址00000001<code>40001381 的MOV指令将GetCommandLineW() API的返回值（RAX）存储到.data节区的特定区域。接下来是多条CALL指令，调用多个函数切分获取的“command line”字符串，最终形成main()函数的argc、argv参数。0000000</code>400013CF~0000000<code>400013E4地址间的MOV指令用来为main()设置参数（RCX、RDX、R8寄存器）。紧接着，00000001</code>400013EA地址处的CALL指令用来调用main()函数。下面看看存储在寄存器中的main函数的参数，如图40-15所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318201228313.png#alt=image-20220318201228313" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>main（int argc,char* argv[]）函数的第一个参数argc存储在RCX寄存器中，其值为1，表示无额外的命令参数。函数的第二个参数为argV[]数组，数组的起始地址存储在RDX寄存器中，其值为472F10,该地址中保存着数组元素argv[0]的值，是第一个命令行字符串的地址，如图40-16所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318201320595.png#alt=image-20220318201320595" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从图40-16中可以看到，argv[]参数（RDX）的起始地址为472F10， argv[0]&#x3D;472F20，地址472F20中保存着第一个命令行字符串（C:\work\WOW64Test_x64.exe）。</p>
+<p>可以像这样查看main()函数的argc与argv这2个参数。图40-15中R8寄存器的值00000000’00472FB0表示什么呢？ main()函数的参数明明只有2个（RCX、RDX），那么这第三个参数R8寄存器中为什么会存储着值呢？下面分析一下图40-17。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318201640826.png#alt=image-20220318201640826" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从图40-17中可以看到，R8寄存器所指的是一个指针数组，数组的所有元素都指向栈区域。第一个元素所指的地址为00000000&#96;00473120,进入该地址查看，如图40-18所示</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318201806422.png#alt=image-20220318201806422" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>在图40-19中可以看得更清楚，main()的第三个参数R8为系统环境变量字符串数组的地址，它不是用户编写的代码，是使用Visual C++ 2010工具编译代码时由编译器自动添加的参数。最后看一下main()函数本身的代码。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95.assets/image-20220318202130078.png#alt=image-20220318202130078" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>至此，我们准确找到了main()函数代码，从这里开始调试就可以了。下面请大家各自动手调试，好好练习一下。</p>
+<blockquote>
+<p>WinDbg的基本使用方法请参考第39章。</p>
+</blockquote>
+<h1 id="40-5小结"><a href="#40-5小结" class="headerlink" title="40.5小结"></a>40.5小结</h1><p>本章学习了64位环境下调试PE32+文件的方法。前一章（64位计算）中我们学习了有关64位 环境中新增与改动的内容，如果完全掌握了这些内容，那么在64位环境下调试程序并没有想得那么难。由于x64、Windows OS 64位、PE32+等能够很好地向下兼容，所以如果熟悉了32位环境下的调试技术，就能快速适应64位环境，顺利调试64位程序。</p>
+<p>WinDbg调试器的用户界面有些陌生，并且如果没有符号文件（*.pdb）,代码的注释（特别是API的名称）会非常少，这给代码的阅读与分析造成了困难。要熟悉WinDbg这个调试工具，必须反复使用它，不断练习，除此之外别无他法（随着代码逆向分析水平的提高，各位调试内核驱动程序文件时会再次使用WinDbg这个调试工具）。当然，如果你还有余力，可以尝试使用IDA Pro, 它是一个非常强大的交互式反汇编工具。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第40章 64位调试</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/03/31/逆向工程核心原理/第40章 64位调试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年3月31日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第41章 ASLR</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg">
+                        <span class="hidden-mobile">第39章 WinDbg</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

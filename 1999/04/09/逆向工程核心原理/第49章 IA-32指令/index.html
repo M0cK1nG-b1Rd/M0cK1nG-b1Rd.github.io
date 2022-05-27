@@ -1,0 +1,1556 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第49章 IA-32指令">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B.assets/image-20220227173930301.png">
+<meta property="article:published_time" content="1999-04-09T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:46:19.469Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/03/img/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B.assets/image-20220227173930301.png">
+  
+  
+  
+  <title>第49章 IA-32指令 - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第49章 IA-32指令"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-04-09 12:21" pubdate>
+          1999年4月9日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          109 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第49章 IA-32指令</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第49章IA-32指令</p>
+<p>本章将学习有关IA-32指令（或称x86指令）的内容。各位刚开始会觉得指令比较复杂，但若</p>
+<p>理解了指令的解析方法与原理，就能够轻松地将指令转换为反汇编代码。掌握了这些内容后，各</p>
+<p>位的逆向分析技术水平将提高到一个新的层次。</p>
+<h1 id="49-1-IA-32指令"><a href="#49-1-IA-32指令" class="headerlink" title="49.1 IA-32指令"></a>49.1 IA-32指令</h1><p>简言之，指令是指CPU能够识读的机器语言（Machine Language ）。IA-32指令指IA-32 （Intel</p>
+<p>Architecture 32位）系列CPU使用的指令。</p>
+<p>如图49-1所示，粗线框中的每一行都是1条指令（E8 CC270000、E9 A4FEFFFF、8BFF、55</p>
+<p>等都是IA-32指令）。编程人员使用程序语言（C&#x2F;C++、JAVA, Python等）编写程序，而CPU则使</p>
+<p>用机器语言，编程人员编写的程序源代码需要编译&#x2F;链接后转换为CPU可以识读的机器语言。</p>
+<p>提示————————————————————————–</p>
+<p>关于IA-32的详细说明请参考以下链接。</p>
+<p>维基百科：<a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/IA-32">http://zh.wikipedia.org/wiki/IA-32</a> （中文版）</p>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/IA-32">http://en.wikipedia.org/wiki/IA-32</a> （英文版）</p>
+<p><a target="_blank" rel="noopener" href="http://ko.wikipedia.org/wiki/IA-32">http://ko.wikipedia.org/wiki/IA-32</a> （韩文版）</p>
+<p>IA-32用户手册：<a target="_blank" rel="noopener" href="http://www.intel.com/products/processor/manuals/">http://www.intel.com/products/processor/manuals/</a></p>
+<h1 id="49-2常用术语"><a href="#49-2常用术语" class="headerlink" title="49.2常用术语"></a>49.2常用术语</h1><p>下面整理一下逆向分析常用术语。讲解IA-32指令的过程中将用到下列术语，准确理解并运</p>
+<p>用这些术语将有助于与他人进行顺畅的交流与沟通</p>
+<p>使用C&#x2F;C++语言（或汇编语言）创建出PE文件后，源代码就被转换成了机器码。一名合格的</p>
+<p>逆向分析人员必须能够解析这些机器码，并理解其工作原理。但机器码是用二进制（0与1 ）表示</p>
+<p>的，我们很难读懂它。因此一般要把机器码转换为16进制代码，转换后可读性提高，但我们识读</p>
+<p>16进制代码时仍然会感到吃力。所以，最后借助调试器内嵌的反汇编器将机器码转换为反汇编代</p>
+<p>码，识读这些反汇编代码就容易多了。</p>
+<h2 id="49-2-1反汇编器"><a href="#49-2-1反汇编器" class="headerlink" title="49.2.1反汇编器"></a>49.2.1反汇编器</h2><p>图49-2显示的是我们熟悉的OllyDbg调试器的用户界面。OllyDbg调试器内嵌有IA-32反汇编</p>
+<p>器（Disassembler ）0</p>
+<p>图49-2中，1行代码就是1条指令。（A）区域中是16进制表示的IA-32指令，（B）区域中是与之对</p>
+<p>应的反汇编代码，（C）区域是指令在内存（或文件）中的实际形式。</p>
+<p>以地址401000处的指令为例，（A）区中的 “68 84B34000” 是IA-32指令，（B）区中</p>
+<p>的“PUSH 0040B384” 为反汇编代码。</p>
+<p>反汇编代码大致由助记符（Mnemonic ）与操作数（ Operand ）组成，助记符表明</p>
+<p>指令功能，操作数指示操作对象。“PUSH 0040B384”指令中，PUSH为助记符，0040B384</p>
+<p>为操作数。</p>
+<p>内嵌在调试器中的反汇编器解析（C）区中的十六进制机器码，将它们切分为（A）区中的一条条</p>
+<p>指令，然后将每条指令转换为（B）区中相应的反汇编代码。从易读性来看，（C）中代码低于（A）区代</p>
+<p>码，（A）区代码又低于（B）区代码。逆向分析人员一般会阅读（B）区中的反汇编代码，并进行相应分</p>
+<p>析。学习IA-32指令后就能分析（A）区中的代码了。</p>
+<h2 id="49-2-2反编译器"><a href="#49-2-2反编译器" class="headerlink" title="49.2.2反编译器"></a>49.2.2反编译器</h2><p>近来，大量PE文件都是使用C&#x2F;C++&#x2F;VB&#x2F;Delphi语言编写的。反编译器（Decompiler）与反汇</p>
+<p>编器在概念上类似，但是反汇编器用来将机器代码转换为反汇编代码，而反编译器则用来将机器</p>
+<p>代码反编译为类似于源代码的代码（C&#x2F;C++&#x2F;VB+&#x2F;Delphi）（反编译时需选用相应语言的反编译</p>
+<p>器）。当然，反编译岀的代码与源代码还是有一定差距的，但随着技术的不断发展，这种差距会</p>
+<p>越来越小。</p>
+<h2 id="49-2-3反编译简介"><a href="#49-2-3反编译简介" class="headerlink" title="49.2.3反编译简介"></a>49.2.3反编译简介</h2><p>本节我们将在IDA Pro分析工具中借助Hex-Rays Decompiler插件将C语言程序（机器代码）反</p>
+<p>编译为类C语言的代码，并比较它与程序源码的不同。先看程序的C语言源代码，如图49-3所示。</p>
+<p>get_folder_count（LPCSTRszPath）是个非常简单的函数，用来计算参数给定路径（szPath ）中</p>
+<p>文件夹的个数^上述源代码经过编译后生成PE文件，在IDA Pro分析工具中使用Hex-Rays</p>
+<p>Decompiler插件将生成的PE文件反编译（Decompile ）为类C语言代码，如图49~4所不。</p>
+<p>各位一定大吃一惊。从图49-4中可以看到，反编译得到的代码与程序的源代码非常相似，仅</p>
+<p>函数名称（sub_401000）、变量名称（vl、v2、v3、v8）不同而已。程序的代码较长且较复杂时,</p>
+<p>反编译得到的代码可读性可能下降，但是借助反编译代码我们能够快速把握程序的代码结构，从</p>
+<p>这个意义来说，反编译仍然是个非常棒的功能。</p>
+<p>拥有这种强大功能的IDA Pro分析工具与Hex-Rays Decompiler插件都是付费的商业软件，且</p>
+<p>价格昂贵，一般人难以承受，大部分都由公司购买使用。使用OllyDbg调试器打开上面的程序文</p>
+<p>件，可以看到反汇编后的代码，如图49-5所示。</p>
+<p>从图49-5中可以看到，反汇编代码看上去比较复杂，不如反编译后的代码更容易阅读，由此</p>
+<p>可见反编译器多么有用。</p>
+<p>提示————————————————————————–</p>
+<p>请注意，反编译器也不是万能的。若使用保护器等工具故意打乱程序代码，或在</p>
+<p>程序运行中使用一些操作技术，就不能反编译，或者使反编译后的代码更加复杂。所 以，学习高级逆向分析技术时一定要掌握反汇编代码和指令。</p>
+<h1 id="49-3-IA-32指令格式"><a href="#49-3-IA-32指令格式" class="headerlink" title="49.3 IA-32指令格式"></a>49.3 IA-32指令格式</h1><p>提示————————————————————————–</p>
+<p>现在我们学习中级逆向分析技术。如果你仍是逆向分析技术的初学者，不太理解</p>
+<p>本部分内容，没关系，阅读后直接跳过即可。以后自己的技术水平提高了，需要了解</p>
+<p>指令相关知识时再学习即可。以下内容是我在“ Intel® 64 and IA-32 Architectures</p>
+<p>Software Developer’s Manuals”基础上整理而来的。更多详细说明请参考相关用户手册。</p>
+<p>正文中使用的有关IA-32指令的图片均出自Intel的用户手册。</p>
+<p>下面学习有关IA-32指令格式的知识。</p>
+<p>如图49-6所示，IA-32指令由6部分组成，其中操作码项是必需的，其他项目都是可选的。接</p>
+<p>下来对指令的各组成部分予以说明</p>
+<h2 id="49-3-1指令前缀"><a href="#49-3-1指令前缀" class="headerlink" title="49.3.1指令前缀"></a>49.3.1指令前缀</h2><p>指令前缀（Instruction Prefixes）是一个可选项目，后面岀现特定操作码时将补充说明其含义。</p>
+<p>下面举个简单的例子。</p>
+<p>前缀项大小为1个字节（后面讲解“指令解析方法”（借助操作码映射解析）时会详细说明</p>
+<p>Prefix 66的含义）。</p>
+<h2 id="49-3-2操作码"><a href="#49-3-2操作码" class="headerlink" title="49.3.2操作码"></a>49.3.2操作码</h2><p>Opcode （ Operation Code,操作码）是必不可少的部分，用来表示实际的指令。</p>
+<p>操作码长度为1〜3个字节，我们在常见的应用程序调试中遇到的操作码大部分都是1个字节，</p>
+<p>有时也会遇到2个字节的操作码。3个字节长度的操作码主要用在MMX （ MultiMedia extension, 多媒体扩展）相关指令中，一般很少有机会接触到。操作码通常都带有操作数（Operand）,操作</p>
+<p>数种类有寄存器、内存地址、常量（Contanst ）0指令中出现的ModR&#x2F;M与SIB选项辅助操作码确</p>
+<p>定操作数。</p>
+<p>操作码种类很多，解析时一般需要查看Intel用户手册的操作码映射。后面讲解“指令解析方</p>
+<p>法”时会做一些解析操作码的练习。</p>
+<h2 id="49-3-3-ModR-x2F-M"><a href="#49-3-3-ModR-x2F-M" class="headerlink" title="49.3.3 ModR&#x2F;M"></a>49.3.3 ModR&#x2F;M</h2><p>ModR&#x2F;M是个可选项，主要用来辅助说明操作码的操作数（操作数的个数、种类[寄存器、地</p>
+<p>址、常量]）</p>
+<p>ModR&#x2F;M项拥有1个字节（8位）长度，分为3部分，各部分含义如图49-7所示。</p>
+<h2 id="49-3-4-SIB"><a href="#49-3-4-SIB" class="headerlink" title="49.3.4 SIB"></a>49.3.4 SIB</h2><p>SIB （ Scale-Index-Base ）也是一个可选项，用来辅助说明ModR&#x2F;M。操作码的操作数为内存</p>
+<p>地址时，需要与ModR&#x2F;M项一起使用。</p>
+<p>SIB项也拥有1个字节（8位）长度，分为3部分，各部分含义如图49-8所示。</p>
+<h2 id="49-3-5位移"><a href="#49-3-5位移" class="headerlink" title="49.3.5位移"></a>49.3.5位移</h2><p>位移（Displacement）也是可选项，操作码的操作数为内存地址时，用来表示位移操作。</p>
+<p>位移的长度为1、2、4字节。</p>
+<h2 id="49-3-6立即数"><a href="#49-3-6立即数" class="headerlink" title="49.3.6立即数"></a>49.3.6立即数</h2><p>立即数（Immediate）也是一个可选项，操作码的操作数为常量时，该常量就被称为立即数。</p>
+<p>立即数的长度为1、2、4字节。</p>
+<h1 id="49-4指令解析手册"><a href="#49-4指令解析手册" class="headerlink" title="49.4指令解析手册"></a>49.4指令解析手册</h1><p>首先制作“指令解析手册”，然后借助该手册练习指令解析。</p>
+<h2 id="49-4-1下载IA-32用户手册"><a href="#49-4-1下载IA-32用户手册" class="headerlink" title="49.4.1下载IA-32用户手册"></a>49.4.1下载IA-32用户手册</h2><p>Intel公司提供的用户手册对IA-32进行了详细说明。代码逆向分析中会经常参考该用户手册，</p>
+<p>所以请从下面地址下载。</p>
+<p><a target="_blank" rel="noopener" href="http://www.intel.com/products/processor/manuals/">http://www.intel.com/products/processor/manuals/</a></p>
+<p>进人页面下载这个文件。</p>
+<p>Intel® 64 and IA-32 Architectures Software Developer’s Manuals Volume 2A.pdf</p>
+<p>Intel® 64 and IA-32 Architectures Software Developer’s Manuals Volume 2B.pdf</p>
+<h2 id="49-4-2打印指令解析手册"><a href="#49-4-2打印指令解析手册" class="headerlink" title="49.4.2打印指令解析手册"></a>49.4.2打印指令解析手册</h2><p>下载Intel用户手册后，其中有些表格是解析指令时需要参考的，请将下面列岀的表格打印</p>
+<p>出来。</p>
+<p>上面打印的资料用得多了、泛黄的时候，各位也就成了解析IA-32指令的高手。</p>
+<p>我几年间一直使用一部自制的指令手册，有人问有关指令解析的问题时，我就会翻阅</p>
+<p>它并给出解答。翻阅得多了，就有了感觉，哪些内容在哪页一清二楚，所以查起来非</p>
+<p>常快。我尊敬的一位前辈也有这样的参考资料，当时看上去都用旧了。从某种意义上</p>
+<p>说，这种使用痕迹就像一把测量逆向分析人员“年轮”的尺子。希望各位也打印一份</p>
+<p>这样的资料，需要的时候随时翻阅查看（参考图49-9）</p>
+<h1 id="49-5指令解析练习"><a href="#49-5指令解析练习" class="headerlink" title="49.5指令解析练习"></a>49.5指令解析练习</h1><p>我们从本节开始学习IA-32指令解析方法。</p>
+<h2 id="49-5-1操作码映射"><a href="#49-5-1操作码映射" class="headerlink" title="49.5.1操作码映射"></a>49.5.1操作码映射</h2><p>首先解析1条长度为1个字节的操作码指令。</p>
+<p>41 INC ECX</p>
+<p>查看前面打印岀的操作码手册（或者Intel Manual Vol.2B ）中的“TableA-2. One-byte Opcode Map”。</p>
+<p>解析指令时，最先要查看表格的名称是否为“Table A-2. One-byte Opcode Map:（00H-F7H）*”。</p>
+<p>然后将要查找的操作码41拆分为4与1，再在操作码映射中将它们分别作为表格的行与列进行查</p>
+<p>找。从查找的结果看，操作码41对应的指令为INC，操作数为ECX（同一方格中的REX.B是64位</p>
+<p>系统专用操作数，忽略即可）。所以指令41最终被解析为INC ECX指令，使用图49-6中的IA-32指</p>
+<p>令格式表示如下：</p>
+<p>图49-10中INC指令的上标为i64, REX指令的上标为o64,它们的含义在操作码</p>
+<p>用户手册的 “Table A-l. Superscripts Utilized in Opcode Tables” 中给出了 讲解3根据表</p>
+<p>格中的说明，i64表示不在64位模式中使用，o64表示只在64位模式中使用。所以操</p>
+<p>作码4047在32位模式中作为INC指令使用，在64位模式（o64）中用作REX前缀。</p>
+<p>由于这里解析的是IA-32指令，所以应该解析为INC指令。操作数亦是如此，在32位</p>
+<p>模式中要选择ECX，在64位模式中要选择REX.B。</p>
+<h2 id="49-5-2操作数"><a href="#49-5-2操作数" class="headerlink" title="49.5.2操作数"></a>49.5.2操作数</h2><p>下面继续通过练习来学习操作数的形态结构。</p>
+<p>使用前面的方法在Table A-2操作码映射中查找指令的第一个字节68,如图所示。</p>
+<p>从图49-11中可以看到，操作码68对应于PUSH Iz，为带有1个操作数的PUSH指令。</p>
+<p>提示————————————————————————–</p>
+<p>Table A-2 One-byte Opcode Map内容繁多，在Intel用户手册中占了不少分量，图</p>
+<p>49-11是其中一部分。</p>
+<p>Iz用来表示操作数的类型，把握其含义即可准确解析整条指令。大写字母I指寻址方法</p>
+<p>（Addressing Method ），小写字母z指操作数类型（ Operand Type ），A.2.1 Codes for Addressing Method</p>
+<p>与A.2.2 Codes for Operand Type中分别对它们进行了说明。</p>
+<p>常用寻址方法整理如表49-2所示。</p>
+<p>指示寻址方法的大写字母I代表Immediate （立即数）。若想知道立即数的大小，还要参考操作</p>
+<p>数类型。</p>
+<p>常用操作数类型整理如表49-3所示。</p>
+<p>指示操作数类型的小写字母z在32位模式下表示的大小为DWORD （32位，4个字节）。综合</p>
+<p>以上信息，操作码68对应的PUSH Iz指令中，Iz （操作数格式）表示大小为4个字节（32位）的立</p>
+<p>即数，所以继续读取68之后的4个字节（ 0040B440 ），整条指令最终解析为PUSH 0040B4A0，用</p>
+<p>IA-32指令格式表示如下：</p>
+<p>以上只是解析指令的“热身”练习，下面正式学习指令解析方法。</p>
+<h2 id="49-5-3-ModR-x2F-M"><a href="#49-5-3-ModR-x2F-M" class="headerlink" title="49.5.3 ModR&#x2F;M"></a>49.5.3 ModR&#x2F;M</h2><p>首先学习包含ModR&#x2F;M的指令解析方法。</p>
+<p>89C1 MOV ECX,EAX</p>
+<p>先在操作码映射中查找Opcode 89，如图49-12所示。</p>
+<p>从操作码映射中可以看到，Opcode89对应MOVEv，Gv指令，带有2个操作数，第一个操作数</p>
+<p>的格式为Ev，第二个操作数格式为Gv。</p>
+<p>由表49-3可知，操作数类型中的小写字母v表示操作数的大小为32位（4个字节）。上面指令</p>
+<p>中2个操作数的大小均为4个字节。接下来需要把握大写字母E与G代表的含义，这样才能准确解</p>
+<p>析整条指令。根据表49-2中的说明，大写字母E是寄存器或内存地址形式的操作数，大写字母G</p>
+<p>只能是寄存器形式的操作数。操作数形式为E或G时，操作码后面一定存在ModR&#x2F;M选项。</p>
+<p>了解操作码后就能掌握操作码映射中的指令格式（Mnemonic、操作数个数、操作</p>
+<p>数大小）。若操作数的寻址方法为E或G，则分析操作码后面的ModR&#x2F;M即可准确解析</p>
+<p>操作数。</p>
+<p>所以，整条指令89C1中，紧跟在Opcode 89后面的1个字节Cl即为ModR&#x2F;M选项。ModR&#x2F;M表</p>
+<p>格是指操作码手册中的Table 2-2. 32-Bit Addressing Forms with the ModR&#x2F;M Byte，如图49-13所7K。</p>
+<p>图49-13中的ModR&#x2F;M表看上去比操作码映射复杂得多，但熟悉原理后就能很容易地掌握其使</p>
+<p>用方法。ModR&#x2F;M长度为1个字节，在图49-13的ModR&#x2F;M表中的[ModR&#x2F;M]区域内，从00开始到FF</p>
+<p>结束。前面讲解ModR&#x2F;M时提到过，它按比特位分为3个部分，分别为Mod、Reg、R&#x2F;M（参考ModR&#x2F;M</p>
+<p>说明）。下面以ModR&#x2F;M Cl为例讲解。</p>
+<p>ModR&#x2F;M拆分后的各值在图49-13中的Mod、REG、R&#x2F;M部分表示出来（二进制）。请各位在</p>
+<p>图49-13中查找C1,分别确认Mod、Reg、R&#x2F;M的值。操作数的寻址方法为E时，操作数的形式在</p>
+<p>图49-13左侧的[E]区域（图49-13表的左侧部分）中显示。</p>
+<p>提示————————————————————————–</p>
+<p>寻址方法“E”代表内存地址或寄存器。从图49-13中可以看到，ModR&#x2F;M值为</p>
+<p>00〜BF时，显示在[E]区域中的操作数为内存地址；ModR&#x2F;M值为C0〜FF时，出现在[E]</p>
+<p>区域中的操作数为寄存器。</p>
+<p>操作数的寻址方法为G时，操作数的形式出现在图49-13中的[G]区域（图49-13的表上端</p>
+<p>部分）。</p>
+<p>提示————————————————————————–</p>
+<p>寻址方法“G”仅有寄存器形式，表49-2中已经说明。从图49-13可以看到，根</p>
+<p>据ModR&#x2F;M的Reg值（000〜111 ）,从EAX变化到EDI （操作数大小为32位时）。</p>
+<p>再回来解析指令89C1，Opcode 89对应MOV Ev，Gv指令，且带有ModR&#x2F;M值。ModR&#x2F;M为C1,</p>
+<p>从图49-13中可以得知，Ev&#x3D;ECX, Gv&#x3D;EAX。所以，指令89C1最终解析为MOV ECXJEAX。</p>
+<p>提示————————————————————————–</p>
+<p>大写字母E与G表示寻址方法，在图49-13中分别出现在[E]区域与[G]区域。小写</p>
+<p>字母v表示操作数类型，32位计算中操作数的大小也为32位。根据这些信息在图49-13</p>
+<p>中查找ModR&#x2F;M值Cl，可知Ev、Gv分别为ECX’ EAX。</p>
+<p>用IA-32指令格式表示如下：</p>
+<p>[Prefixes][Opcode][ModR&#x2F;M][SIB][Displacement][Immediate]</p>
+<h2 id="49-5-4-Group"><a href="#49-5-4-Group" class="headerlink" title="49.5.4 Group"></a>49.5.4 Group</h2><p>Gmup指令语句将操作码与ModR&#x2F;M组合起来，使操作码最多可以表示出8种形式的指令</p>
+<p>（Mnemonic ）0灵活使用Group指令虽然会使解析变得有些复杂，却能较好地扩展操作码映射。</p>
+<p>83C3 12 ADD EBX,12</p>
+<p>首先在操作码映射中查找83对应的指令形式。</p>
+<p>从图49-14可知，Opcode 83对应的指令为Grp 1 Ev，Ib，带有2个操作数，形式分别为Ev、lb。</p>
+<p>由前面的讲解可知，Ev代表4个字节的寄存器（或者内存地址），lb代表1个字节的立即数（根据</p>
+<p>表49-3可知，操作数类型的b代表字节大小）</p>
+<p>提示————————————————————————–</p>
+<p>到现在为止，解析上述语句时仍未出现指令（Mnemonic ）,只是表示成了 Immediate</p>
+<p>Grp 1的形式，即在多种形式的Group中它是Immediate Grp 1。1条操作码中包含多种</p>
+<p>指令，根据后面的ModR&#x2F;M可以最终确定相应指令。前面图中，Immediate Group 1</p>
+<p>的第二个操作数是立即数。该Group中的指令用来计算（ADD、SUB, XOR等）这类</p>
+<p>立即数。</p>
+<p>操作数中含有Ev符号，所以紧跟在后面的1个字节（C3 ）为ModR&#x2F;M。操作码为Group指令语</p>
+<p>句时，后面必须紧跟ModR&#x2F;M。综合目前获取的各种信息，指令83C312解析如下：</p>
+<p>到现在还是无法确切知道指令（Mnemonic）与操作数的内容。分析ModR&#x2F;M “C3” 后即可</p>
+<p>准确解析上述指令（解析与顺序无关，但从左到右解析起来会更简便）。</p>
+<p>首先参考Group指令表查看对应指令（Mnemonic）。Group指令表是指操作码用户手册中的</p>
+<p>Table A-6. Opcode Extentions for One- and Two Opcodes by Group Number,如图49-15所示。</p>
+<p>图49-15中操作码为83,所以只看Group 1项目即可。并且，由于ModR&#x2F;MC3的Reg值为000（二</p>
+<p>进制），所以对应的指令（Mnemonic ）为ADD。综合以上分析，指令83C312解析如下：</p>
+<p>接下来，先确定第一个操作数。在ModR&#x2F;M表中查找C3值。</p>
+<p>由图49-16可知，ModR&#x2F;M “C3” 的Ev对应的值为EBX。</p>
+<p>从图49-14可知，第一个操作数的格式为Ev。在图49-13、图49-16的[E]区域中</p>
+<p>查找寻址方法符号E对应的值，有EBX、BX、BL这3种，再加上操作数类型符号是</p>
+<p>小写字母v,所以最终选择4个字节的EBX寄存器（该处的E只能为通用寄存器，不</p>
+<p>可能为MM3与XMM3寄存器）。也不可以选择[G]区域中的EAX值，[G]区域要在寻</p>
+<p>址方法符号为G时使用。ModR&#x2F;M表比较复杂，必须准确理解其使用方法。</p>
+<p>至此，指令83C312解析如下：</p>
+<p>83C312 • ADD EBX, lb</p>
+<p>第二个操作数的符号为Ib，表示1个字节大小的立即数，直接读取ModR&#x2F;M后面的1个字节（12 ）</p>
+<p>即可。综上所述，指令83C312最终解析为如下形式：</p>
+<p>83C312 - ADD EBX, 12</p>
+<p>用IA-32指令格式表示如下：</p>
+<p>[Prefixes][Opcode][ModR&#x2F;M][SIB][Displacement][Immediate]</p>
+<h2 id="49-5-5前缀"><a href="#49-5-5前缀" class="headerlink" title="49.5.5前缀"></a>49.5.5前缀</h2><p>本小节介绍含Prefix （前缀）的指令解析方法。有些前缀（ 66,67 ）对整条指令的解析有着重</p>
+<p>要影响，所以必须掌握。</p>
+<p>66:81FE 3412 CMP SI,1234</p>
+<p>首先在Table A-2 Opcode Map中查找 “66”。</p>
+<p>由图49-17可知，“66” 表示操作数大小（前缀）。更准确地说，它表示的是Operand-Size Override</p>
+<p>Prefix, Prefix 66的含义为“将32位大小的操作数识别为16位大小（或者将16位大小的操作数识别</p>
+<p>为32位大小）”。紧接在Prefix 66后面的1个字节81为操作码，在操作码映射中查找 “81”，如图</p>
+<p>49-18所示0</p>
+<p>Opcode 81为Group指令，带有2个操作数（Ev, Iz ）。符号Ev—般表示32位的寄存器（或内存</p>
+<p>地址），而符号Iv表示32位立即数（参考操作码用户手册A.2.1&amp;A.2.2）。但因前面有Operand-Size</p>
+<p>Override Prefix 66,故操作数的大小分别由32位变为16位。操作数格式中出现符号E,则表示后面</p>
+<p>跟有ModR&#x2F;M字节（FE）。综合以上分析，指令6681FE3412解析如下（请注意：Prefix 66使操作</p>
+<p>数大小变为16位）：</p>
+<p>6681FE 3412 • Grpl Ev, Iz （Operand Size &#x3D; 16 bit）</p>
+<p>要想得到准确指令与操作数，还要分析ModR&#x2F;M值FE代表的含义。</p>
+<p>Ex） ModR&#x2F;M &#x3D; FE</p>
+<p>FE的二进制表示&#x3D;11111110</p>
+<p>拆分ModR&#x2F;M &#x3D; 1111111110 （Mod: 11, Reg:111, R&#x2F;M:110）</p>
+<p>接着在Table A-6中查看Group指令，确定其代表的具体指令，如图49-19所示。</p>
+<p>由图49-19中的Group表可知，Opcode 81 （Group 1 ）中，ModR&#x2F;M的REG （值为111 ）对应的</p>
+<p>实际指令为CMP。</p>
+<p>6681FE 3412 CMP Ev, Iz （Operand Size &#x3D; 16 bit）</p>
+<p>接下来开始确定第一个操作数。在ModR&#x2F;M表格中查找“FE”，如图49-20所示</p>
+<p>从图49-20中可以看到，ModR&#x2F;M “FE”的Ev符号对应值为ESI,但是受Prefix 66的限制，要</p>
+<p>选择16位的SI。</p>
+<p>6681FE 3412 - CMP SI, Iz （Operand Size &#x3D; 16 bit）</p>
+<p>第二个操作数的符号为Iz，原指4个字节（32位）的立即数值，但受Prefix 66的影响，其变为</p>
+<p>2个字节（16位）大小，即获取ModR&#x2F;M后面的2个字节（1234）。所以整条指令最终解析如下：</p>
+<p>6681FE 3412 • CMP SI, 1234</p>
+<p>用IA-32指令格式表示如下：</p>
+<p>[Prefixes][Opcode][ModR&#x2F;M][SIB][Displacement][Immediate]</p>
+<h2 id="49-5-6双字节操作码"><a href="#49-5-6双字节操作码" class="headerlink" title="49.5.6双字节操作码"></a>49.5.6双字节操作码</h2><p>本小节学习操作码为双字节时的指令解析方法。单字节操作码不够用时，可以将其扩展为双</p>
+<p>字节。双字节操作码中第一个字节恒为0F，故其在操作码映射中的查找方式与单字节操作码是一</p>
+<p>样的。</p>
+<p>0F85 FA1F00O0 JNZ XXXXXXXX</p>
+<p>先在单字节操作码映射中查找指令的第一个字节（0F）,如图49-21所示。</p>
+<p>由上表可知，“OF”为双字节操作码的Escape符号，指示继续在Table A-3中查找双字节操作</p>
+<p>码。双字节操作码映射（即TableA-3 ）在Intel用户手册中的分量是单字节的两倍，如图49-22所示。</p>
+<p>从图49-22的表格标题可以看到，第一个字节为 “OF”。查找第二个字节85,可以看到它对应</p>
+<p>的指令为JNE （ JNZ ）。</p>
+<p>提示————————————————————————–</p>
+<p>Jcc为Conditional Jump （条件跳转）指令，一般这种条件跳转指令之前都有比较</p>
+<p>语句（CMP、TEST）,并根据比较的结果决定是否跳转。Jcc指令有多种形式，示例中</p>
+<p>的0F85被解析为JNE （ Jump Not Equal）或JNZ （ Jump Not Zero ）指令（两条指令含</p>
+<p>义相同）。Jcc指令（ 0F80〜0F8F ）的操作数在图49-22中显示为“Long-displacement”。</p>
+<p>操作数说明中，一般Long表示4个字节（32位），Short表示1个字节（ 8位）。所以，</p>
+<p>Jcc指令的操作数为4字节大小的Displacement （移位值）。</p>
+<p>由于JNE指令的操作数为4个字节大小的移位值，继续读取操作码后面的4个字节</p>
+<p>（00001FFA）,整条指令解析如下：</p>
+<p>以上指令中的移位值00001FFA为相对位移，加上当前的EIP才能准确算出跳转地</p>
+<p>址。比如，上述指令的地址为401000,执行指令后，EIP值为401006 （增加6个字节</p>
+<p>（指令长度）），那么实际跳转的地址为403000 （JNE 403000），它是EIP值（ 401006 ）</p>
+<p>与移位值（1FFA ）相加的结果。调试中会经常遇到“相对位移”这一术语，希望各位</p>
+<p>理解其含义。</p>
+<h2 id="49-5-7移位值-amp-立即数"><a href="#49-5-7移位值-amp-立即数" class="headerlink" title="49.5.7移位值&amp;立即数"></a>49.5.7移位值&amp;立即数</h2><p>若指令中同时存在移位值&amp;立即数，该如何解析呢？下面学习这种指令的解析方法。</p>
+<p>首先在操作码映射中查找“C7”，如图49-33所示。</p>
+<p>Opcode C7对应Group 11 MOV指令，带有2个操作数（Ev，Iz ）。所以上述指令解析如下：</p>
+<p>岀现Group指令或操作数形式中有E、G时，操作码之后必跟着ModR&#x2F;M选项，上述指令中</p>
+<p>ModR&#x2F;M的值为05。</p>
+<p>接着在Group指令表（Table A-6）中查找其对应的实际指令（Mnemonic）,如图49-24所示</p>
+<p>Group 11中ModR&#x2F;M的Reg值（ 000 ）对应的指令为MOV,且在Group 11中仅有一个MOV指令</p>
+<p>（故图49-23中岀现了 “Groupll-MOV”的标识）。</p>
+<p>C705 00CF4000 01000100 - MOV Ev, Iz</p>
+<p>接下来确定第一个操作数（Ev）,在ModR&#x2F;M表（Table 2-2）中查找 “05”，如图49-25所示。</p>
+<p>第一个操作数（Ev）为“disp32”，代表32位大小的移位值。ModR&#x2F;M在00〜BF范围内时，Ev</p>
+<p>形式的操作数表示内存地址（ModR&#x2F;M在C0〜FF范围内时，Ev®式的操作数表示寄存器）。所以,</p>
+<p>ModR&#x2F;M之后的4个字节（ 0040CF00 ）为移位值，表示内存地址（表示地址时一定要用上[]中括号）。</p>
+<p>C705 00CF4000 01000100 - MOV [0040CF00], Iz</p>
+<p>最后，第二个操作数Iz为4个字节大小的立即数，从移位值之后读取4个字节（00010001 ）</p>
+<p>即可。</p>
+<p>C705 0OCF4000 01000100 • MOV [0040CF00], 10001</p>
+<p>上述指令表示向40CF00地址中放人10001值，使用IA-32指令格式表示如下：</p>
+<p>[Prefixes][Opcode][ModR&#x2F;M][SIB][Displacement][Immediate]</p>
+<h2 id="49-5-8-SIB"><a href="#49-5-8-SIB" class="headerlink" title="49.5.8 SIB"></a>49.5.8 SIB</h2><p>操作数指向内存地址时，SIB （ Scale, Index、Base）用来辅助寻址。指令中含有SIB时，其</p>
+<p>本身会变得较为复杂。换言之，如果掌握了含有SIB的指令解析方法，你就达到了大师级别。</p>
+<p>8B0C01 MOV ECX, [EAX+ECX]</p>
+<p>首先在操作码映射中查找 “8B”，如图49-26所示。</p>
+<p>由图49-26可知，Opcode 8B对应的指令为MOV Gv，Ev，带有2个操作数，第一个操作数为Gv</p>
+<p>形式，是一个4字节的寄存器；第二个操作数为E4式，是一个4字节的寄存器或内存地址。操作</p>
+<p>数的寻址方法为G、EB寸，操作码后会跟着ModR&#x2F;M选项。解析出该ModR&#x2F;M即可准确解析操作数。</p>
+<p>上述指令中ModR&#x2F;M为0C，在ModR&#x2F;M表中查找，如图49-27所示。</p>
+<p>第一个操作数Gv对应的值为ECX，第二个操作数Ev对应的值为符号表示需要</p>
+<p>SIB字节来辅助表示准确地址。综合以上分析，上述指令解析如下：</p>
+<p>第二个操作数的符号[-][-]指向内存地址，要准确解析它需要用到SIB字节，用更直观的方</p>
+<p>式表示如下：</p>
+<p>重写上述指令如下：</p>
+<p>这种表7K方法更加直观。接下来在SIB表中查找Reg.A与Reg.B，如图49-28所示。</p>
+<p>前面的指令中，SIB的值为01，SIB表就是操作码用户手册中的Table 2-3。</p>
+<p>査看SIB表的方法与查看ModR&#x2F;M表的方法类似，先找到SIB值，然后在表顶部的[Reg.A]区域</p>
+<p>获取Reg.A寄存器，然后在表左侧的[Reg.B]区域获取Reg.B寄存器。图49-28中与SIB 01对应的</p>
+<p>Reg.A为ECX，Reg.B为EAX。所以指令最终解析如下：</p>
+<p>用IA-32指令格式表示如下：</p>
+<p>操作数为（复杂形式的）内存地址时，SIB就像这样用来辅助寻址。接下来解析一条带有更</p>
+<p>复杂的SIB选项的指令。</p>
+<p>如图49-29所示，Opcode 8D对应的指令为LEA Gv，M。</p>
+<p>LEA指令是“Load Effective Address”的缩写，是“取有效地址指令”。第一个操作数为Gv</p>
+<p>形式，是4个字节大小的寄存器；第二个操作数为M形式，仅表示内存地址（参考表49-2）。</p>
+<p>由于操作数的寻址方法为G、M，所以操作码后面跟着ModR&#x2F;M字节，分析后面的ModR&#x2F;M即</p>
+<p>可得到准确的操作数值。上述指令中ModR&#x2F;M值为84,在Table 2-2中查找它，如图49-30所示。</p>
+<p>第一个操作数Gv形式为EAX,第二个操作数M形式为[–][–]+disp32。</p>
+<p>各位现在已经非常熟悉ModR&#x2F;M表格了吧？在表格上端求G形式的值，在表格左</p>
+<p>侧求E或M形式的值。</p>
+<p>综合以上分析，上述指令解析如下</p>
+<p>第二个操作数中的[–][–]+disp32指的是内存地址，要想准确解析，需要使用后面的SIB字节</p>
+<p>与32位的移位值。使用更直观的方式表示[–][–]+disp32如下：</p>
+<p>用更直观的方式解析上述指令。</p>
+<p>8D8428 B1354000 - LEA EAX, [（Reg. A）+（Reg. B） + disp32]</p>
+<p>接下来查看SIB表以获取Reg.A与Reg.B对应的值。因SIB为28,故Reg.A为EAX, Reg.B为EBP</p>
+<p>（参考图49-31 ）。</p>
+<p>上述指令中disp32的值为SIB后的004035B1。综合以上所有分析，整条指令最终解析如下:</p>
+<p>8D8428 B1354000 LEA EAX, [EAX+EBP+4035B1]</p>
+<h1 id="49-6指令解析课外练习"><a href="#49-6指令解析课外练习" class="headerlink" title="49.6指令解析课外练习"></a>49.6指令解析课外练习</h1><p>若想完全掌握指令解析方法，需要大量练习。反复看前面的练习示例，熟悉解析方法后，在</p>
+<p>OllyDbg调试器中打开并运行notepad.exe程序，如图49-32所示。</p>
+<p>参考前面打印岀的操作码用户手册，将区域[1]中的指令逐条解析为反汇编代码（请先隐藏</p>
+<p>OllyDbg调试器中的反汇编窗口）。指令解析的成功率达到99%以上后，再看区域[2]中的机器代码，</p>
+<p>将它们解析为反汇编代码。通过这些训练，各位会迅速成长为IA-32指令解析高手。</p>
+<h1 id="49-7小结"><a href="#49-7小结" class="headerlink" title="49.7小结"></a>49.7小结</h1><p>本章主要讲解IA-32指令的解析方法，刚接触它的读者朋友可能会觉得有些难度。但若完全</p>
+<p>掌握了指令解析方法，逆向技术水平就会达到中级以上。</p>
+<p>我主要使用IA-32指令来编写查杀恶意代码的函数。检测变形病毒（Polymorphic Vims）时，</p>
+<p>必须探测岀Polymorphic引擎中产生的指令类型，这时就需要分析人员具有丰富的指令知识。此外，</p>
+<p>了解指令结构也有助于提高代码调试水平。掌握IA-32指令相关知识对于编写“打补丁”代码、</p>
+<p>分析漏洞Shell代码都非常有帮助。当然，掌握IA-32指令解析方法对于提高各位的逆向分析技术</p>
+<p>水平也有相当大的帮助。</p>
+<p>以上内容仅涉及Intel用户手册中的极少部分。若想深入学习有关IA-32指令的知</p>
+<p>识，请各位认真研读 Intel® 64 and IA-32 Architectures Software Developer，s Manuals （与</p>
+<p>指令解析相关的部分为Vol. 2A-2.K Vol.2B-Appendix A ）D</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第49章 IA-32指令</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/04/09/逆向工程核心原理/第49章 IA-32指令/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年4月9日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第50章 反调试技术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH">
+                        <span class="hidden-mobile">第48章 SEH</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

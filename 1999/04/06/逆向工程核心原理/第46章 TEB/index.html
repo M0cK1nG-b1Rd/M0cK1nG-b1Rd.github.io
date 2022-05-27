@@ -1,0 +1,1299 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/apple-touch-icon.png">
+  <link rel="icon" href="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/icon/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="何语灵">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅作学习记录，侵删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第46章 TEB">
+<meta property="og:url" content="https://m0ck1ng-b1rd.github.io/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/index.html">
+<meta property="og:site_name" content="M0cK1nG-b1Rd&#39;s site">
+<meta property="og:description" content="仅作学习记录，侵删">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320213813296.png#alt=image-20220320213813296">
+<meta property="article:published_time" content="1999-04-06T04:21:06.000Z">
+<meta property="article:modified_time" content="2022-05-27T06:51:37.299Z">
+<meta property="article:author" content="何语灵">
+<meta property="article:tag" content="Binary">
+<meta property="article:tag" content="逆向工程核心原理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320213813296.png#alt=image-20220320213813296">
+  
+  
+  
+  <title>第46章 TEB - M0cK1nG-b1Rd&#39;s site</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/scroll.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"m0ck1ng-b1rd.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"87rdYWc7BpvmNHtufVgH6hwF-gzGzoHsz","app_key":"FOGIb6hlzKdTWSp4wBpACnWG","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>M0cK1nG-b1Rd&#39;s site</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/761607.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第46章 TEB"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="1999-04-06 12:21" pubdate>
+          1999年4月6日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="逆向工程核心原理"
+        id="heading-3aa8d47104cb3e1c282e0b87fc4ac315" role="tab" data-toggle="collapse" href="#collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+        aria-expanded="true"
+      >
+        逆向工程核心原理
+        <span class="list-group-count">(43)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3aa8d47104cb3e1c282e0b87fc4ac315"
+           role="tabpanel" aria-labelledby="heading-3aa8d47104cb3e1c282e0b87fc4ac315">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/1999/02/17/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC19%E7%AB%A0%20UPack%E8%B0%83%E8%AF%95%20-%20%E6%9F%A5%E6%89%BEOEP/" title="UPack调试-查找OEP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">UPack调试-查找OEP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/11/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC13%E7%AB%A0%20PE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="第13章 PE文件格式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第13章 PE文件格式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/12/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC14%E7%AB%A0%20%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/" title="第14章 运行时压缩"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第14章 运行时压缩</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/13/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/" title="第15章 调试UPX压缩的notepad程序"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第15章 调试UPX压缩的notepad程序</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/14/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/" title="第16章 基址重定位表"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第16章 基址重定位表</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/15/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC17%E7%AB%A0%20%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%A0%E9%99%A4.reloc%E8%8A%82%E5%8C%BA/" title="第17章 从可执行文件中删除.reloc节区"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第17章 从可执行文件中删除.reloc节区</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/16/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC18%E7%AB%A0%20UPack%20PE%E6%96%87%E4%BB%B6%E5%A4%B4%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" title="第18章 UPack PE文件头详细分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第18章 UPack PE文件头详细分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/18/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC20%E7%AB%A0%20%E2%80%9C%E5%86%85%E5%B5%8C%E8%A1%A5%E4%B8%81%E2%80%9D%E7%BB%83%E4%B9%A0/" title="第20章 “内嵌补丁”练习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第20章 “内嵌补丁”练习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/20/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC22%E7%AB%A0%20%E6%81%B6%E6%84%8F%E9%94%AE%E7%9B%98%E8%AE%B0%E5%BD%95%E5%99%A8/" title="第22章 恶意键盘记录器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第22章 恶意键盘记录器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/21/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC23%E7%AB%A0%20DLL%E6%B3%A8%E5%85%A5/" title="第23章 DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第23章 DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/22/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC24%E7%AB%A0%20DLL%E5%8D%B8%E8%BD%BD/" title="第24章 DLL卸载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第24章 DLL卸载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/23/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC25%E7%AB%A0%20%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9PE%E5%8A%A0%E8%BD%BDDLL/" title="第25章 通过修改PE加载DLL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第25章 通过修改PE加载DLL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/24/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC26%E7%AB%A0%20PE%20Tools/" title="第26章 PE Tools"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第26章 PE Tools</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/25/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC27%E7%AB%A0%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/" title="第27章 代码注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第27章 代码注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/26/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC28%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81/" title="第28章 使用汇编语言编写注入代码"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第28章 使用汇编语言编写注入代码</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/27/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC29%E7%AB%A0%20API%E9%92%A9%E5%8F%96%EF%BC%9A%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%9C%E8%8A%B1%E2%80%9D/" title="第29章 API钩取：逆向分析之“花”"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第29章 API钩取：逆向分析之“花”</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/28/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC30%E7%AB%A0%20%E8%AE%B0%E4%BA%8B%E6%9C%ACWriteFile()%20API%E9%92%A9%E5%8F%96/" title="第30章 记事本WriteFile() API钩取"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第30章 记事本WriteFile() API钩取</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC31%E7%AB%A0%20%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E5%99%A8/" title="第31章 关于调试器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第31章 关于调试器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC32%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E5%99%A8%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97/" title="第32章 计算器显示中文数字"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第32章 计算器显示中文数字</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC33%E7%AB%A0%20%E9%9A%90%E8%97%8F%E8%BF%9B%E7%A8%8B/" title="第33章 隐藏进程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第33章 隐藏进程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC34%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%85%A8%E5%B1%80API%E9%92%A9%E5%8F%96%EF%BC%9AIE%E8%BF%9E%E6%8E%A5%E6%8E%A7%E5%88%B6/" title="第34章 高级全局API钩取：旧连接控制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第34章 高级全局API钩取：旧连接控制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC35%E7%AB%A0%20%E4%BC%98%E7%A7%80%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BA%94%E7%A7%8D%E6%A0%87%E5%87%86/" title="第35章 优秀分析工具的五种标准"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第35章 优秀分析工具的五种标准</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC36%E7%AB%A0%2064%E4%BD%8D%E8%AE%A1%E7%AE%97/" title="第36章 64位计算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第36章 64位计算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC37%E7%AB%A0%20x64%E5%A4%84%E7%90%86%E5%99%A8/" title="第37章 x64处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第37章 x64处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC38%E7%AB%A0%20PE32+/" title="第38章 PE32+"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第38章 PE32+</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC39%E7%AB%A0%20WinDbg/" title="第39章 WinDbg"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第39章 WinDbg</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/03/31/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC40%E7%AB%A0%2064%E4%BD%8D%E8%B0%83%E8%AF%95/" title="第40章 64位调试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第40章 64位调试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC41%E7%AB%A0%20ASLR/" title="第41章 ASLR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第41章 ASLR</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC42%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84%E4%BC%9A%E8%AF%9D/" title="第42章 内核6中的会话"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第42章 内核6中的会话</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC43%E7%AB%A0%20%E5%86%85%E6%A0%B86%E4%B8%AD%E7%9A%84DLL%E6%B3%A8%E5%85%A5/" title="第43章 内核6中的DLL注入"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第43章 内核6中的DLL注入</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC44%E7%AB%A0%20InjDll.exe%EF%BC%9ADLL%E6%B3%A8%E5%85%A5%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7/" title="第44章 InjDILexe： DLL注入专用工具"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第44章 InjDILexe： DLL注入专用工具</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第45章 TLS回调函数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/06/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC46%E7%AB%A0%20TEB/" title="第46章 TEB"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">第46章 TEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第47章 PEB</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/08/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC48%E7%AB%A0%20SEH/" title="第48章 SEH"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第48章 SEH</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/09/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC49%E7%AB%A0%20IA-32%E6%8C%87%E4%BB%A4/" title="第49章 IA-32指令"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第49章 IA-32指令</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/04/30/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC50%E7%AB%A0%20%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第50章 反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第50章 反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/01/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC51%E7%AB%A0%20%E9%9D%99%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第51章 静态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第51章 静态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/02/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC52%E7%AB%A0%20%E5%8A%A8%E6%80%81%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第52章 动态反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第52章 动态反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/03/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC53%E7%AB%A0%20%E9%AB%98%E7%BA%A7%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="第53章 高级反调试技术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第53章 高级反调试技术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/05/04/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC54%E7%AB%A0%20%E8%B0%83%E8%AF%95%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9C%8D%E5%8A%A1/" title="第54章 调试练习1:服务"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第54章 调试练习1:服务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/19/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC21%E7%AB%A0%20Windows%E6%B6%88%E6%81%AF%E9%92%A9%E5%8F%96/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+      
+      
+        <a href="/1999/02/10/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC7%E7%AB%A0%20%E6%A0%88%E5%B8%A7/" title="第7章 栈帧"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">第7章 栈帧</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第46章 TEB</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年5月27日 下午
+                  
+                
+              </p>
+            
+            <div class="markdown-body">
+              
+              <p>第46章 TEB</p>
+<p>本章将学习有关TEB ( Thread Environment Block,线程环境块）的知识，它们是我们后面要学习的高级调试技术的基础，请大家认真学习，理解并掌握相关概念。</p>
+<h1 id="46-1-TEB"><a href="#46-1-TEB" class="headerlink" title="46.1 TEB"></a>46.1 TEB</h1><p>TEB指线程环境块，该结构体包含进程中运行线程的各种信息，进程中的每个线程都对应一个TEB结构体。不同OS中TEB结构体的形态略微不同，有关TEB结构体的详细说明都已被文档化，各位可以直接查看并参考。</p>
+<h2 id="46-1-1-TEB结构体的定义"><a href="#46-1-1-TEB结构体的定义" class="headerlink" title="46.1.1 TEB结构体的定义"></a>46.1.1 TEB结构体的定义</h2><p>首先看看MSDN中关于TEB结构体的说明。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">TEB</span> &#123;</span><br>    PVOID Reserved1[<span class="hljs-number">12</span>];<br>    PPEB ProcessEnvironmentBlock;<br>    PVOID Reserved2[<span class="hljs-number">399</span>];<br>    BYTE Reserved3[<span class="hljs-number">1952</span>];<br>    PVOID TlsSlots[<span class="hljs-number">64</span>];<br>    BYTE Reserved4[<span class="hljs-number">8</span>];<br>    PVOID Reserved5[<span class="hljs-number">26</span>];<br>    PVOID ReservedForOle;  <span class="hljs-comment">// Windows 2000 only</span><br>    PVOID Reserved6[<span class="hljs-number">4</span>];<br>    PVOID TlsExpansionSlots;<br>&#125; TEB, *PTEB<br></code></pre></td></tr></table></figure>
+
+<p>正如大家所见，MSDN对TEB结构体的说明太过简单。要想查看关于TEB结构体的更多细节，必须借助类似于WinDbg的内核调试器（Kernel Debugger )才行。</p>
+<blockquote>
+<p>安装并运行WinDbg的方法请参考“WinDbg” 一章。</p>
+</blockquote>
+<h2 id="46-1-2-TEB结构体成员"><a href="#46-1-2-TEB结构体成员" class="headerlink" title="46.1.2 TEB结构体成员"></a>46.1.2 TEB结构体成员</h2><p>使用WinDbg调试器获取TEB结构体的组成成员，如下所示。</p>
+<blockquote>
+<p>获取下面信息的方法：dt ntdll!_TEB（注意配置加载正确的符号文件）</p>
+</blockquote>
+<blockquote>
+<p>若要详细信息</p>
+</blockquote>
+<blockquote>
+<p>输入命令：dt -r1 ntdll!_TEB</p>
+</blockquote>
+<p><strong>Windows XP SP3中</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs c">nt!_TEB<br>   +<span class="hljs-number">0x000</span> NtTib            : _NT_TIB<br>   +<span class="hljs-number">0x01c</span> EnvironmentPointer : Ptr32 Void<br>   +<span class="hljs-number">0x020</span> ClientId         : _CLIENT_ID<br>   +<span class="hljs-number">0x028</span> ActiveRpcHandle  : Ptr32 Void<br>   +<span class="hljs-number">0x02c</span> ThreadLocalStoragePointer : Ptr32 Void<br>   +<span class="hljs-number">0x030</span> ProcessEnvironmentBlock : Ptr32 _PEB<br>   +<span class="hljs-number">0x034</span> LastErrorValue   : Uint4B<br>   +<span class="hljs-number">0x038</span> CountOfOwnedCriticalSections : Uint4B<br>   +<span class="hljs-number">0x03c</span> CsrClientThread  : Ptr32 Void<br>   +<span class="hljs-number">0x040</span> Win32ThreadInfo  : Ptr32 Void<br>   +<span class="hljs-number">0x044</span> User32Reserved   : [<span class="hljs-number">26</span>] Uint4B<br>   +<span class="hljs-number">0x0ac</span> UserReserved     : [<span class="hljs-number">5</span>] Uint4B<br>   +<span class="hljs-number">0x0c0</span> WOW32Reserved    : Ptr32 Void<br>   +<span class="hljs-number">0x0c4</span> CurrentLocale    : Uint4B<br>   +<span class="hljs-number">0x0c8</span> FpSoftwareStatusRegister : Uint4B<br>   +<span class="hljs-number">0x0cc</span> SystemReserved1  : [<span class="hljs-number">54</span>] Ptr32 Void<br>   +<span class="hljs-number">0x1a4</span> ExceptionCode    : Int4B<br>   +<span class="hljs-number">0x1a8</span> ActivationContextStack : _ACTIVATION_CONTEXT_STACK<br>   +<span class="hljs-number">0x1bc</span> SpareBytes1      : [<span class="hljs-number">24</span>] UChar<br>   +<span class="hljs-number">0x1d4</span> GdiTebBatch      : _GDI_TEB_BATCH<br>   +<span class="hljs-number">0x6b4</span> RealClientId     : _CLIENT_ID<br>   +<span class="hljs-number">0x6bc</span> GdiCachedProcessHandle : Ptr32 Void<br>   +<span class="hljs-number">0x6c0</span> GdiClientPID     : Uint4B<br>   +<span class="hljs-number">0x6c4</span> GdiClientTID     : Uint4B<br>   +<span class="hljs-number">0x6c8</span> GdiThreadLocalInfo : Ptr32 Void<br>   +<span class="hljs-number">0x6cc</span> Win32ClientInfo  : [<span class="hljs-number">62</span>] Uint4B<br>   +<span class="hljs-number">0x7c4</span> glDispatchTable  : [<span class="hljs-number">233</span>] Ptr32 Void<br>   +<span class="hljs-number">0xb68</span> glReserved1      : [<span class="hljs-number">29</span>] Uint4B<br>   +<span class="hljs-number">0xbdc</span> glReserved2      : Ptr32 Void<br>   +<span class="hljs-number">0xbe0</span> glSectionInfo    : Ptr32 Void<br>   +<span class="hljs-number">0xbe4</span> glSection        : Ptr32 Void<br>   +<span class="hljs-number">0xbe8</span> glTable          : Ptr32 Void<br>   +<span class="hljs-number">0xbec</span> glCurrentRC      : Ptr32 Void<br>   +<span class="hljs-number">0xbf0</span> glContext        : Ptr32 Void<br>   +<span class="hljs-number">0xbf4</span> LastStatusValue  : Uint4B<br>   +<span class="hljs-number">0xbf8</span> StaticUnicodeString : _UNICODE_STRING<br>   +<span class="hljs-number">0xc00</span> StaticUnicodeBuffer : [<span class="hljs-number">261</span>] Uint2B<br>   +<span class="hljs-number">0xe0c</span> DeallocationStack : Ptr32 Void<br>   +<span class="hljs-number">0xe10</span> TlsSlots         : [<span class="hljs-number">64</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf10</span> TlsLinks         : _LIST_ENTRY<br>   +<span class="hljs-number">0xf18</span> Vdm              : Ptr32 Void<br>   +<span class="hljs-number">0xf1c</span> ReservedForNtRpc : Ptr32 Void<br>   +<span class="hljs-number">0xf20</span> DbgSsReserved    : [<span class="hljs-number">2</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf28</span> HardErrorsAreDisabled : Uint4B<br>   +<span class="hljs-number">0xf2c</span> Instrumentation  : [<span class="hljs-number">16</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf6c</span> WinSockData      : Ptr32 Void<br>   +<span class="hljs-number">0xf70</span> GdiBatchCount    : Uint4B<br>   +<span class="hljs-number">0xf74</span> InDbgPrint       : UChar<br>   +<span class="hljs-number">0xf75</span> FreeStackOnTermination : UChar<br>   +<span class="hljs-number">0xf76</span> HasFiberData     : UChar<br>   +<span class="hljs-number">0xf77</span> IdealProcessor   : UChar<br>   +<span class="hljs-number">0xf78</span> Spare3           : Uint4B<br>   +<span class="hljs-number">0xf7c</span> ReservedForPerf  : Ptr32 Void<br>   +<span class="hljs-number">0xf80</span> ReservedForOle   : Ptr32 Void<br>   +<span class="hljs-number">0xf84</span> WaitingOnLoaderLock : Uint4B<br>   +<span class="hljs-number">0xf88</span> Wx86Thread       : _Wx86ThreadState<br>   +<span class="hljs-number">0xf94</span> TlsExpansionSlots : Ptr32 Ptr32 Void<br>   +<span class="hljs-number">0xf98</span> ImpersonationLocale : Uint4B<br>   +<span class="hljs-number">0xf9c</span> IsImpersonating  : Uint4B<br>   +<span class="hljs-number">0xfa0</span> NlsCache         : Ptr32 Void<br>   +<span class="hljs-number">0xfa4</span> pShimData        : Ptr32 Void<br>   +<span class="hljs-number">0xfa8</span> HeapVirtualAffinity : Uint4B<br>   +<span class="hljs-number">0xfac</span> CurrentTransactionHandle : Ptr32 Void<br>   +<span class="hljs-number">0xfb0</span> ActiveFrame      : Ptr32 _TEB_ACTIVE_FRAME<br>   +<span class="hljs-number">0xfb4</span> SafeThunkCall    : UChar<br>   +<span class="hljs-number">0xfb5</span> BooleanSpare     : [<span class="hljs-number">3</span>] UChar<br></code></pre></td></tr></table></figure>
+
+<p><strong>Windows 7中</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><code class="hljs c">dt ntdll!_TEB<br>   +<span class="hljs-number">0x000</span> NtTib            : _NT_TIB<br>   +<span class="hljs-number">0x01c</span> EnvironmentPointer : Ptr32 Void<br>   +<span class="hljs-number">0x020</span> ClientId         : _CLIENT_ID<br>   +<span class="hljs-number">0x028</span> ActiveRpcHandle  : Ptr32 Void<br>   +<span class="hljs-number">0x02c</span> ThreadLocalStoragePointer : Ptr32 Void<br>   +<span class="hljs-number">0x030</span> ProcessEnvironmentBlock : Ptr32 _PEB<br>   +<span class="hljs-number">0x034</span> LastErrorValue   : Uint4B<br>   +<span class="hljs-number">0x038</span> CountOfOwnedCriticalSections : Uint4B<br>   +<span class="hljs-number">0x03c</span> CsrClientThread  : Ptr32 Void<br>   +<span class="hljs-number">0x040</span> Win32ThreadInfo  : Ptr32 Void<br>   +<span class="hljs-number">0x044</span> User32Reserved   : [<span class="hljs-number">26</span>] Uint4B<br>   +<span class="hljs-number">0x0ac</span> UserReserved     : [<span class="hljs-number">5</span>] Uint4B<br>   +<span class="hljs-number">0x0c0</span> WOW32Reserved    : Ptr32 Void<br>   +<span class="hljs-number">0x0c4</span> CurrentLocale    : Uint4B<br>   +<span class="hljs-number">0x0c8</span> FpSoftwareStatusRegister : Uint4B<br>   +<span class="hljs-number">0x0cc</span> SystemReserved1  : [<span class="hljs-number">54</span>] Ptr32 Void<br>   +<span class="hljs-number">0x1a4</span> ExceptionCode    : Int4B<br>   +<span class="hljs-number">0x1a8</span> ActivationContextStackPointer : Ptr32 _ACTIVATION_CONTEXT_STACK<br>   +<span class="hljs-number">0x1ac</span> SpareBytes       : [<span class="hljs-number">36</span>] UChar<br>   +<span class="hljs-number">0x1d0</span> TxFsContext      : Uint4B<br>   +<span class="hljs-number">0x1d4</span> GdiTebBatch      : _GDI_TEB_BATCH<br>   +<span class="hljs-number">0x6b4</span> RealClientId     : _CLIENT_ID<br>   +<span class="hljs-number">0x6bc</span> GdiCachedProcessHandle : Ptr32 Void<br>   +<span class="hljs-number">0x6c0</span> GdiClientPID     : Uint4B<br>   +<span class="hljs-number">0x6c4</span> GdiClientTID     : Uint4B<br>   +<span class="hljs-number">0x6c8</span> GdiThreadLocalInfo : Ptr32 Void<br>   +<span class="hljs-number">0x6cc</span> Win32ClientInfo  : [<span class="hljs-number">62</span>] Uint4B<br>   +<span class="hljs-number">0x7c4</span> glDispatchTable  : [<span class="hljs-number">233</span>] Ptr32 Void<br>   +<span class="hljs-number">0xb68</span> glReserved1      : [<span class="hljs-number">29</span>] Uint4B<br>   +<span class="hljs-number">0xbdc</span> glReserved2      : Ptr32 Void<br>   +<span class="hljs-number">0xbe0</span> glSectionInfo    : Ptr32 Void<br>   +<span class="hljs-number">0xbe4</span> glSection        : Ptr32 Void<br>   +<span class="hljs-number">0xbe8</span> glTable          : Ptr32 Void<br>   +<span class="hljs-number">0xbec</span> glCurrentRC      : Ptr32 Void<br>   +<span class="hljs-number">0xbf0</span> glContext        : Ptr32 Void<br>   +<span class="hljs-number">0xbf4</span> LastStatusValue  : Uint4B<br>   +<span class="hljs-number">0xbf8</span> StaticUnicodeString : _UNICODE_STRING<br>   +<span class="hljs-number">0xc00</span> StaticUnicodeBuffer : [<span class="hljs-number">261</span>] Wchar<br>   +<span class="hljs-number">0xe0c</span> DeallocationStack : Ptr32 Void<br>   +<span class="hljs-number">0xe10</span> TlsSlots         : [<span class="hljs-number">64</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf10</span> TlsLinks         : _LIST_ENTRY<br>   +<span class="hljs-number">0xf18</span> Vdm              : Ptr32 Void<br>   +<span class="hljs-number">0xf1c</span> ReservedForNtRpc : Ptr32 Void<br>   +<span class="hljs-number">0xf20</span> DbgSsReserved    : [<span class="hljs-number">2</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf28</span> HardErrorMode    : Uint4B<br>   +<span class="hljs-number">0xf2c</span> Instrumentation  : [<span class="hljs-number">9</span>] Ptr32 Void<br>   +<span class="hljs-number">0xf50</span> ActivityId       : _GUID<br>   +<span class="hljs-number">0xf60</span> SubProcessTag    : Ptr32 Void<br>   +<span class="hljs-number">0xf64</span> EtwLocalData     : Ptr32 Void<br>   +<span class="hljs-number">0xf68</span> EtwTraceData     : Ptr32 Void<br>   +<span class="hljs-number">0xf6c</span> WinSockData      : Ptr32 Void<br>   +<span class="hljs-number">0xf70</span> GdiBatchCount    : Uint4B<br>   +<span class="hljs-number">0xf74</span> CurrentIdealProcessor : _PROCESSOR_NUMBER<br>   +<span class="hljs-number">0xf74</span> IdealProcessorValue : Uint4B<br>   +<span class="hljs-number">0xf74</span> ReservedPad0     : UChar<br>   +<span class="hljs-number">0xf75</span> ReservedPad1     : UChar<br>   +<span class="hljs-number">0xf76</span> ReservedPad2     : UChar<br>   +<span class="hljs-number">0xf77</span> IdealProcessor   : UChar<br>   +<span class="hljs-number">0xf78</span> GuaranteedStackBytes : Uint4B<br>   +<span class="hljs-number">0xf7c</span> ReservedForPerf  : Ptr32 Void<br>   +<span class="hljs-number">0xf80</span> ReservedForOle   : Ptr32 Void<br>   +<span class="hljs-number">0xf84</span> WaitingOnLoaderLock : Uint4B<br>   +<span class="hljs-number">0xf88</span> SavedPriorityState : Ptr32 Void<br>   +<span class="hljs-number">0xf8c</span> SoftPatchPtr1    : Uint4B<br>   +<span class="hljs-number">0xf90</span> ThreadPoolData   : Ptr32 Void<br>   +<span class="hljs-number">0xf94</span> TlsExpansionSlots : Ptr32 Ptr32 Void<br>   +<span class="hljs-number">0xf98</span> MuiGeneration    : Uint4B<br>   +<span class="hljs-number">0xf9c</span> IsImpersonating  : Uint4B<br>   +<span class="hljs-number">0xfa0</span> NlsCache         : Ptr32 Void<br>   +<span class="hljs-number">0xfa4</span> pShimData        : Ptr32 Void<br>   +<span class="hljs-number">0xfa8</span> HeapVirtualAffinity : Uint4B<br>   +<span class="hljs-number">0xfac</span> CurrentTransactionHandle : Ptr32 Void<br>   +<span class="hljs-number">0xfb0</span> ActiveFrame      : Ptr32 _TEB_ACTIVE_FRAME<br>   +<span class="hljs-number">0xfb4</span> FlsData          : Ptr32 Void<br>   +<span class="hljs-number">0xfb8</span> PreferredLanguages : Ptr32 Void<br>   +<span class="hljs-number">0xfbc</span> UserPrefLanguages : Ptr32 Void<br>   +<span class="hljs-number">0xfc0</span> MergedPrefLanguages : Ptr32 Void<br>   +<span class="hljs-number">0xfc4</span> MuiImpersonation : Uint4B<br>   +<span class="hljs-number">0xfc8</span> CrossTebFlags    : Uint2B<br>   +<span class="hljs-number">0xfc8</span> SpareCrossTebBits : Pos <span class="hljs-number">0</span>, <span class="hljs-number">16</span> Bits<br>   +<span class="hljs-number">0xfca</span> SameTebFlags     : Uint2B<br>   +<span class="hljs-number">0xfca</span> SafeThunkCall    : Pos <span class="hljs-number">0</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> InDebugPrint     : Pos <span class="hljs-number">1</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> HasFiberData     : Pos <span class="hljs-number">2</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> SkipThreadAttach : Pos <span class="hljs-number">3</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> WerInShipAssertCode : Pos <span class="hljs-number">4</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> RanProcessInit   : Pos <span class="hljs-number">5</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> ClonedThread     : Pos <span class="hljs-number">6</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> SuppressDebugMsg : Pos <span class="hljs-number">7</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> DisableUserStackWalk : Pos <span class="hljs-number">8</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> RtlExceptionAttached : Pos <span class="hljs-number">9</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> InitialThread    : Pos <span class="hljs-number">10</span>, <span class="hljs-number">1</span> Bit<br>   +<span class="hljs-number">0xfca</span> SpareSameTebBits : Pos <span class="hljs-number">11</span>, <span class="hljs-number">5</span> Bits<br>   +<span class="hljs-number">0xfcc</span> TxnScopeEnterCallback : Ptr32 Void<br>   +<span class="hljs-number">0xfd0</span> TxnScopeExitCallback : Ptr32 Void<br>   +<span class="hljs-number">0xfd4</span> TxnScopeContext  : Ptr32 Void<br>   +<span class="hljs-number">0xfd8</span> LockCount        : Uint4B<br>   +<span class="hljs-number">0xfdc</span> SpareUlong0      : Uint4B<br>   +<span class="hljs-number">0xfe0</span> ResourceRetValue : Ptr32 Void<br></code></pre></td></tr></table></figure>
+
+<p>如上所示，借助WinDbg的符号文件，我们查看了TEB结构体的所有成员。仔细比较代码46-2与46-3可以发现，Windows 7下的TEB结构体比Windows XP下的TEB结构体大。</p>
+<h2 id="46-1-3重要成员"><a href="#46-1-3重要成员" class="headerlink" title="46.1.3重要成员"></a>46.1.3重要成员</h2><p>如上所示，TEB结构体的成员多而复杂，在用户模式调试中起着重要作用的成员有2个，如代码46-4所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">+<span class="hljs-number">0x000</span> NtTib            : _NT_TIB<br>+<span class="hljs-number">0x030</span> ProcessEnvironmentBlock : Ptr32 _PEB<br></code></pre></td></tr></table></figure>
+
+<p><strong>ProcessEnvironmentBlock成员</strong></p>
+<p>先看Offset 30处的ProcessEnvironmentBlock成员，它是指向PEB（Process Environment Block，进程环境块）结构体的指针。PEB是进程环境块，每个进程对应1个PEB结构体，下一章将详细讲解。</p>
+<p><strong>NtTib成员</strong></p>
+<p>TEB结构体的第一个成员S_NT_TIB结构体（TIB是Thread Information Block的简称，意为“线程信息块”），_NT_TIB结构体的定义如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">NT_TIB</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">EXCEPTION_REGISTRATION_RECORD</span> *<span class="hljs-title">ExceptionList</span>;</span><br>    PVOID StackBase;<br>    PVOID StackLimit;<br>    PVOID SubSystemTib;<br>    PVOID ArbitraryUserPointer;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">NT_TIB</span> *<span class="hljs-title">Self</span>;</span><br>&#125; NT_TIB;<br><span class="hljs-keyword">typedef</span> NT_TIB *PNT_TIB;<br></code></pre></td></tr></table></figure>
+
+<p>ExceptionList成员指向_EXCEPTION_REGISTRATION_RECORD结构体组成的链表，它用于Windows OS的SEH。Self成员是_NT_TIB结构体的自引用指针，也是TEB结构体的指针（因为TEB结构体的第一个成员就是_NT_TIB结构体）。那么接下来的问题是，该如何在用户模式下访问TEB结构体呢？只有访问它才能使用相应信息。下一节将学习如何在用户模式下访问TEB结构体。</p>
+<h1 id="46-2-TEB访问方法"><a href="#46-2-TEB访问方法" class="headerlink" title="46.2 TEB访问方法"></a>46.2 TEB访问方法</h1><p>前面讲解过，借助WinDbg内核调试器可以很容易地访问TEB结构体。那么，该如何在用户模式下访问它呢？答案就是，通过OS提供的相关API访问。</p>
+<blockquote>
+<p>请注意：下面示例中出现的地址会随用户计算机环境的不同而不同。</p>
+</blockquote>
+<h2 id="46-2-1-Ntdll-NtCurrentTeb"><a href="#46-2-1-Ntdll-NtCurrentTeb" class="headerlink" title="46.2.1 Ntdll.NtCurrentTeb()"></a>46.2.1 Ntdll.NtCurrentTeb()</h2><p>Ntdll.NtCurrentTeb() API用来返回当前线程的TEB结构体的地址。该函数内部是如何实现的呢？下面使用OllyDbg工具查看。首先在OllyDbg中打开Notepad.exe程序（也可以打开其他任一程序），然后在鼠标右键菜单中选择Search for Name in all modules菜单，在Name in all modules对话框中查找ntdll.NtCurrentTeb()API,如图46-1所示（单击Name栏，按Name排序后更易查找）。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320213813296.png#alt=image-20220320213813296" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>如图46-1所示，查找到NtCurrentTeb函数后，使用鼠标双击即可跳转到该API的代码处，如图46-2所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320214004834.png#alt=image-20220320214004834" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>从上图可以看到，NtCurrentTeb()函数的内部代码非常简单，只返回FS:[18]地址值。在图46-2 的OllyDbg的代码注释窗口中可以看到FS:[18]的实际地址为7FFDF018。在内存窗口中进入7FFDF018地址，发现其值为7FFDF000，即NtCurrentTeb() API返回7FFDF000,该地址就是当前线程的TEB的地址。仔细观察图46-2中TEB结构体的地址（7FFDF000）,发现它与FS段寄存器所指的段内存的基址是一样的。也就是说，TEB与FS段寄存器有着某种关联。</p>
+<h2 id="46-2-2-FS段寄存器"><a href="#46-2-2-FS段寄存器" class="headerlink" title="46.2.2 FS段寄存器"></a>46.2.2 FS段寄存器</h2><p><strong>SDT（Segment Descriptor Table，段描述符表）</strong></p>
+<p>其实，FS段寄存器用来指示当前线程的TEB结构体。</p>
+<p>IA-32系统中进程的虚拟内存大小为4GB，因而需要32位的指针才能访问整个内存空间。但 是FS寄存器的大小只有16位，那么它如何表示进程内存空间中的TEB结构体的地址呢？实际上，FS寄存器并非直接指向TEB结构体的地址，它持有SDT的索引，而该索引持有实际TEB地址。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320231533622.png#alt=image-20220320231533622" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<blockquote>
+<p>SDT位于内核内存区域，其地址存储在特殊的寄存器GDTR（Global Descriptor Table Resiger,全局描述符表寄存器）中</p>
+</blockquote>
+<p>借助示意图描述上述过程，如图46-3所示。</p>
+<p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2022/05/img/%E7%AC%AC46%E7%AB%A0%20TEB.assets/image-20220320221305348.png#alt=image-20220320221305348" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload></p>
+<p>由于段寄存器实际存储的是SDT的索引，所以它也被称为“段选择符”（Segment Selector）。从图46-3中可以看到，TEB结构体位于FS段选择符所指的段内存的起始地址（base address）处。</p>
+<ul>
+<li>FS:[0x18]&#x3D;TEB起始地址</li>
+</ul>
+<p>如果掌握了上述内容，那么就很容易理解下面公式的含义。</p>
+<p>FS:[0x18] &#x3D; TEB.NtTib.Self &#x3D; address of TIB &#x3D; address of TEB &#x3D; <strong>FS:0</strong> &#x3D; 7FFDF000</p>
+<p>FS:0是段内存的起始地址，FS寄存器指向（Indexing） 一个段描述符，而该描述符又指向段内存的起始地址。</p>
+<p>从图46-2中可知，FS:[0x18]与[7FFDF018]（→7FFDF000）具有相同含义。由代码46-5中的_NT_TIB结构体的定义得知，结构体的最后一个Self成员恰好位于从TEB结构体偏移018的位置（再次提醒TEB结构体的第一个成员就是_NT_TIB结构体）。Self指针变量指向偏移018的起始地址，也就是TEB的起始地址。</p>
+<ul>
+<li>FS:[0x30]&#x3D;PEB起始地址</li>
+</ul>
+<p>根据代码46-2与代码46-3，FS:[0x30]可表示为如下等式：</p>
+<p>FS:[0x30] &#x3D; TEB.ProcessEnvironmentBlock &#x3D; address of PEB</p>
+<p>从图46-2中可以知道，FS:[0x30]与[7FFDF030]（→7FFD3000）具有相同含义。也就是说，通过TEB的ProcessEnvironment Block成员可以获取PEB结构体的起始地址。PEB结构体多用于反调试，下一章将详细讲解。</p>
+<ul>
+<li>FS:[0]&#x3D;SEH起始地址</li>
+</ul>
+<p>此外还要了解一下FS:[0]。</p>
+<p>FS:[0] &#x3D; TEB.NtTib.ExceptionList &#x3D; address of SEH</p>
+<p>从图46-2中可以知道，FS:[0]与[7FFDF000]（→1DFF64）具有相同含义。</p>
+<p>SEH是Wiondows操作系统中的结构化异常处理机制，常用于反调试技术，详细内容请参考第48章。</p>
+<h1 id="46-3小结"><a href="#46-3小结" class="headerlink" title="46.3小结"></a>46.3小结</h1><p>本章我们学习了FS:[0]、FS:[0xl8]、FS:[0x30]的含义，调试中会经常见到。只要理解了“FS:[0xl8]指向TEB结构体的起始地址”，就能轻松掌握它们表示的含义。为便于说明，本章并未做复杂讲解，大家具备了一定的水平与实力后；我们会另外学习IA-32内存模型的知识。刚开始学习时虽然有些枯燥乏味，但还是要先认真整理这些相关概念，随着各位对IA-32 CPU与Windows OS理解的逐渐深人，再逐步学习更高级的代码逆向分析技术。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Binary/" class="category-chain-item">Binary</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Binary/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" class="category-chain-item">逆向工程核心原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Binary/">#Binary</a>
+      
+        <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">#逆向工程核心原理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第46章 TEB</div>
+      <div>https://m0ck1ng-b1rd.github.io/1999/04/06/逆向工程核心原理/第46章 TEB/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>何语灵</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>1999年4月6日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/1999/04/07/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC47%E7%AB%A0%20PEB/" title="第47章 PEB">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第47章 PEB</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/1999/04/05/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%AC%AC45%E7%AB%A0%20TLS%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" title="第45章 TLS回调函数">
+                        <span class="hidden-mobile">第45章 TLS回调函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'M0cK1nG-b1Rd/blog-comments');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://M0cK1nG-b1Rd.github.io" target="_blank" rel="nofollow noopener"><span>M0cK1nG-b1Rd</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Powered by Hexo&Fluid</span></a> <div>Per aspera ad astra</div> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+  
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/DynamicRibbon.min.js"></script>
+<script src="//picbedddd.oss-cn-beijing.aliyuncs.com/blog/scripts/star.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":250,"height":500,"hOffset":-30,"vOffset":-150},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
