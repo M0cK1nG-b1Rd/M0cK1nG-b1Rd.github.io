@@ -1,3 +1,4 @@
+https://m0ck1ng-b1rd.github.io/2022/06/06/HTB/Fingerprint/
 https://m0ck1ng-b1rd.github.io/2022/04/13/APT%E7%BA%A7CS%E9%9A%90%E8%97%8F%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E3%80%81C2-Profile%E5%92%8CCDN%E6%8B%89%E6%BB%A1%E6%BA%AF%E6%BA%90%E9%9A%BE%E5%BA%A6/
 https://m0ck1ng-b1rd.github.io/2022/04/29/%E5%80%92%E8%85%BE/VMWare%E4%B8%8AArch+xfce4%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%BE%8E%E5%8C%96/
 https://m0ck1ng-b1rd.github.io/2021/12/07/HTB/Intelligence/
