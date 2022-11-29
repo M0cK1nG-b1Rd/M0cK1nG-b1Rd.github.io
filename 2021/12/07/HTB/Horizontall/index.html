@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/e4ec7d8504fdb58b5e6b7ddc82aafc77.png">
 <meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
-<meta property="article:modified_time" content="2022-04-14T10:57:12.740Z">
+<meta property="article:modified_time" content="2022-06-06T13:10:48.805Z">
 <meta property="article:author" content="何语灵">
 <meta property="article:tag" content="HackTheBox">
 <meta name="twitter:card" content="summary_large_image">
@@ -485,18 +485,18 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年4月14日 晚上
+                    本文最后更新于：2022年6月6日 晚上
                   
                 
               </p>
             
             <div class="markdown-body">
               
-              <h2 id="0x01-准备"><a href="#0x01-准备" class="headerlink" title="0x01 准备"></a>0x01 准备</h2><p>该靶机设置了域名，需要手动在host文件配置ip地址。</p>
+              <h1 id="0x01-准备"><a href="#0x01-准备" class="headerlink" title="0x01 准备"></a>0x01 准备</h1><p>该靶机设置了域名，需要手动在host文件配置ip地址。</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210905215302816.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905215302816"></p>
 <p>配置完成后即可访问靶机。看到vue的图标也就不难看出这是一个前后端分离的网站，我们的目标应该主要放在后端的接口上。</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210905220136069.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905220136069"></p>
-<h2 id="0x02-user-txt"><a href="#0x02-user-txt" class="headerlink" title="0x02 user.txt"></a>0x02 user.txt</h2><p>我安装的burp插件帮我找到了一个子域名，同样我们需要将其录入hosts文件中绑定靶机的ip，这样才能正常访问：</p>
+<h1 id="0x02-user-txt"><a href="#0x02-user-txt" class="headerlink" title="0x02 user.txt"></a>0x02 user.txt</h1><p>我安装的burp插件帮我找到了一个子域名，同样我们需要将其录入hosts文件中绑定靶机的ip，这样才能正常访问：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210905220111940.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905220111940"></p>
 <p>如下即可：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210905220548469.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905220548469"></p>
@@ -529,7 +529,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>这样我们可以拿到user的flag了，如果想拿root的flag需要进一步提权。</p>
-<h2 id="0x03-root-txt"><a href="#0x03-root-txt" class="headerlink" title="0x03 root.txt"></a>0x03 root.txt</h2><p>使用linpeas扫了一圈没啥收获。然后这里之后我就卡住了。</p>
+<h1 id="0x03-root-txt"><a href="#0x03-root-txt" class="headerlink" title="0x03 root.txt"></a>0x03 root.txt</h1><p>使用linpeas扫了一圈没啥收获。然后这里之后我就卡住了。</p>
 <p>两天后回来继续看，去论坛和别的老哥交流了一下，给的提示是关注可疑的开放端口。</p>
 <p>然后又回linpeas看了看端口，发现确实有可疑的端口：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210907171216367.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210907171216367"></p>
@@ -559,7 +559,7 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210907163250421.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210907163250421"></p>
 <p>运行exp，成功拿到root的shell。查看flag即可。</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Horizontall.assets/image-20210907163455505.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210907163455505"></p>
-<h2 id="0x04-后记"><a href="#0x04-后记" class="headerlink" title="0x04 后记"></a>0x04 后记</h2><p>emm。。值得一提的是这个box的评级居然只是easy。论坛上也有很多老哥吐槽说应该设成medium。</p>
+<h1 id="0x04-后记"><a href="#0x04-后记" class="headerlink" title="0x04 后记"></a>0x04 后记</h1><p>emm。。值得一提的是这个box的评级居然只是easy。论坛上也有很多老哥吐槽说应该设成medium。</p>
 <p>复盘一下思路吧，这个靶机还是很有意思的：</p>
 <ol>
 <li>利用了两个CVE组合拳打下user权限的shell</li>

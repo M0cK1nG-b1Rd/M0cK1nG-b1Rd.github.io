@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/0fc719df3061177675fd15d156da0ac0.png">
 <meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
-<meta property="article:modified_time" content="2022-04-14T10:56:56.910Z">
+<meta property="article:modified_time" content="2022-06-06T09:04:41.510Z">
 <meta property="article:author" content="何语灵">
 <meta property="article:tag" content="HackTheBox">
 <meta name="twitter:card" content="summary_large_image">
@@ -246,7 +246,7 @@
         
         
         
-          46 分钟
+          47 分钟
         
       </span>
     
@@ -485,7 +485,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年4月14日 晚上
+                    本文最后更新于：2022年6月6日 下午
                   
                 
               </p>
@@ -493,7 +493,7 @@
             <div class="markdown-body">
               
               <p>insane难度初体验 &amp; HTTP Smuggle攻击实操 &amp; 云渗透学习</p>
-<h2 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sC -sV -v <span class="hljs-number">10.10.10.22</span><br></code></pre></td></tr></table></figure>
+<h1 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> -sC -sV -v <span class="hljs-number">10.10.10.22</span><br></code></pre></td></tr></table></figure>
 
 <p>发现端口22、3000、5000开启</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210924214339576.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210924214339576"></p>
@@ -521,7 +521,7 @@
 <p>对这些存在交互的地方测试XSS，SQLi，SSTI，未果。</p>
 <p>转变思路，先抓个包看看，可以发现存在的服务器信息，可以发现后端是<code>gunicorn</code>，然后代理使用了<code>haproxy</code>：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210924220539045.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210924220539045"></p>
-<h2 id="0x02-突破口"><a href="#0x02-突破口" class="headerlink" title="0x02 突破口"></a>0x02 突破口</h2><p>Google一下，可以看到HAProxy存在HTTP走私漏洞：</p>
+<h1 id="0x02-突破口"><a href="#0x02-突破口" class="headerlink" title="0x02 突破口"></a>0x02 突破口</h1><p>Google一下，可以看到HAProxy存在HTTP走私漏洞：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210927161101414.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210927161101414"></p>
 <p>对那篇文章进行总结，于此题而言，攻击原理和要点如下：</p>
 <ol>
@@ -572,7 +572,7 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929144609360.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929144609360"></p>
 <p>保存私钥，<code>chmod 600</code> 后登录之，成功，拿到user.txt：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929213539864.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929213539864"></p>
-<h2 id="0x03-David’s-shell"><a href="#0x03-David’s-shell" class="headerlink" title="0x03 David’s shell"></a>0x03 David’s shell</h2><p>查看一下网络连接状态：</p>
+<h1 id="0x03-David’s-shell"><a href="#0x03-David’s-shell" class="headerlink" title="0x03 David’s shell"></a>0x03 David’s shell</h1><p>查看一下网络连接状态：</p>
 <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs perl">netstat -tulnp <span class="hljs-comment">#这条命令能够看到docker容器，初步排查后确定这不是我们的关注点</span><br><br>netstat -tulnp | <span class="hljs-keyword">grep</span> <span class="hljs-number">127</span> <span class="hljs-comment"># 只看127.0.0.1</span><br></code></pre></td></tr></table></figure>
 
 
@@ -637,7 +637,7 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929165428416.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929165428416"></p>
 <p>使用密码登录，拿到david的shell：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929223048356.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929223048356"></p>
-<h2 id="0x04-提权至root"><a href="#0x04-提权至root" class="headerlink" title="0x04 提权至root"></a>0x04 提权至root</h2><p>在david家目录的某个文件夹底下能够发现一个<code>servers.enc</code>文件：</p>
+<h1 id="0x04-提权至root"><a href="#0x04-提权至root" class="headerlink" title="0x04 提权至root"></a>0x04 提权至root</h1><p>在david家目录的某个文件夹底下能够发现一个<code>servers.enc</code>文件：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929223318515.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929223318515"></p>
 <p>那就想着法子解密咯。回到之前的gitea，在Key_Management目录下能够发现有一个keys.php，可以看出它在与aws的kms服务进行交互：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210930112614166.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210930112614166"></p>
@@ -701,6 +701,12 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210929203757742.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210929203757742"></p>
 <p>拿到此密码即可登录root用户：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/img/Sink.assets/image-20210930114707304.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210930114707304"></p>
+<h1 id="0x05-Summary"><a href="#0x05-Summary" class="headerlink" title="0x05 Summary"></a>0x05 Summary</h1><p>这是一个Insane难度的Linux靶机，主要考察内容如下：</p>
+<ul>
+<li>HTTP Smuggle攻击</li>
+<li>git利用</li>
+<li>aws云渗透</li>
+</ul>
 
               
             </div>

